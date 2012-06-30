@@ -1,0 +1,7 @@
+1: Figure out how to structure windwatchqueue (or another good way of doing individual location weather over time tracking
+2. Make a custom django manage command https://docs.djangoproject.com/en/dev/howto/custom-management-commands/#howto-custom-management-commands and make a cron job to run it every time interval to get new weather data.
+3. Figure out how to do the ETL from the weather DB, it should go something like:
+	a) request XML for a site area as defined by gps
+	b) load XML into a weather object
+	c) save weather object into weather object store 
+	d) update weather object date map with new object index key

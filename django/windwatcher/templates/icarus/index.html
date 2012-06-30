@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<style type="text/css">
+body {color: white; background: black;}
+div {text-align: left; font-size: 200%;}
+</style>
+</head>
+<body>
+<div>
+
+<h1>Welcome to the future of hang gliding, bro.</h1>
+<br>
+{% if datetime %}
+<i> You asked for something better, something new, at: </i> 
+<br>
+{{datetime}}
+<br>
+<b>I know, and your patience will soon be rewarded. Trust me. </b>
+{% endif %}
+{% if site_list %}
+{% for site in site_list.all %}
+<li> {{ site.name }} </li>
+{% endfor %}
+{% endif %}
+<br>
+<i>-Sean</i>
+</div>
+</body>
+</html>

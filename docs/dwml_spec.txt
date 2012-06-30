@@ -1,0 +1,740 @@
+U.S. DEPARTMENT OF COMMERCE
+NATIONAL OCEANIC AND ATMOSHPERIC ADMINSTISTRATION
+NATIONAL WEATHER SERVICE
+OFFICE OF SCIENCE AND TECHNOLOGY
+METEROLOGICAL DEVELOPMENT LABORATORY
+
+Digital Weather Markup Language
+Specification
+(Version 1.0)
+
+18 April 2012
+Table of Contents
+
+List of Figures
+
+Figure 1.  Example Forecast at a Glance Product34
+Figure 2.  Example Digital/Tabular Forecast Product3434
+Figure 3.  Example Digital Zone Forecast Product343435
+Figure 4.  Forecast at a Glance46
+Figure 5.  Digital/Tabular Forecast49
+Figure 6.  Digital Zone Forecast4954
+Figure 7:  Sample Model Output Statistics Bulletin.Bulletin58
+
+List of Tables
+
+Table 1.  DWML Content by Product34343536
+Table 2:  Sky Cover to Text Conversion (Source:  NWSI 10-503).50382
+Table 3:  Valid Values for Weather Coverage Attribute.Attribute83
+Table 4:  Valid Values for Weather Intensity.Intensity83
+Table 5:  Valid Weather Values.Values83
+Table 6:  Valid Weather Attributes.Attributes84
+Table 7:  Valid Visibility Values.Values84
+Table 8:  NDFDgen Night Time Icon Algorithm (priority in ascending order).order85
+Table 9:  NDFDgen Day Time Icon Algorithm (priority in ascending order).order87
+Table 10:  NDFDgenByDay Night Time Icon Algorithm (format = .12 hourly.) (priority in ascending order).order88
+Table 11:  NDFDgenByDay Day Time Icon Algorithm (format = .12 hourly. or .24 hourly) (priority in ascending order).order90
+Table 12:  NDFDgenByDay Weather Summary Phrases (format = .12 hourly. or .24 hourly.) (priority in ascending order).order92
+Table 13:  NDFDgenByDay Weather Summary Phrases (format = .12 hourly.) (priority in ascending order). 	92
+
+1. Overview:  
+This document defines the Digital Weather Markup Language (DWML).  DWML is a new XML language which is being developed to initially support the exchange of the National Weather Service.s (NWS) National Digital Forecast Database (NDFD) data.  However, the specification is being written with enough flexibility to accommodate other environmental science applications.  Appendix E provides a definition of DWML types based on restrictions appropriate to NDFD data.  Other sets of restrictions similar to those in Appendix E need to be established for other specific implementations.
+1.1. DWML Requirements
+This specification attempts to include requirements in the MDL NDFD XML Requirements document (Appendix A).  The matrix in Appendix B indicates which design feature satisfies which requirement.
+1.2. DWML Structure
+The tree diagrams in Appendix C provide a graphical representation of how DWML elements and attributes relate to each other.  These relationships in concert with the DWML type definitions in Appendix E form the basis for language validation.
+1.3. Sample Document
+In addition to providing a definition of the elements and their attributes, this specification provides sample DWML documents in Appendix D for the three products proposed in the NDFD XML Requirements document.  Appendix D also includes the application of DWML elements to a Model Output Statistics (MOS) bulletin.  The MOS bulletin example is a non-NDFD example and so it does not conform to the NDFD type definitions.  The MOS bulletin example is provided merely to illustrate the flexibility of DWLM to handle other data sources.
+2. DWML Data Element Nomenclature: 
+This specification uses the following approach to describing elements:
+1) Element and attribute names are all lower case.
+2) Element and attribute names use a hyphen (.-.) to separate multiple word names so as to improve readability (ex. <creation-date>).  Attribute and element names avoid the use of abbreviations to enhance readability.
+3) Within this document, child elements are nested in a sub-paragraph under their parents.
+4) Attributes are also nested but do not have the angle brackets (.<>.) and are italicized.
+5) The element.s and attribute.s type is provided in braces (.{}.).  For more information on each type refer to Appendix E.
+6) If the element can occur zero or more times, an asterisk (.*.) is placed after its name.  See specification 5.2.1.5 for an example.
+7) If the element occurs zero or one times, a question mark (.?.) follows its name.  See specification 4.1.3 for an example.
+8) If the element must appear at least once, a plus sign (.+.) trails its name.  See specification 5.2.1 for an example.
+9) Element names without a special trailing character must occur exactly once.  Specification 3.1 provides an example of an element that is required exactly once.
+10) Each DWML specification references the requirement that it is designed to meet.  The requirement is positioned at the end of the specification and contained in parentheses.  For example, specification 3.1 satisfies requirement 4.2.
+11) The order of element descriptions in the paragraphs below is not significant.  Any required ordering of elements is specified in the tree diagrams found in Appendix C and type definitions in Appendix E.
+3. Framework Elements:
+3.1. <dwml> Element
+The <dwml> element {dw:dwmlType}:  The root element for DWML (R4.2).
+3.1.1. version Attribute
+The version attribute {xsd:string} indicates which version of DWML the instance contains (R2.1.3).
+3.2. <head> Element
+The <head> element {dw:headType} contains the metadata for the DWML instance.  See section 4 for elements found in the <head> element (R4.2).
+3.3. <data> Element
+The <data> element {dw:dataType} contains the environmental data.  See section 5 for child elements of the <data> element (R4.2 and R2.2).
+4. DWML Metadata Elements
+DWML metadata provides information about the DWML product and the data it contains.  These elements are children of the <head> element.
+4.1. <product> Element
+The <product> element {dw:productType} holds meta information about the product.
+4.1.1. concise-name Attribute
+The concise-name attribute {dw:concise-nameType} represents a name or code that describes this product.  The concise-nameType will have a list of names that is extensible to support secondary developer additions.  Sample values include .glance., .digital-tabular., .digital-zone. (Derived From R2.1.1).
+4.1.2. srsName Attribute
+The srsName attribute {dw:srsNameType} communicates the spatial reference system used by NDFD.  The NDFD spatial reference system is the .WGS 1984..
+4.1.3. operational-mode Attribute
+The operational-mode attribute {dw:operational-modeType} defines the status of the product.  Applications can review the content of this element to determine if they should perform further processing.  Sample values include .test., .developmental., .experimental., and .official. product. (R2.1.4)
+4.1.3.1. Test Product
+The .test. product indicates that this is an instance of an existing DWML product that contains some change being evaluated by a DWML development team.  Users will typically not process this product (R2.1.4.1).
+4.1.3.2. Developmental Product
+The .developmental. product represents a new product that is not yet ready for public evaluation or use (R2.1.4.2).
+4.1.3.3. Experimental Product
+This product is available for testing and evaluation for a specified, limited time period for the explicit purpose of obtaining customer feedback. (R2.1.4.3).
+4.1.3.4. Official Product
+The .official. product identifies an instance of an established DWML product.  This DWML instance is part of the approved product suite available from the NWS (R2.1.4.4).
+4.1.4. <title> Element
+The <title> element {xsd:string} [?] provides a concise summarization of what this DWML product contains (R2.1.1).
+4.1.5. <field> Element
+The <field> Element {dw:fieldType} specifies the general area within the environmental sciences that the data contained in the DWML instance is from.  Example values include .meteorological., .hydrological., .oceanographical., .land surface., and .space. (R2.1.5).
+4.1.6. <category> Element
+The <category> Element {dw:categoryType} [?] defines the specific category that the product belongs to.  Example values include .observation., .forecast., .analysis., and .statistic. (R2.1.6).
+4.1.7. <creation-date> Element
+The <creation-date> Element {xsd:creation-dateType} contains the date and time that the product was prepared (R2.1.2).
+4.1.7.1. refresh-frequency Attribute
+The refresh-frequency attribute {xsd:duration} is used by the production center to help users know how often to return for updated data.  In the case of the NDFD, the data is updated on an as needed basis.  As a result the frequency provided may not always ensure users update as soon as new data is available.  The frequency will also not guarantee that that when updates are done that the retrieved data is new.  Still, the suggested refresh frequency will help well mannered users know what the provider believes is a reasonable time between repeated accesses of the system (R2.1.14).
+4.2. <source> Element
+The <source> Element {dw:sourceType}  [?] holds information about the product.s source and links to credit and disclaimer information.
+4.2.1. <more-information> Element
+The <more-information> element {xsd:anyURI} is a link to the web page of the forecast.s source or a more complete forecast (R2.1.13).
+4.2.2. <production-center> Element
+The <production-center> element {xsd:production-centerType} [?] identifies which organization creates the product (R2.1.7).
+4.2.2.1. <sub-center> Element
+The <sub-center> element {xsd:string} [?] is the part of the production center that prepared the product (R2.1.8).
+4.2.3. <disclaimer> Element
+The <disclaimer> element {xsd:anyURI} [?] is the URL containing a disclaimer regarding the data (R2.1.9).
+4.2.4. <credit> Element
+The <credit> Element {xsd:anyURI} [?] is the URL used to credit the source of the data (R2.1.10).
+4.2.5. <credit-logo> Element
+The <credit-logo> element {xsd:anyURI} [?] is the image link used with the credit URL to acknowledge the data source (R.2.11).
+4.2.6. <feedback> Element
+The <feedback> Element {xsd:anyURI} [?] is a URL to a web page used to provide the production center comments on the product (R2.1.12).
+5. DWML Data Elements
+These elements hold the environmental data.  They are children of the <data> element.(R2.2).
+5.1. <location> Element
+The <location> element {dw:locationType} [+]:  Defines the location for the data contained in the element <data>.  The element must contain exactly one of its child elements (R2.2.2).
+5.1.1. <location-key> Element
+The <location-key> element {dw:location-keyType} [?] is used to relate the location to its corresponding parameters (R2.2.2).
+5.1.2. <point> Element
+For information on the <point> element see Section 
+5.1.2.1. summarization Attribute
+For information on the summarization attribute see Section .
+5.1.3. <city> Element
+The <city> element {dw:cityType} [?] contains the city name for which the data is valid (R2.2.2).
+5.1.3.1. state Attribute
+The state attribute {dw:stateType} holds the two digit abbreviation for the state that the city resides in (R2.2.2).
+5.1.3.2. summarization Attribute
+For information on the summarization attribute see Section .
+5.1.4. <nws-zone> Element
+The <nws-zone> element {dw:nws-zoneType} [?] contains the National Weather Service forecast zone name for which the data is valid (R2.2.2).
+5.1.4.1. state Attribute
+The state attribute {dw:stateType} holds the two digit abbreviation for the state that the city resides in (R2.2.2).
+5.1.4.2. summarization Attribute
+For information on the summarization attribute see Section .
+5.1.5. <area> Element
+The <area> element {dw:areaType} [?] is a geometrical shape may be used to define which grid points the data represents.  The element must contain exactly one of its child elements (Derived from R2.2.1.5).
+5.1.5.1. area-type Attribute
+The area-type attribute {dw:area-typeType} defines the aerial shape being used.  Permissible values include .circle. and .rectangle. (Derived from R2.2.1.5).
+5.1.5.2. <circle> Element
+The <circle> element {dw:circleType} [?] is a circular area about a grid point.  The area can contain any number of grid points which are summarized.
+5.1.6. <point> Element
+For information on the <point> element see Section 
+5.1.6.1.1. <radius> Element
+The <radius> element {dw:radiusType} is the distance from the center point of the circle to edge of the circular area (Derived from R2.2.1.5).
+5.1.6.1.1.1. radius-units Attribute
+The radius-units attribute {dw:radius-unitsType) is the units of the radius measurement.  Example values include .statute miles. and .kilometers. (Derived from R2.2.1.5).
+5.1.6.2. summarization Attribute
+For information on the summarization attribute see Section .
+5.1.6.3. <rectangle> Element
+The <rectangle> element {dw:rectangleType} [?] is a rectangular area which is defined by four latitude and longitude pairs.  The area can contain any number of grid points which are summarized.
+5.1.7. <point> Element
+For information on the <point> element see Section 
+5.1.8. <point> Element
+For information on the <point> element see Section 
+5.1.9. <point> Element
+For information on the <point> element see Section 
+5.1.10. <point> Element
+For information on the <point> element see Section 
+5.1.10.1. summarization Attribute
+For information on the summarization attribute see Section .
+5.1.11. <height> Element
+The <height> element {dw:heightType} [?] is the data point.s distance above/below some datum.  If this element is not present, it is assumed that the data values are surface based (R2.2.2.3.1).
+5.1.11.1. datum Attribute
+The datum attribute {dw:datumType} is the reference for the height measurement.  Example values include .surface. and .mean sea level. (R2.2.2.3.1.1).
+5.1.11.2. height-units Attribute
+The height-units attribute {dw:unitsType}represents the units of measure used for the height value.  Example values include .feet. and .meters. (R2.2.2.3.1.2).
+5.1.12. <level> Element
+The <level> element {dw:levelType} [?] allows the data to be valid at some specific level.  For example, within model data, a value may apply to a sigma level (R2.2.2.3.2).
+5.1.12.1. vertical-coordinate Attribute
+For information on the vertical-coordinate attribute see Section .
+5.1.13. <layer> Element
+The <layer> element {dw:layerType} [?] allows the data to be valid for some specific layer.  For example, within model data, a value may be valid through a sigma layer (R2.2.2.3.3).  
+5.1.13.1. vertical-coordinate Attribute
+For information on the vertical-coordinate attribute see Section .
+5.2. <moreWeatherInformation> Element
+The <moreWeatherInformation> element {xsd:anyURI} contains a link to the NDFD point-and-click forecast page for each set of user requested lat/lon pairs.
+5.2.1. applicable-location Attribute
+The applicable-location attribute {dw:applicable-locationType} [?] is used to relate the location to a particular list of parameters (R2.2.1). In this case it is the user requested point number.
+5.3. <time-layout> Element
+The <time-layout> element {dw:time-layoutType } [+] contains the start and stop valid times and any associated period names for the data.  Since different environmental parameters have different time schemes (valid at different interval and available for different lengths of time into the future), there will be one <time-layout> element for each of these unique temporal configurations.  Each data parameter will reference exactly one of these time layouts (R2.2.3).
+5.3.1. time-coordinate Attribute
+The time-coordinate attribute {dw:time-coordinateType} defines the time coordinate as either .local time. or .UTC. (R2.2.3.3).
+5.3.1.1. summarization Attribute
+For information on the summarization attribute see Section .
+5.3.2. <layout-key> Element
+The <layout-key> element {dw:layout-keyType} contains the key (k-p24h-n7-1) used to associated this time layout with a particular parameter element (R2.2.3).  The key is derived using the following convention:
+1) .k. stands for key.
+2) .p24h. implies a data period length of 24 hours.
+3) .n7. means that the number of data times is 7.
+4) .1. is a sequential number used to keep the layout keys unique.
+The key should not be parsed to derive the period.  This is because, the period length changes for some data type after day 3 and so period length implied by the key name only applies to the early times.
+5.3.3. <start-valid-time> Element
+The <start-valid-time> element {dw:start-valid-timeType} [+] is the start time of the period of time for which the data is valid (R2.2.3.1).
+5.3.3.1.1. period-name Attribute
+The period-name attribute {xsd:string} [?] contains the name associated with this time interval (ex. TODAY) (R2.2.3.4).
+5.3.4. <end-valid-time> Element
+The <end-valid-time> element {xsd:dateTime} [*]:  The end time of the period of time for which the data is valid.  The absence of this attribute indicates that the element is valid at a specific time (R2.2.3.2).
+5.4. <parameters> Element
+The <parameters> element {dw:parametersType} [+] holds the environmental data (R2.2.1).
+5.4.1. applicable-location Attribute
+The applicable-location attribute {dw:applicable-locationType} [?] is used to relate the location to a particular list of parameters (R2.2.1).
+5.4.2. <temperature> Element
+The <temperature> Element {dw:temperatureType} [*] is a container for temperature data (R2.2.1).
+5.4.2.1. type Attribute
+The type Attribute {dw:typeType} specifies the type of temperature.  Example values include .maximum., .minimum., .temperature., .dew point., .heat index., .wind chill. (R2.2.1.1).
+5.4.2.2. units Attribute
+The units attribute {dw:unitsType} defines the units of the temperature value.  Example values include .F., .C., and .K..  The default value is .F. (R2.2.1.3).
+5.4.2.3. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.2.4. <value> Element
+The <value> element {dw:valueType} [+]:  The temperature value reported to the nearest whole degree.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.2.4.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a temperature range (R2.2.1).
+5.4.2.4.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a temperature range (R2.2.1).
+5.4.2.5. <valueWithUncertainty> Element
+The <valueWithUncertainty> element {dw: valueWithUncertaintyType} [+]:  Element containing a <value> element and an <uncertainty> element.  Represents a value like 75°F + or minus 1.5°F.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.2.5.1. <value> Element
+The <value> element {dw:valueType} [+]:  The temperature value reported to the nearest whole degree.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.2.5.1.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a temperature range (R2.2.1).
+5.4.2.5.1.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a temperature range (R2.2.1).
+5.4.2.5.2. <uncertainty> Element
+Specifies the uncertainty {dw: uncertaintyType} [+] associated with the accompanying value.
+5.4.2.5.2.1. type Attribute
+The type Attribute {dw:uncertaintyTypeType} specifies the type of uncertainty.  Example values include .analysis error. (R2.2.1.1).
+5.4.2.5.2.2. <error> Element
+The <error> element {errorType} [?] holds an uncertainty value characterized as an error.
+5.4.2.5.2.2.1. qualifier Attribute
+The qualifier attribute {dw:qualifierType} [?] is use to indicate how the error is applied.  For example, a qualifier set to a value of .+/-., indicating the error is to be added and subtracted from the base value to determine the range of values.
+5.4.2.6. <name> Element
+The <name> element {xsd:string} [?]:  The name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.2.7. categorical-table Attribute
+The categorical-table attribute {dw:categorical-tableType} [?] is the foreign key to a list of categories that define the meaning of the value (R2.2.1).
+5.4.2.8. conversion-table Attribute
+The conversion-table attribute {dw:conversion-tableType} [?] is the foreign key to a list of conversions tables that provide a equivalent value for the data (R2.2.1).
+5.4.3. <precipitation> Element
+The <precipitation> element {dw:precipitationType} [*] is a container for the precipitation values (R2.2.1).
+5.4.3.1. type Attribute
+The type Attribute {dw:typeType} specifies the type of precipitation parameter.  Example values include .liquid. and .snow. (R2.2.1.1).
+5.4.3.2. units Attribute
+The units attribute {dw:unitsType} defines the units of the precipitation value.  Example values include .inches. and .millimeters..  The default value is .inches. (R2.2.1.3).
+5.4.3.3. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.3.4. <value> Element
+The <value> element {dw:valueType} [+]:  The precipitation type parameter.s value to the nearest integer value.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.3.4.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a precipitation range (R2.2.1).
+5.4.3.4.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a precipitation range (R2.2.1).
+5.4.3.5. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.3.6. categorical-table Attribute
+The categorical-table attribute {dw:categorical-tableType} [?] is the foreign key to a list of categories that define the meaning of the value (R2.2.1).
+5.4.3.7. conversion-table Attribute
+The conversion-table attribute {dw:conversion-tableType} [?] is the foreign key to a list of conversions tables that provide a equivalent value for the data (R2.2.1).
+5.4.4. <probability-of-precipitation> Element
+The <probability-of-precipitation> element {dw:probability-of-precipitationType} [*] is a container for the probability of precipitation (POP) values (R2.2.1).
+5.4.4.1. type Attribute
+The type Attribute {dw:typeType} specifies the type of POP parameter.  Example values include .12 hour. and .floating..  Default value is .12 hour. (R2.2.1.1).
+5.4.4.2. units Attribute
+The units attribute {dw:unitsType} defines the units of the POP value.  Example values include .percent. (R2.2.1.3).
+5.4.4.3. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.4.4. <value> Element
+The <value> element {dw:valueType} [+]:  The POP value to the nearest integer value.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.4.4.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a probability of POP range (R2.2.1).
+5.4.4.4.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a POP range (R2.2.1).
+5.4.4.5. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.4.6. categorical-table Attribute
+The categorical-table attribute {dw:categorical-tableType} [?] is the foreign key to a list of categories that define the meaning of the value (R2.2.1).
+5.4.4.7. conversion-table Attribute
+The conversion-table attribute {dw:conversion-tableType} [?] is the foreign key to a list of conversions tables that provide a equivalent value for the data (R2.2.1).
+5.4.5. <convective-hazard> Element
+The <convective-hazard> element {dw:convective-hazardType} [*] is a container for the convective hazard values like hazard outlook, tornadoes, hail, severe thunderstorms from the Storm Prediction Center (R2.2.1).
+5.4.5.1. type Attribute
+The type Attribute {dw:typeType} specifies the type of convective hazard parameter.  Example values include .outlook., .tornadoes., .hail., .damaging thunderstorm wind. .extreme tornadoes., .extreme hail., .extreme thunderstorm winds., .severe thunderstorms. and .extreme severe thunderstorms..  (R2.2.1.1).
+5.4.5.2. units Attribute
+The units attribute {dw:unitsType} defines the units of the convective hazard value.  Example values include .percent. (R2.2.1.3).
+5.4.5.3. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.5.4. <value> Element
+The <value> element {dw:valueType} [+]:  The convective hazard value to the nearest integer value.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.5.4.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a probability of convective hazard range (R2.2.1).
+5.4.5.4.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a convective hazard range (R2.2.1).
+5.4.5.5. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.5.6. categorical-table Attribute
+The categorical-table attribute {dw:categorical-tableType} [?] is the foreign key to a list of categories that define the meaning of the value (R2.2.1).
+5.4.5.7. conversion-table Attribute
+The conversion-table attribute {dw:conversion-tableType} [?] is the foreign key to a list of conversions tables that provide a equivalent value for the data (R2.2.1).
+5.4.6. <wind-speed> Element
+The <wind-speed> element {dw:wind-speedType} [*] is a container for the wind speed values (R2.2.1).
+5.4.6.1. type Attribute
+The type Attribute {dw:typeType} specifies the type of wind speed parameter.  Example values include .sustained., .cumulative34., and .gust. (R2.2.1.1).
+5.4.6.2. units Attribute
+The units attribute {dw:unitsType} defines the units of the wind speed values.  Example values include .knots., .meters per second., and .percent..  The default value is .knots..  NOTE:  .percent. is used for probabilistic winds (R2.2.1.3).
+5.4.6.3. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.6.4. <value> Element
+The <value> element {dw:valueType} [+]:  The wind speed value reported to the nearest integer.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.6.4.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a wind speed range (R2.2.1).
+5.4.6.4.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a temperature range (R2.2.1).
+5.4.6.5. <valueWithUncertainty> Element
+The <valueWithUncertainty> element {dw: valueWithUncertaintyType} [+]:  Element containing a <value> element and an <uncertainty> element.  Represents a value like 10 kts + or minus 2.0 kts.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.6.5.1. <value> Element
+The <value> element {dw:valueType} [+]:  The temperature value reported to the nearest whole degree.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.6.5.1.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a temperature range (R2.2.1).
+5.4.6.5.1.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a temperature range (R2.2.1).
+5.4.6.5.2. <uncertainty> Element
+Specifies the uncertainty {dw: uncertaintyType} [+] associated with the accompanying value.
+5.4.6.5.2.1. type Attribute
+The type Attribute {dw:uncertaintyTypeType} specifies the type of uncertainty.  Example values include .analysis error. (R2.2.1.1).
+5.4.6.5.2.2. <error> Element
+The <error> element {errorType} [?] holds an uncertainty value characterized as an error.
+5.4.6.5.2.2.1. qualifier Attribute
+5.4.6.5.3. The qualifier attribute {dw:qualifierType} [?] is use to indicate how the error is applied.  For example, a qualifier set to a value of .+/-., indicating the error is to be added and subtracted from the base value to determine the range of values.
+5.4.6.6. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.6.7. categorical-table Attribute
+The categorical-table attribute {dw:categorical-tableType} [?] is the foreign key to a list of categories that define the meaning of the value (R2.2.1).
+5.4.6.8. conversion-table Attribute
+The conversion-table attribute {dw:conversion-tableType} [?] is the foreign key to a list of conversions tables that provide a equivalent value for the data (R2.2.1).
+5.4.7. <direction> Element
+The <direction> element {dw:directionType} [?] is a container for the direction values (R2.2.1).
+5.4.7.1. type Attribute
+The type Attribute {dw:typeType} specifies the type of wind direction.  Example values include .wind. and .swell..  The default value is .wind. (R2.2.1.1).
+5.4.7.2. units Attribute
+The units attribute {dw:unitsType} defines the units of the wind direction values.  Example values include .degrees true. (R2.2.1.3).
+5.4.7.3. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.7.4. <value> Element
+The <value> element {dw:valueType} [+]:  The wind direction value reported to the nearest integer.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.7.4.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a wind direction range (R2.2.1).
+5.4.7.4.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a wind direction range (R2.2.1).
+5.4.7.5. <valueWithUncertainty> Element
+The <valueWithUncertainty> element {dw: valueWithUncertaintyType} [+]:  Element containing a <value> element and an <uncertainty> element.  Represents a value like 270° + or minus 5.0°.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.7.5.1. <value> Element
+The <value> element {dw:valueType} [+]:  The temperature value reported to the nearest whole degree.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.7.5.1.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a temperature range (R2.2.1).
+5.4.7.5.1.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a temperature range (R2.2.1).
+5.4.7.5.2. <uncertainty> Element
+Specifies the uncertainty {dw:uncertaintyType} [+] associated with the accompanying value.
+5.4.7.5.2.1. type Attribute
+The type Attribute {dw:uncertaintyTypeType} specifies the type of uncertainty.  Example values include .analysis error. (R2.2.1.1).
+5.4.7.5.2.2. <error> Element
+The <error> element {errorType} [?] holds an uncertainty value characterized as an error.
+5.4.7.5.2.2.1. qualifier Attribute
+5.4.7.5.3. The qualifier attribute {dw:qualifierType} [?] is use to indicate how the error is applied.  For example, a qualifier set to a value of .+/-., indicating the error is to be added and subtracted from the base value to determine the range of values.
+5.4.7.6. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.7.7. categorical-table Attribute
+The categorical-table attribute {dw:categorical-tableType} [?] is the foreign key to a list of categories that define the meaning of the value (R2.2.1).
+5.4.7.8. conversion-table Attribute
+The conversion-table attribute {dw:conversion-tableType} [?] is the foreign key to a list of conversions tables that provide a equivalent value for the data (R2.2.1).
+5.4.8. <cloud-amount> Element
+The <cloud-amount> element {dw:cloud-amountType} [*] is a container for the cloud amount values (R2.2.1).
+5.4.8.1. type Attribute
+The type Attribute {dw:typeType} specifies the type of cloud amount values.  Example values include .total. and .layered. (R2.2.1.1).
+5.4.8.2. units Attribute
+The units attribute {dw:unitsType} defines the units of the cloud amount values.  Example values include .percent. and .8ths..  The default value is .percent. (R2.2.1.3).
+5.4.8.3. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.8.4. <value> Element
+The <value> element {dw:valueType} [+]:  The cloud cover value reported to the nearest integer.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.8.4.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a range of cloud amount (R2.2.1).
+5.4.8.4.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a range of cloud amount (R2.2.1).
+5.4.8.5. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.8.6. <cloud-layer> Element
+The <cloud-layer> element {dw:layerType} [?] is the layer containing the cloud amount.  Example values include .high., .middle., and .low..  This element is not present when the type attribute is set to .total. (Derived from R2.2.1).
+5.4.8.7. categorical-table Attribute
+The categorical-table attribute {dw:categorical-tableType} [?] is the foreign key to a list of categories that define the meaning of the value (R2.2.1).
+5.4.8.8. conversion-table Attribute
+The conversion-table attribute {dw:conversion-tableType} [?] is the foreign key to a list of conversions tables that provide a equivalent value for the data (R2.2.1).
+5.4.9. <weather> Element
+The <weather> element {dw:weatherType} [?] is a container for the weather values (R2.2.1).
+5.4.9.1. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.9.2. <weather-conditions> Element
+The <weather-conditions> element {weather-conditionsType} [+] is a container for up to three weather values that are used to describe the weather conditions at a given time.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.9.3. <value> Element
+The <value> element {dw:valueType} [* (max of 5)] hold the sensible weather information.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.9.3.1.1. coverage Attribute
+The coverage attribute {dw:coverageType} [?] holds the weather coverage value. Valid values for the NDFD are contained in Appendix E, Table 3 (R2.2.1).
+5.4.9.3.1.2. intensity Attribute
+The intensity attribute {dw:intensityType} [?] holds the weather intensity.  Valid values for the NDFD are contained in Appendix E, Table 4 (R2.2.1).
+5.4.9.3.1.3. additive Attribute
+The additive attribute {dw:additiveType} [?] dictates whether the following value element is combined using an .and. or an .or..  For example rain and snow vice rain or snow (R2.2.1).
+5.4.9.3.1.4. qualifier Attribute
+The qualifier attribute {dw:qualifierType} [?] is used to communicate a special aspect of the weather value.  Valid values for the NDFD are contained in Appendix E, Table 6 (R2.2.1).
+5.4.9.3.1.5. weather-type Attribute
+The weather-type attribute {dw:weather-typeType} [?] captures the weather element being forecast. Valid values for the NDFD are contained in Appendix E, Table 5 (R2.2.1).
+5.4.9.3.1.6. <visibility> Element
+The <visibility> element {dw:visibilityType} [*] contains the weather visibility value (R2.2.1).
+5.4.9.3.1.6.1. units Attribute
+The units attribute {dw:unitsType} contains the units of the visibility value.  Example values include .statute miles. and .meters. (R2.2.1).
+5.4.9.4. categorical-table Attribute
+The categorical-table attribute {dw:categorical-tableType} [?] is the foreign key to a list of categories that define the meaning of the value (R2.2.1).
+5.4.9.5. conversion-table Attribute
+The conversion-table attribute {dw:conversion-tableType} [?] is the foreign key to a list of conversions tables that provide a equivalent value for the data (R2.2.1).
+5.4.9.6. weather-summary Attribute
+The weather-summary Attribute {xsd:string} [?] is a short phrase (~2 words) used to summarize the weather conditions for that time.  Example phrases include .partly cloudy. and .scattered thunderstorms. (R2.2.1).
+5.4.10. <humidity> Element
+The <humidity> Element {dw:humidityType} [?] is a container for humidity values (R2.2.1).
+5.4.10.1. type Attribute
+The type Attribute {dw:typeType} specifies the type of humidity.  Example values include .relative. and .specific. (R2.2.1.1).
+5.4.10.2. units Attribute
+The units attribute {dw:unitsType} defines the units of the humidity values.  Example values include .percent. and .kilogram/kilogram. (R2.2.1.3).
+5.4.10.3. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.10.4. <value> Element
+The <value> element {dw:valueType} [+]:  The humidity value reported to the nearest integer.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.10.4.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a relative humidity range (R2.2.1).
+5.4.10.4.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a relative humidity range (R2.2.1).
+5.4.10.5. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.10.6. categorical-table Attribute
+The categorical-table attribute {dw:categorical-tableType} [?] is the foreign key to a list of categories that define the meaning of the value (R2.2.1).
+5.4.10.7. conversion-table Attribute
+The conversion-table attribute {dw:conversion-tableType} [?] is the foreign key to a list of conversions tables that provide a equivalent value for the data (R2.2.1).
+5.4.11. <conditions-icons> Element
+The <conditions-icons> element {dw:conditions-iconsType} [?] holds a URL for a weather icon depicting the cloud and precipitation conditions.  The icons will be consistent with other NWS forecast products (R5.1).
+5.4.11.1. type Attribute
+The type Attribute {dw:typeType} specifies the type of icons.  Example values include .forecast-NWS. (R2.2.1.1).
+5.4.11.2. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.11.3. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.11.4. <icon-link> Element
+The <icon-link> element {xsd:anyURI} [+] contains the URL of the icon used to represent weather conditions (R5.1).
+NOTE:  The priority algorithm for icon determination can be found in Table 8.Table 11.  In these tables, the nomenclature [20,30.90,100] indicates that one of the 2 digit values appear in the icon file name.  For example, the rain icon could be ra20.jpg, ra30.jpg on up to ra100.jpg.
+5.4.12. <wordedForecast> Element
+The <wordedForecast> element {dw:wordedForecastType} [?] holds a text representation of the forecast for the indicated time period.
+5.4.12.1. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.12.2. dataSource
+Describes the data source used to create the worded forecast (examples include .NDFD Mosaic. or .Local NetCDF., etc.).
+5.4.12.3. wordGenerator
+Specifies which algorithm was used to create the worded forecast (examples include .MarkMitchell.).
+5.4.12.4. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.12.5. <text> Element
+The <text> element {dw:textType} [+]:  The worded forecast.  Missing entries are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.13. <water-state> Element
+The <water-state> Element {dw:water-stateType} [?] is a container for sea and wave information.  The seas element will not be present when the waves or swell elements are used.  The wave and swell can both appear or they may appear separately (R2.2.1).
+5.4.13.1. time-layout Attribute
+For information on the time-layout attribute see Section .
+5.4.13.2. <seas> Element
+The <seas> element {dw:seasType} [?] holds the height of the seas which is a combination of both wind waves and swell (R2.2.1).
+5.4.13.3. type Attribute
+The type Attribute {dw:typeType} specifies the type of seas.  An example value includes .combined. (R2.2.1.1).
+5.4.13.4. units Attribute
+The units attribute {dw:unitsType} defines the units of the seas values.  Example values include .feet. and .meters. (R2.2.1.3).
+5.4.13.5. <value> Element
+The <value> element {dw:valueType} [+]:  The seas value reported to the nearest integer.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.13.5.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a sea height range (R2.2.1).
+5.4.13.5.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a sea height range (R2.2.1).
+5.4.13.6. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.13.7. <waves> Element
+The <waves> element {dw:wavesType} [?] holds the height of waves generated by the local wind blowing (R2.2.1).
+5.4.13.8. type Attribute
+The type Attribute {dw:typeType} specifies the type of waves.  An example value includes .wind. or .significant. (R2.2.1.1).
+5.4.13.9. units Attribute
+The units attribute {dw:unitsType} defines the units of the wave values.  Example values include .feet. and .meters. (R2.2.1.3).
+5.4.13.10. <value> Element
+The <value> element {dw:valueType} [+]:  The wave value reported to the nearest integer.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.13.10.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a wave height range (R2.2.1).
+5.4.13.10.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a wave height range (R2.2.1).
+5.4.13.10.2.1. period Attribute
+The period attribute {xsd:nonNegativeIntegers} [?] holds the time, in seconds for the passage of successive wave crests (R2.2.1).
+5.4.13.10.2.2. steepness Attribute
+The steepness attribute {xsd:nonNegativeIntegers} [?] holds the Ratio of wave height to wavelength. Theoretical wave steepness maximum is around 1/10, after which the wave becomes unstable and breaks (R2.2.1).
+5.4.13.11. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.13.12. <swell> Element
+The <swell> element {dw:swellType} [?] holds the height of wind waves which have traveled beyond the wave generation region (R2.2.1).
+5.4.13.13. type Attribute
+The type Attribute {dw:typeType} specifies the type of swell.  An example value includes .significant. (R2.2.1.1).
+5.4.13.14. units Attribute
+The units attribute {dw:unitsType} defines the units of the swell values.  Example values include .feet. and .meters. (R2.2.1.3).
+5.4.13.15. <value> Element
+The <value> element {dw:valueType} [+] contains the swell value reported to the nearest integer.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.13.15.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a swell height range (R2.2.1).
+5.4.13.15.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a swell height range (R2.2.1).
+5.4.13.15.2.1. period Attribute
+The period attribute {xsd:nonNegativeIntegers} [?] holds the time, in seconds for the passage of successive wave crests (R2.2.1).
+5.4.13.15.2.2. steepness Attribute
+The steepness attribute {xsd:nonNegativeIntegers} [?] holds the Ratio of wave height to wavelength. Theoretical wave steepness maximum is around 1/10, after which the wave becomes unstable and breaks (R2.2.1).
+5.4.13.16. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.13.16.1. <direction> Element
+The <direction> element {dw:directionType} [+] is a container for the direction values (R2.2.1).
+5.4.13.17. type Attribute
+The type Attribute {dw:typeType} specifies the type of swell direction.  Example values include .wind. and .swell..  The default value is .wind. (R2.2.1.1).
+5.4.13.18. units Attribute
+The units attribute {dw:unitsType} defines the units of the swell direction values.  Example values include .degrees true. (R2.2.1.3).
+5.4.13.19. <value> Element
+The <value> element {dw:valueType} [+] holds the direction value reported to the nearest integer.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.13.19.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a swell direction range (R2.2.1).
+5.4.13.19.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a swell direction range (R2.2.1).
+5.4.13.20. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.4.13.21. ice-coverage Element
+The ice-coverage element {dw:ice-coverageType} [?] holds the amount of ice on the water body (R2.2.1).
+5.4.13.22. type Attribute
+The type attribute {dw:typeType} specifies the type of ice coverage.  An example value includes .total. (R2.2.1.1).
+5.4.13.23. units Attribute
+The units attribute {dw:unitsType} defines the units of the ice cverage values.  Example values include .percent. (R2.2.1.3).
+5.4.13.24. <value> Element
+The <value> element {dw:valueType} [+]:  The ice coverage value reported to the nearest integer.  Missing values are represented by an empty element and xsi:nil=.true. (R2.2.1).
+5.4.13.24.1. upper-range Attribute
+The upper-range attribute {dw:upper-rangeType} [?] holds the value associated with the upper end of a ice coverage range (R2.2.1).
+5.4.13.24.2. lower-range Attribute
+The lower-range attribute {dw:lower-rangeType} [?] holds the value associated with the lower end of a ice coverage range (R2.2.1).
+5.4.13.25. <name> Element
+The <name> element {xsd:string} [?] is the name of this parameter.  The name value can be used for display purposes (R2.2.1.2).
+5.5. <categorical-definitions> Element
+The <categorical-definitions> element {dw:categorical-definitionsType} [?] contains the definitions of categories found in parameter value elements (R2.2.1).
+5.5.1. <categorical-table> Element
+The <categorical-table> element {dw:categorical-table-elementType} [+] contains the categorical data (R2.2.1).
+5.5.1.1. units Attribute
+5.5.1.2. The units attribute {dw:unitsType} defines the units of the data in the categories (R2.2.1).
+5.5.1.3. <categorical-key> Element
+The <categorical-key> element {dw:categorical-keyType} is the primary key relating the data in the parameter element to a particular categorical table (R2.2.1).
+5.5.1.4. <value> Element
+The <value> element {dw:valueType} [+]:  The value found in the data (R2.2.1).
+5.5.1.4.1. category {xsd:string}:  The category corresponding to the value (R2.2.1).
+5.6. <conversion-definitions> Element
+The <conversion-definitions> element {dw:conversion-definitionsType} [?] contains look-up tables used to relate numerical data to an equivalent value (R2.2.1).
+5.6.1. <conversion-table> Element
+The <conversion-table> element {dw:conversion-table-elementType} [+] holds the range of data associated with each equivalent value (R2.2.1).
+5.6.1.1. <conversion-key> Element
+The <conversion-key> element {dw:conversion-keyType} contains the primary key relating the data in the parameter element to a particular conversion table (R2.2.1).
+5.6.1.2. <start-value> Element
+The <start-value> element {dw:start-valueType} [+] is the starting value of the range of data for which the value is equivalent (R2.2.1).
+5.6.1.3. <end-value> Element
+The <end-value> element {dw:end-valueType} [+] is the ending value of the range of data for which the value is equivalent (R2.2.1).
+5.6.1.4. <equivalent-value> Element
+The <equivalent-value> element {xsd:string}  [+] is the equivalent value of the data (R2.2.1).
+6. Latitude and Longitude Lists
+6.1. <latLonList> Element
+The <latLonList> element {dw:latLonListType} [?] holds a list of latitude and longitude pairs that are contained in a subgrid.  A latitude and longitude pair is composed of a latitude value followed by a comma followed by a longitude value (i.e. 38.98,-77.07).  Each latitude and longitude pair is separated by a space (i.e. 33.869922,-80.080906 33.914765,-80.074936).
+7. Common Element and Attribute Definitions
+7.1. <point> Element
+The <point> element {dw:pointType} [?] is the element used to define the grid point for which the data is valid (R2.2.2).
+7.1.1. latitude Attribute
+The latitude attribute {xsd:decimal} defines the latitude of the point where the data is valid (R2.2.2.2).
+7.1.2. longitude Attribute
+The longitude attribute {xsd:decimal} defines the latitude of the point where the data is valid (R2.2.2.2).
+7.2. vertical-coordinate Attribute
+The vertical-coordinate attribute {xsd:string} defines the data.s vertical position (R2.2.2.3).
+7.3. summarization Attribute
+The summarization attribute {dw:summarizationType} [?] indicates how a collection of grid point values is summarized into a single value.  Example summarization types include .none., .mean., .median., .mode., .maximum., .minimum., .12hourly., or .24hourly..  A value of .none. indicates that the values are valid at a single grid point or time (R2.2.1.5).
+7.4. time-layout Attribute
+The time-layout attribute {dw:time-layoutType} defines the key to the appropriate valid times and any relevant period name information (R2.2.3).
+8. XML Considerations
+8.1. Namespace
+DWML will use the namespace http://www.nws.noaa.gov/mdl/ndfd/dwml.
+8.2. Schema
+DWML will use XML Schema to perform validity checking.
+8.3. Character Set
+DWML will use UTF-8 encoding.
+Appendix A:  DWML Requirements
+
+1. Overview
+This document defines the requirements for a markup language of the National Oceanic and Atmospheric Administration.s National Weather Service.s (NWS) National Digital Forecast Database (NDFD). This document will refer to the new markup language as the Digital Weather Markup Language (DWML).  DWML will serve as a vehicle for transferring portions of the NDFD to NOAA.s customers and partners.  The piece of the database distributed in DWML will correspond to some subset of the available weather elements, times, and grid points.  While DWML will initially focus on NDFD data, the intent is to make this new markup language flexible and scaleable enough to accommodate other meteorological data such as weather observations and guidance products.
+1.1. Message:  A collection of DWML elements in a valid arrangement.
+1.2. Product:  A collection of NWS information in a defined format.
+1.3. Issuance:  A particular product.
+2. XML Components
+DWML contains both metadata as well as meteorological data.  The two will be clearly separated within a message.
+2.1. DWML Metadata:  DWML metadata will provide information about the DWML message and the data it contains.  The metadata will provide the following some of which may be optional for a given issuer.
+2.1.1. Product Title:  A concise summarization of what this DWML product contains.
+2.1.2. Product Creation Date:  The date and time that the product was prepared.
+2.1.3. DWML Version:  Indicates which version of DWML is being used.
+2.1.4. Operational Mode:  The operational mode tells the user if the message is produced as a developmental, experimental or official product, or a test.  See National Weather Service Instruction 10-102 for additional details on changes in operational mode.
+2.1.4.1.   Test:  Indicates that this is an instance of an existing DWML product that contains some change being evaluated by the DWML development team.  Users will typically not process this product.
+2.1.4.2.   Developmental:  A new product that is not yet ready for public evaluation or use.
+2.1.4.3.   Experimental:  Product is available for testing and evaluation for a specified, limited time period for the explicit purpose of obtaining customer feedback.
+2.1.4.4.   Official:  Operational products defined in NWS policy
+2.1.5. Product Class:  Product Class specifies the general type of product contained in a DWML instance.  Expected values include meteorological, hydrological, oceanographical, land surface, and space.
+2.1.6. Product Type:  The product type defines the specific category of the product class to which the product belongs.  Examples include observation, forecast, analysis, and statistic.
+2.1.7. Production Center:  Production Center identifies which organization creates the product.
+2.1.8. Product Sub-center:  The component of the product center that prepared the product.
+2.1.9. Disclaimer URL:  The URL containing an optional disclaimer that the production center wants users to know about.
+2.1.10. Credit URL:  The URL used to credit the source of the data.
+2.1.11. Credit Logo:  The optional image used with the credit URL to acknowledge the data source.
+2.1.12. Feedback URL:  The optional URL to a web page used to provide the production center comments on the product.
+2.1.13. Additional Information URL:  A link to a more complete forecast or the web page for the forecast.s source.
+2.1.14. Suggested Refresh Frequency:  Used by the production center to help users know how often to return for updated data.  Since the NDFD is updated on an as needed basis, the frequency provided will not always ensure users update as soon as new data is available.  The frequency will also not guarantee that that when updates are done that the retrieved data is new.  Still, the suggested refresh frequency will help well mannered users know what the provider believes is a reasonable time between repeated accesses of the system (i.e. seconds, days, months, etc).
+2.2. DWML Data:  At the heart of NDFD data is a meteorological value with a geographical and temporal component.  To define this value, DWML needs to provide the following information:
+2.2.1. Data Value:  This is the information retrieved or derived from the NDFD database (i.e. 71).
+2.2.1.1.   Value Type:  The category to which the parameter belongs.  For example, temperature is the category that contains maximum temperature, dew point temperature etc.
+2.2.1.2.   Value Name:  The name of the parameter that the value measures (i.e. maximum temperature).
+2.2.1.3.   Value Units:  The units of the parameter (i.e. .F).
+2.2.1.4.   Value Precision:  The value needs to be provided with the correct number of significant digits (i.e. 71 .F).
+2.2.1.5.   Type of Spatial Summarization:  Collections of grid point values may be summarized into a single value.  If this is done, the type of summarization will be provided (mean, median, mode, centroid value etc.).
+2.2.1.6.   Type of Temporal Summarization:  A number of grid point values may be summarized for a given period of time.  When this is done, the type of temporal summarization will be provided (period, hourly, 3 hourly, daily, etc.).
+2.2.2. Data Location:  The three dimensional place that the data value applies to.
+2.2.2.1.   Type of Geography:  Types of geography could include a point (lat/lon), city and state, county, National Weather Service forecast zone, and zip code.
+2.2.2.2.   Horizontal Location:  The position of the data projected onto the earth.s surface.  This could be a latitude and longitude pair, a specific city and state, a county name, a National Weather Service zone name, or a zip code.
+2.2.2.3.   Vertical Coordinate System:  The type of coordinates that define the data.s vertical position (i.e. height above mean sea level, sigma, etc.).  Dependant on the vertical coordinate system, one of the following will also be needed.
+2.2.2.3.1. Height:  This is the data point.s distance above/below some datum.
+2.2.2.3.1.1.   Datum:  This is the reference for the height measurement (i.e. earth surface, mean sea level, etc.).
+2.2.2.3.1.2.   Units:  The units of measure used for the height value.
+2.2.2.3.2. Level:  The digital data.s vertical position may be defined at some discrete level.
+2.2.2.3.3. Layer:  The digital data.s vertical position may be defined for some discrete layer.
+2.2.3. Data Time:  DWML will provide for arbitrary time periods as well as common time references.
+2.2.3.1.   Start of Valid Time:  The start time of the period for which the data is valid.
+2.2.3.2.   End of Valid Time:  The end time of the period for which the data is valid.
+2.2.3.3.   Time Coordinate:  Can be either Local Time (LT) or Coordinated Universal Time (UTC).
+2.2.3.4.   Period Name:  A textual description of the time embodied by the start and end times.  For example, the time might correspond to .THIS AFTERNOON..
+3. DWML Validation
+3.1. DWML will adhere to the requirements defining well formed XML.
+3.2. DWML will provide a schema to ensure any given instance conforms to the language.s specifications.
+3.3. DWML will use UTF-8 encoding.
+4. General Characteristics
+4.1. DWML will use self describing element and attribute names.
+4.2. DWML will employ industry standards to ensure the language is easy to maintain and is capable of later expansion.
+5. Product Samples
+DWML should be capable of producing XML versions of the following three existing National Weather Service.s web products.
+5.1. Forecast at a Glance
+The current experimental grid point forecast (on-line example) contains the high or low temperature, the sky condition, and a weather icon. Figure 1 shows an example of the experimental forecast product.  See Table 1 for DWML sample metadata and data values for this product.
+5.2. Digital Tabular Forecast
+The current experimental forecast (on-line example) contains hourly values for temperature, dew point temperature, probability of precipitation, wind direction and speed, sky cover, as well as precipitation type information.  Figure 2 shows an example of this experimental forecast product.  See Table 1 for DWML sample metadata and data values for this product.
+5.3. Digital Zone Forecast
+This product is similar to the Forecast at a Glance in that it uses 12 hour forecast periods to summarize the NDFD data.  The digital zone forecast is like the Digital Tabular Forecast in terms of its use of an extensive number of weather elements.  Figure 3 shows an example product.  See Table 1 for sample DWML metadata and data values for this product.
+This Afternoon
+Tonight
+Saturday
+Saturday Night
+Sunday
+Sunday Night
+Monday
+
+
+
+
+
+
+
+Partly Cloudy
+Hi 74 .F
+Partly Cloudy
+Lo 58 .F
+Mostly Cloudy
+Hi 79 .F
+Mostly Clear
+Lo 55 .F
+Partly Cloudy
+Hi 81 .F
+Partly Cloudy
+Lo 59 .F
+Partly Cloudy
+Hi 77 .F
+Figure 1.  Example Forecast at a Glance Product
+
+Error! Not a valid link.
+Figure 2.  Example Digital/Tabular Forecast Product
+
+
+This Afternoon
+Tonight
+Saturday
+Saturday Night
+Sunday
+Sunday Night
+Sky Cover
+30 %
+25 %
+20 %
+35 %
+60 %
+65 %
+High/Low
+74 .F
+58 .F
+79 .F
+55 .F
+81 .F
+59 .F
+Wind Direction
+NW
+NW
+SW
+SW
+SW
+SE
+Wind Speed
+5 -10
+5 -10
+5 -10
+5 -10
+10 - 15
+5 -10
+PoP
+0
+0
+0
+0
+40
+60
+Weather Type
+None
+None
+None
+None
+Thunderstorms
+Showers
+Figure 3.  Example Digital Zone Forecast Product
+
