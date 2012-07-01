@@ -10,15 +10,16 @@ args_list = {
 'begin' : '2012-07-01T00:00:00',
 'end' : '2016-06-25T00:00:00',
 'Unit' : 'e',
-'maxt' : 'maxt',
-'mint' : 'mint',
+#'maxt' : 'maxt',
+#'mint' : 'mint',
 'temp' : 'temp',
 'wspd' : 'wspd',
 'wdir' : 'wdir',
+'rh' : 'rh',
 'sky' : 'sky',
-#'wx' : 'wx',
-#'appt' : 'appt',
-'wgust' : 'wgust',
+'wx' : 'wx',
+'appt' : 'appt',
+#'wgust' : 'wgust',
 'Submit' : 'Submit' }
 soap_query = 'http://graphical.weather.gov/xml/SOAP_server/ndfdXMLclient.php?whichClient=NDFDgen'
 
@@ -54,7 +55,7 @@ for params in param_list:
     for wvars in params.getchildren():
         wtime = wvars.attrib['time-layout']
         #for some reason strip wasn't doing anything, hack'd
-        wtype = wvars.find('name').text.lower().replace(' ','').replace(',','')
+        wtype = wvars.find('name').text.lower().replace(' ','_').replace(',','')
         index = 0 # <- a good sign I'm not doing this properly 
         for wtslice in wvars.findall('value'):
             lk_dict[wtime][index][wtype] = wtslice.text 
@@ -72,11 +73,9 @@ for tl in tl_list:
                 time_dict[time][param] = tslice[param]
 
 #debugging output:
-tlist = time_dict.keys()
-tlist.sort()
-for t in tlist:
-    print t,time_dict[t]
-#build into dict of dicts (using datetime as key for second dict)
-#second dict has wind dir, wind amplitude, etc
-#iterate over data and turn it into objects
+#tlist = time_dict.keys()
+#tlist.sort()
+#for t in tlist:
+#    print t,time_dict[t]
 #save objects
+
