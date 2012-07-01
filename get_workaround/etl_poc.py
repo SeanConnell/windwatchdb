@@ -33,7 +33,7 @@ weather = weather_f.read()
 #close the object like a good citizen
 weather_f.close()
 #parse out some weather data for saving into the django class for the ORM
-xml.fromstring(weather)
+#xml.fromstring(weather)
 #collect time keys and date ranges into hash 
 wxml = xml.fromstring(weather)
 wxml = wxml.find('data')
@@ -48,10 +48,12 @@ for tl in tl_list:
            lk_dict[tk].append({'time' : svt.text})
 
 #get data for time ranges
+param_list = wxml.findall('parameters')
 for params in param_list:
     for wvars in params.getchildren():
         wtime = wvars.attrib['time-layout']
-        wtype = wvars.find('name').text
+        #for some reason strip wasn't doing anything, hack'd
+        wtype = wvars.find('name').text.lower().replace(' ','').replace(',','')
         index = 0 # <- a good sign I'm not doing this properly 
         for wtslice in wvars.findall('value'):
             lk_dict[wtime][index][wtype] = wtslice.text 
