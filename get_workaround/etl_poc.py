@@ -4,19 +4,20 @@ import xml.etree.ElementTree as xml
 import sys
 from datetime import date, timedelta
 args_list = { 
-'lat' : '38.99',
-'lon' : '-77.01',
+'lat' : '45.50',
+'lon' : '-122.6',
 'product' : 'time-series',
-'begin' : '2004-01-01T00:00:00',
+'begin' : '2012-07-01T00:00:00',
 'end' : '2016-06-25T00:00:00',
 'Unit' : 'e',
 'maxt' : 'maxt',
 'mint' : 'mint',
 'temp' : 'temp',
+'wspd' : 'wspd',
 'wdir' : 'wdir',
 'sky' : 'sky',
-'wx' : 'wx',
-'appt' : 'appt',
+#'wx' : 'wx',
+#'appt' : 'appt',
 'wgust' : 'wgust',
 'Submit' : 'Submit' }
 soap_query = 'http://graphical.weather.gov/xml/SOAP_server/ndfdXMLclient.php?whichClient=NDFDgen'
@@ -60,7 +61,21 @@ for params in param_list:
             index += 1
 
 #join data ranges into time ranges based on time key
+time_dict = {} 
+for tl in tl_list:
+    tk = tl.find('layout-key').text
+    for tslice in lk_dict[tk]:
+        time = tslice['time']
+        time_dict[time] = {} 
+        for param in tslice.keys():
+            if param != 'time':
+                time_dict[time][param] = tslice[param]
 
+#debugging output:
+tlist = time_dict.keys()
+tlist.sort()
+for t in tlist:
+    print t,time_dict[t]
 #build into dict of dicts (using datetime as key for second dict)
 #second dict has wind dir, wind amplitude, etc
 #iterate over data and turn it into objects
