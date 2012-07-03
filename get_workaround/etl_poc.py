@@ -3,6 +3,14 @@ from urllib import *
 import xml.etree.ElementTree as xml 
 import sys
 from datetime import date, timedelta
+
+#Get windwatcher and django on the import path
+sys.path.append('/home/sean/django/windwatcher')
+from django.core.management import setup_environ
+import settings
+setup_environ(settings)
+from icarus.models import *
+
 args_list = { 
 'lat' : '45.50',
 'lon' : '-122.6',
@@ -73,9 +81,9 @@ for tl in tl_list:
                 time_dict[time][param] = tslice[param]
 
 #debugging output:
-#tlist = time_dict.keys()
-#tlist.sort()
-#for t in tlist:
-#    print t,time_dict[t]
+tlist = time_dict.keys()
+tlist.sort()
+for t in tlist:
+    print t,time_dict[t]
 #save objects
 
