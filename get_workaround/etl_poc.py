@@ -3,6 +3,8 @@ from urllib import *
 import xml.etree.ElementTree as xml 
 import sys
 from datetime import date, timedelta
+from datetime import datetime 
+import re
 
 #Get windwatcher and django on the import path
 sys.path.append('/home/sean/django/windwatcher')
@@ -86,4 +88,29 @@ tlist.sort()
 for t in tlist:
     print t,time_dict[t]
 #save objects
+dofweat = DayOfWeather()
+dofweat.prediction_date = datetime.now().strftime("%Y-%m-%d %H:%M")
+wtslice = WeatherTimeSlice()
+wtslice.temperature = int(time_dict[time]['temperature'])
+wtslice.wind_speed = int(time_dict[time]['wind_speed'])
+wtslice.wind_direction = int(time_dict[time]['wind_direction'])
 
+#Parse out the time from this string, probably some things to worry about here FIXME later
+extract_dt = re.compile('(^.*)(..:..:..)-(..:..)$',re.IGNORECASE) 
+times = extract_dt.match(t) 
+forecast_dt = str(times.group(1)) + str(times.group(2)) 
+date_it_happens = str(times.group(1))
+start_time = str(times.group(2))
+gmt_offset = str(times.group(3)) 
+forecast_dt = forecast_dt.replace('T',' ') 
+print forecast_dt 
+print gmt_offset 
+wtslice.start_time = datetime.strptime(start_time,"%H:%M:%S")
+dofweat.date_it_happens = date_it_happens
+dofweat.max_temperature = -100 #fix later
+dofweat.mim_temperature = -100 #this too
+print "saving day"
+dofweat.save()
+print "saving slice"
+wtslice.day_of_occurance = dofweat
+wtslice.save()

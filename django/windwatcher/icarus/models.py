@@ -24,8 +24,9 @@ class DayOfWeather(models.Model):
 """A chunk of time for which weather has been predicted. Goes with the DayOfWeather to build out a forecast"""
 class WeatherTimeSlice(models.Model):
     def __unicode__(self):
-        return unicode(self.start_time + self.duration)
+        return unicode("Weather beginning at " + str(self.start_time))
 
+    start_time = models.DateTimeField()
     wind_direction = models.IntegerField(default=0)
     wind_speed = models.IntegerField(default=0)
     chance_precipitation = models.IntegerField(default=0)
