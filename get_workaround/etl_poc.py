@@ -33,6 +33,47 @@ args_list = {
 'Submit' : 'Submit' }
 soap_query = 'http://graphical.weather.gov/xml/SOAP_server/ndfdXMLclient.php?whichClient=NDFDgen'
 
+"""Parses out relevant groups of time, returns them as a dict of datetime objects FIXME: figure out gmt offset stuff"""
+def parse_timestring(string):
+    extract_dt = re.compile('(^.*)(..:..:..)-(..:..)$',re.IGNORECASE) 
+    times = extract_dt.match(string) 
+    forecast_dt = str(times.group(1)) + str(times.group(2))
+    date_it_happens = str(times.group(1))
+    date_it_happens = date_it_happens.replace('T','')
+    forecast_dt = forecast_dt.replace('T',' ') 
+    start_time = str(times.group(2))
+    gmt_offset = str(times.group(3)) 
+    date_it_happens = datetime.strptime(date_it_happens,"%Y-%m-%d")
+    start_time = datetime.strptime(start_time,"%H:%M:%S")
+    times = {'forecast_dt':forecast_dt,
+             'date_it_happens':date_it_happens,
+             'start_time':start_time,
+             'gmt_offset':gmt_offset}
+    return times
+
+"""Parses relevant information into a weather time slice"""
+def save_wtime_slice(times, data_dict, dofweat):
+    wtslice = WeatherTimeSlice()
+    wtslice.temperature = int(data_dict[time]['temperature'])
+    wtslice.wind_speed = int(data_dict[time]['wind_speed'])
+    wtslice.wind_direction = int(data_dict[time]['wind_direction'])
+    wtslice.start_time = times['start_time']
+    wtslice.day_of_occurance = dofweat
+    print "saving slice of", wtslice
+    wtslice.save()
+
+"""Parses out relevant information into models and saves them"""
+def save_day_of_weather(times, data_dict):
+    #save objects
+    dofweat = DayOfWeather()
+    dofweat.prediction_date = datetime.now()
+    dofweat.date_it_happens = times['date_it_happens'] 
+    dofweat.max_temperature = -100 #fix later
+    dofweat.min_temperature = -100 #this too
+    print "saving day", dofweat
+    dofweat.save()
+    save_wtime_slice(times,data_dict,dofweat)
+
 # build that get query to the soap server, fucking punt on doing soap directly
 for arg in args_list.keys():
     soap_query += '&' + arg + '=' + args_list[arg] 
@@ -85,32 +126,8 @@ for tl in tl_list:
 #debugging output:
 tlist = time_dict.keys()
 tlist.sort()
-for t in tlist:
-    print t,time_dict[t]
-#save objects
-dofweat = DayOfWeather()
-dofweat.prediction_date = datetime.now().strftime("%Y-%m-%d %H:%M")
-wtslice = WeatherTimeSlice()
-wtslice.temperature = int(time_dict[time]['temperature'])
-wtslice.wind_speed = int(time_dict[time]['wind_speed'])
-wtslice.wind_direction = int(time_dict[time]['wind_direction'])
-
-#Parse out the time from this string, probably some things to worry about here FIXME later
-extract_dt = re.compile('(^.*)(..:..:..)-(..:..)$',re.IGNORECASE) 
-times = extract_dt.match(t) 
-forecast_dt = str(times.group(1)) + str(times.group(2)) 
-date_it_happens = str(times.group(1))
-start_time = str(times.group(2))
-gmt_offset = str(times.group(3)) 
-forecast_dt = forecast_dt.replace('T',' ') 
-print forecast_dt 
-print gmt_offset 
-wtslice.start_time = datetime.strptime(start_time,"%H:%M:%S")
-dofweat.date_it_happens = date_it_happens
-dofweat.max_temperature = -100 #fix later
-dofweat.mim_temperature = -100 #this too
-print "saving day"
-dofweat.save()
-print "saving slice"
-wtslice.day_of_occurance = dofweat
-wtslice.save()
+#fix this so I'm not overwriting the same day a whole bunch
+for time in tlist:
+    #print time,time_dict[time]
+    times = parse_timestring(time)
+    save_day_of_weather(times, time_dict)
