@@ -13,7 +13,15 @@ div {text-align: left; font-size: 200%;}
 <h1>Welcome to the future of hang gliding, bro.</h1>
 <br>
 {% if datetime %}
-{{datetime}}
+    {{datetime}}
+{% endif %}
+{% if weather_list %}
+    <b>List of days of weather currently known:<b> 
+    <br>
+    <table border="1">
+    {% for day in weather_list %}
+        <tr><td> {{day}} </td></tr>
+    {% endfor %}
 {% endif %}
 <br>
 <ul>
