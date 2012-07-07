@@ -13,7 +13,7 @@ import datetime, time
 def index(request):
     template = loader.get_template('icarus/index.html')
     site_list = Sites.objects.all().order_by('name') 
-    weather_list = DayOfWeather.objects.all()
+    weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
     dt_utc = datetime.datetime.utcnow()
     # convert UTC to local time
     dt_local = dt_utc - datetime.timedelta(seconds=time.altzone)
@@ -24,5 +24,20 @@ def index(request):
         })
     return HttpResponse(template.render(context))
 
-def site(request,site="Empty"):
-    return HttpResponse("Not ready yet")
+def site(request,site=None):
+    template = loader.get_template('icarus/site.html')
+    context = Context({
+        'site':site,
+        })
+    return HttpResponse(template.render(context))
+
+def weather_day(request,dofweat=None):
+    template = loader.get_template('icarus/day_of_weather.html')
+    dofweat = DayOfWeather.objects.get(id=dofweat)
+    tslice_list = WeatherTimeSlice.objects.filter(day_of_occurance=dofweat)
+    tslice_list.extra(order_by = ['-start_time'])
+    context = Context({
+        'dofweat':dofweat,
+        'tslice_list':tslice_list,
+        })
+    return HttpResponse(template.render(context))

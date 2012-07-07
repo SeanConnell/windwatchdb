@@ -20,7 +20,9 @@ div {text-align: left; font-size: 200%;}
     <br>
     <table border="1">
     {% for day in weather_list %}
-        <tr><td> {{day}} </td></tr>
+        <tr>
+            <td> <a href="/day/{{day.id}}">{{day}}</a></td>
+        </tr>
     {% endfor %}
 {% endif %}
 <br>

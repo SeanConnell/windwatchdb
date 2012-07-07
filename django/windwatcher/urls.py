@@ -14,4 +14,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
      url(r'^admin/', include(admin.site.urls)),
+
+     url(r'^site/(.*)', 'icarus.views.site'),
+
+     url(r'^day/(.*)', 'icarus.views.weather_day'),
 )
