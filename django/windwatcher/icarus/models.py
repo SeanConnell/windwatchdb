@@ -14,7 +14,7 @@ class Sites(models.Model):
 """Holds a bunch of timeslice predictions for that day's weather"""
 class DayOfWeather(models.Model):
     def __unicode__(self):
-        return unicode(self.date_it_happens.strftime("%A, %d. %B %Y %I:%M%p"))
+        return unicode(self.date_it_happens.strftime("%A, %d. %B %Y"))
 
     date_it_happens = models.DateTimeField()
     prediction_date = models.DateTimeField()

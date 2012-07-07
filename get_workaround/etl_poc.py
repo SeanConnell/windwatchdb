@@ -52,27 +52,23 @@ def parse_timestring(string):
     return times
 
 """Parses relevant information into a weather time slice"""
-def save_wtime_slice(times, data_dict, dofweat):
+def create_wtime_slice(time, data_dict):
     wtslice = WeatherTimeSlice()
-    wtslice.temperature = int(data_dict[time]['temperature'])
-    wtslice.wind_speed = int(data_dict[time]['wind_speed'])
-    wtslice.wind_direction = int(data_dict[time]['wind_direction'])
-    wtslice.start_time = times['start_time']
-    wtslice.day_of_occurance = dofweat
-    print "saving slice of", wtslice
-    wtslice.save()
+    wtslice.temperature = int(data_dict['temperature'])
+    wtslice.wind_speed = int(data_dict['wind_speed'])
+    wtslice.wind_direction = int(data_dict['wind_direction'])
+    wtslice.start_time = datetime.strptime(time,'%H:%M:%S') 
+    return wtslice
 
 """Parses out relevant information into models and saves them"""
-def save_day_of_weather(times, data_dict):
+def create_day_of_weather(date):
     #save objects
     dofweat = DayOfWeather()
     dofweat.prediction_date = datetime.now()
-    dofweat.date_it_happens = times['date_it_happens'] 
+    dofweat.date_it_happens = datetime.strptime(date,'%Y/%m/%d') 
     dofweat.max_temperature = -100 #fix later
     dofweat.min_temperature = -100 #this too
-    print "saving day", dofweat
-    dofweat.save()
-    save_wtime_slice(times,data_dict,dofweat)
+    return dofweat
 
 # build that get query to the soap server, fucking punt on doing soap directly
 for arg in args_list.keys():
@@ -123,11 +119,31 @@ for tl in tl_list:
             if param != 'time':
                 time_dict[time][param] = tslice[param]
 
-#debugging output:
-tlist = time_dict.keys()
-tlist.sort()
-#fix this so I'm not overwriting the same day a whole bunch
-for time in tlist:
-    #print time,time_dict[time]
-    times = parse_timestring(time)
-    save_day_of_weather(times, time_dict)
+#this is hackey in a bad way
+#fix data structure to be day.time instead of daytime 
+
+#build up the stupid multidimensional dict. God I've been writing too much perl...
+day_data_dict = {}
+for day in time_dict.keys():
+    daytime = parse_timestring(day)
+    date = daytime['date_it_happens'].strftime('%Y/%m/%d')
+    time = daytime['start_time'].strftime('%H:%M:%S')
+    day_data_dict[date] = {}
+for day in time_dict.keys():
+    daytime = parse_timestring(day)
+    date = daytime['date_it_happens'].strftime('%Y/%m/%d')
+    time = daytime['start_time'].strftime('%H:%M:%S')
+    day_data_dict[date][time] = {}
+    for data in time_dict[day].keys():
+        day_data_dict[date][time][data] = time_dict[day][data]
+
+day_list = day_data_dict.keys()
+day_list.sort()
+for day in day_list:
+    dow = create_day_of_weather(day)
+    print "saving day of weather",dow
+    dow.save()
+    for wts in day_data_dict[day].keys():
+        wslice = create_wtime_slice(wts,day_data_dict[day][wts])
+        wslice.day_of_occurance = dow
+        wslice.save()
