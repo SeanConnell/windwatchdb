@@ -19,14 +19,14 @@ div {text-align: left; font-size: 200%;}
 <th>Wind Direction</th>
 <th>Wind Speed</th>
 <th>Temperature</th>
-<th>Apparent Temperature</th>
+<!--<th>Apparent Temperature</th>-->
 {% for slice in tslice_list %}
      <tr> 
         <td> {{ slice.start_time|date:'G:i' }} </td>
         <td> {{ slice.wind_direction }} </td>
         <td> {{ slice.wind_speed }} </td>
         <td> {{ slice.temperature }} </td>
-        <td> {{ slice.apparent_temperature }} </td>
+        <!--<td> {{ slice.apparent_temperature }} </td>-->
      </tr>
 {% endfor %}
 </table>

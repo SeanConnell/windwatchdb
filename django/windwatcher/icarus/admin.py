@@ -1,9 +1,9 @@
-from icarus.models import Sites, DayOfWeather,WeatherTimeSlice,Launches,Landings,WeatherWatchQueue
+from icarus.models import Site,DayOfWeather,WeatherTimeSlice,Launche,Landing,WeatherWatchQueue
 from django.contrib import admin
 
-admin.site.register(Sites)
+admin.site.register(Site)
 admin.site.register(DayOfWeather)
 admin.site.register(WeatherTimeSlice)
 admin.site.register(WeatherWatchQueue)
-admin.site.register(Launches)
-admin.site.register(Landings)
+admin.site.register(Launche)
+admin.site.register(Landing)

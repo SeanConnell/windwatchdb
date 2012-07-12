@@ -3,7 +3,7 @@ from datetime import datetime as dt
 from datetime import timedelta as td
 
 """Holds the site coords for the NWDB lookup as well as name of site and a list of launches and landings"""
-class Sites(models.Model):
+class Site(models.Model):
     def __unicode__(self):
             return self.name
 
@@ -36,12 +36,12 @@ class WeatherTimeSlice(models.Model):
     day_of_occurance = models.ForeignKey(DayOfWeather)
 
 """ A launch and its sea level altitude, acceptable range of wind directions to fly in, and warnings about how to launch"""
-class Launches(models.Model):
+class Launch(models.Model):
     def __unicode__(self):
         return unicode(self.name + " launch for " + self.site.name)
 
     name = models.CharField(max_length=200)
-    site = models.ForeignKey(Sites)
+    site = models.ForeignKey(Site)
     altitude = models.IntegerField(default=0)
     flyable_wind_direction_min = models.IntegerField(default=0)
     flyable_wind_direction_max = models.IntegerField(default=0)
@@ -50,9 +50,9 @@ class Launches(models.Model):
     launch_description = models.CharField(max_length=50000)
 
 """ A landing and its sea level altitude, and a description of how to do the approach"""    
-class Landings(models.Model):
+class Landing(models.Model):
     name = models.CharField(max_length=200)
-    site = models.ForeignKey(Sites)
+    site = models.ForeignKey(Site)
     altitude = models.IntegerField(default=0)    
     flyable_wind_direction_min = models.IntegerField(default=0)
     flyable_wind_direction_max = models.IntegerField(default=0)

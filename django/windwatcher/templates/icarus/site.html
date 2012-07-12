@@ -16,8 +16,19 @@ div {text-align: left; font-size: 200%;}
     {{datetime}}
 {% endif %}
 {% if site %}
-{{ site }}
+{{ site.name }}
 {% endif %}
+{% if weather_list %} 
+    <b>List of Days:<b>  
+    <br> 
+    <table border="1"> 
+    {% for day in weather_list %} 
+        <tr> 
+            <td> <a href="/day/{{day.id}}">{{day}}</a></td> 
+        </tr> 
+    {% endfor %} 
+{% endif %} 
+
 <br>
 </div>
 </body>
