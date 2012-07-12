@@ -20,6 +20,7 @@ class DayOfWeather(models.Model):
     prediction_date = models.DateTimeField()
     max_temperature = models.IntegerField() #future use
     min_temperature = models.IntegerField() #future use
+    weather_stream = models.ForeignKey(WeatherWatchQueue) #holds thew weather for this site
 
 """A chunk of time for which weather has been predicted. Goes with the DayOfWeather to build out a forecast"""
 class WeatherTimeSlice(models.Model):
@@ -65,3 +66,4 @@ class WeatherWatchQueue(models.Model):
     start_date = models.DateTimeField() 
     end_date = models.DateTimeField() 
     number_of_days = models.IntegerField() #current number of days there exists data for
+    relevant_site = models.ForeignKey(Site) #which site the weather is for

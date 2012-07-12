@@ -10,13 +10,10 @@ div {text-align: left; font-size: 200%;}
 <body>
 <div>
 
-<h1>Welcome to the future of hang gliding, bro.</h1>
+<h1>Welcome to the future of hang gliding: Wing Weather</h1>
 <br>
-{% if datetime %}
-    {{datetime}}
-{% endif %}
-<b>List of known sites:</b>
 {% if site_list %}
+    <br>
     <b>List of Sites:<b> 
     <br>
     <table border="1">
@@ -28,12 +25,15 @@ div {text-align: left; font-size: 200%;}
     </table>
 {% endif %}
 <br>
+<i>-Sean</i>
+</div>
+{% if datetime %}
+    {{datetime}}
+{% endif %}
 <ul>
   <li><a href="https://twitter.com/seanrconnell" rel="me">@seanrconnell on Twitter</a></li>
   <li><a href="https://github.com/seanconnell" rel="me">Github</a></li>
   <li><a href="http://facebook.com/seanconnell" rel="me">Facebook</a></li>
 </ul>
-<i>-Sean</i>
-</div>
 </body>
 </html>
