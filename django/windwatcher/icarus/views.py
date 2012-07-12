@@ -27,7 +27,9 @@ def index(request):
 def site(request,site_id=None):
     template = loader.get_template('icarus/site.html')
     site = Site.objects.get(id=site_id)
-    weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
+    wwq = WeatherWatchQueue.objects.get(relevant_site=site)
+    weather_list = DayOfWeather.objects.filter(weather_stream=wwq)
+    #weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
     context = Context({
         'weather_list':weather_list,
         'site':site,

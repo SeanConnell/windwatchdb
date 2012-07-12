@@ -6,10 +6,17 @@ from datetime import timedelta as td
 class Site(models.Model):
     def __unicode__(self):
             return self.name
-
     name = models.CharField(max_length=200)
     lat = models.DecimalField(max_digits=12, decimal_places=6) #lat and lon for the point defining the site
     lon = models.DecimalField(max_digits=12, decimal_places=6)
+
+"""All weather objects are collected into this queue for easy access"""
+class WeatherWatchQueue(models.Model):
+    #probably don't actually need these fields, will add back in if I want them
+    #start_date = models.DateTimeField() 
+    #end_date = models.DateTimeField() 
+    #number_of_days = models.IntegerField() #current number of days there exists data for
+    relevant_site = models.ForeignKey(Site) #which site the weather is for
 
 """Holds a bunch of timeslice predictions for that day's weather"""
 class DayOfWeather(models.Model):
@@ -61,9 +68,3 @@ class Landing(models.Model):
     approach_warnings = models.CharField(max_length=50000)
     approach_description = models.CharField(max_length=50000)
 
-"""All weather objects are collected into this queue for easy access"""
-class WeatherWatchQueue(models.Model):
-    start_date = models.DateTimeField() 
-    end_date = models.DateTimeField() 
-    number_of_days = models.IntegerField() #current number of days there exists data for
-    relevant_site = models.ForeignKey(Site) #which site the weather is for
