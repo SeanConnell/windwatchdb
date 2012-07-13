@@ -1,16 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<style type="text/css">
-body {color: white; background: black;}
-div {text-align: left; font-size: 200%;}
-</style>
-</head>
-<body>
-<div>
+{% extends "base.html" %}
 
-<h1>Wing Weather</h1>
+{% block content %}
 {% if site_list %}
     <b>List of Sites:<b> 
     <table border="1">
@@ -21,16 +11,9 @@ div {text-align: left; font-size: 200%;}
     {% endfor %}
     </table>
 {% endif %}
-<br>
-<i>-Sean</i>
-</div>
-{% if datetime %}
-    {{datetime}}
-{% endif %}
 <ul>
   <li><a href="https://twitter.com/seanrconnell" rel="me">@seanrconnell on Twitter</a></li>
   <li><a href="https://github.com/seanconnell" rel="me">Github</a></li>
   <li><a href="http://facebook.com/seanconnell" rel="me">Facebook</a></li>
 </ul>
-</body>
-</html>
+{% endblock %}

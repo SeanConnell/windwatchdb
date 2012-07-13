@@ -1,21 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<style type="text/css">
-body {color: white; background: black;}
-div {text-align: left; font-size: 200%;}
-</style>
-</head>
-<body>
-<div>
-
-<br>
+{% extends "base.html" %}
+{% block content %}
 {% if site %}
-<h1>{{ site.name }}</h1>
+<h2>{{ site.name }}</h2>
 {% endif %}
 {% if weather_list %} 
-    <b>List of Days:<b>  
+    <b>List of Days:</b>  
     <br> 
     <table border="1"> 
     {% for day in weather_list %} 
@@ -24,11 +13,5 @@ div {text-align: left; font-size: 200%;}
         </tr> 
     {% endfor %} 
 {% endif %} 
+{% endblock %}
 
-<br>
-</div>
-{% if datetime %}
-    {{datetime}}
-{% endif %}
-</body>
-</html>

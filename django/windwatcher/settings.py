@@ -89,7 +89,6 @@ SECRET_KEY = 'pn084l0-2vuw&dp$yl+tw%a%6i2v4#)g%qja!ec0t(#s8c-d4i'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -104,6 +103,7 @@ ROOT_URLCONF = 'windwatcher.urls'
 
 TEMPLATE_DIRS = (
 	"/home/sean/django/windwatcher/templates",
+	"/home/sean/django/windwatcher/templates/icarus",
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

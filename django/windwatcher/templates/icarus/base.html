@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<style type="text/css">
+body {
+    color: white
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    font-size:200%
+}
+#footer {
+    position:absolute;
+    bottom:0;
+    color: white
+}
+
+B {font-family:serif, helvetica; font-weight:bold;color:white;}
+h1 {font-family:serif, helvetica; font-weight:bold;color:white;}
+h2 {font-family:serif, helvetica; font-weight:bold;color:white;}
+td {font-family:serif, helvetica; font-weight:bold;color:white;}
+th {font-family:serif, helvetica; font-weight:bold;color:white;}
+</style>
+</head>
+<body>
+<div id="navigation">
+    {% block header %} {% endblock %}
+</div>
+<h1>{{ title|default:"Wing Weather" }}</h1>
+<div id="content">
+    {% block content %} {% endblock %}
+    <div id="footer-spacer"></div>
+</div>
+<div id="footer">
+{% block footer %} 
+Page brough into existance at {% now "H:i F jS, Y" %}
+{% endblock %}
+</div>
+</body>
+</html>
