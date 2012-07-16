@@ -17,5 +17,5 @@ urlpatterns = patterns('',
 
      url(r'^site/(.*)', 'icarus.views.site'),
 
-     url(r'^day/(.*)', 'icarus.views.weather_day'),
+     url(r'^day/(.*):(.*)', 'icarus.views.weather_day'),
 )

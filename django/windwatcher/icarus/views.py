@@ -37,13 +37,15 @@ def site(request,site_id=None):
         })
     return HttpResponse(template.render(context))
 
-def weather_day(request,dofweat_id=None):
+def weather_day(request,dofweat_id=None,site_id=None):
     template = loader.get_template('icarus/day_of_weather.html')
     dofweat = DayOfWeather.objects.get(id=dofweat_id)
+    site = Site.objects.get(id=site_id)
     tslice_list = WeatherTimeSlice.objects.filter(day_of_occurance=dofweat)
     tslice_list.extra(order_by = ['-start_time'])
     context = Context({
         'dofweat':dofweat,
+        'title':site.name,
         'tslice_list':tslice_list,
         })
     return HttpResponse(template.render(context))

@@ -8,7 +8,7 @@
     <table border="1"> 
     {% for day in weather_list %} 
         <tr> 
-            <td> <a href="/day/{{day.id}}">{{day}}</a></td> 
+            <td> <a href="/day/{{day.id}}:{{site.id}}">{{day}}</a></td> 
         </tr> 
     {% endfor %} 
 {% endif %} 
