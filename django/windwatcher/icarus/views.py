@@ -30,6 +30,7 @@ def site(request,site_id=None):
     wwq = WeatherWatchQueue.objects.get(relevant_site=site)
     weather_list = DayOfWeather.objects.filter(weather_stream=wwq)
     #weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
+    print site.last_weather_refresh
     context = Context({
         'weather_list':weather_list,
         'site':site,

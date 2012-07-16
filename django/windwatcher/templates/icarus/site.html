@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if site %}
-<h2>{{ site.name }} gathered at {{site.last_weather_update}}</h2>
+<h2>{{ site.name }} weather gathered at  {{ site.last_weather_refresh|date:"H:i F jS, Y" }}</h2>
 <i><h3>{{ site.city }}, {{ site.state }} </h3></i>
 {% endif %}
 {% if weather_list %} 

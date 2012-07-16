@@ -11,7 +11,7 @@ class Site(models.Model):
     state = models.CharField(max_length=100)
     lat = models.DecimalField(max_digits=12, decimal_places=6) #lat and lon for the point defining the site
     lon = models.DecimalField(max_digits=12, decimal_places=6)
-    last_weather_update = models.DateTimeField(null=True)
+    last_weather_refresh = models.DateTimeField(null=True)
 
 """All weather objects are collected into this queue for easy access"""
 class WeatherWatchQueue(models.Model):
@@ -81,3 +81,5 @@ class Landing(models.Model):
     approach_warnings = models.CharField(max_length=50000)
     approach_description = models.CharField(max_length=50000)
 
+#class DatabaseUpdating(models.Model):
+# do something like this, though this doesn't seem proper, to not let people see a blown up database when stuff is updating    
