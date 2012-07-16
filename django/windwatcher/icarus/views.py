@@ -47,3 +47,4 @@ def weather_day(request,dofweat_id=None):
         'tslice_list':tslice_list,
         })
     return HttpResponse(template.render(context))
+

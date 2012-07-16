@@ -80,6 +80,3 @@ class Landing(models.Model):
     flyable_wind_speed = models.IntegerField(default=0)
     approach_warnings = models.CharField(max_length=50000)
     approach_description = models.CharField(max_length=50000)
-
-#class DatabaseUpdating(models.Model):
-# do something like this, though this doesn't seem proper, to not let people see a blown up database when stuff is updating    
