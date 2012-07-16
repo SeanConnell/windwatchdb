@@ -146,6 +146,7 @@ def update_weather(site):
         #find WWQ for the site
         wwq = WeatherWatchQueue.objects.get(relevant_site=site)
         dow.weather_stream = wwq
+        dow.prediction_date = datetime.now()
         print "saving day of weather",dow
         dow.save()
         for wts in day_data_dict[day].keys():

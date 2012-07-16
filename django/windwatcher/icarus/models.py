@@ -7,8 +7,11 @@ class Site(models.Model):
     def __unicode__(self):
             return self.name
     name = models.CharField(max_length=200)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
     lat = models.DecimalField(max_digits=12, decimal_places=6) #lat and lon for the point defining the site
     lon = models.DecimalField(max_digits=12, decimal_places=6)
+    last_weather_update = models.DateTimeField(null=True)
 
 """All weather objects are collected into this queue for easy access"""
 class WeatherWatchQueue(models.Model):
@@ -29,6 +32,11 @@ class DayOfWeather(models.Model):
     min_temperature = models.IntegerField() #future use
     weather_stream = models.ForeignKey(WeatherWatchQueue) #holds thew weather for this site
 
+    class Meta:
+        # sort by "the date" in descending order unless
+        # overridden in the query with order_by()
+        ordering = ['date_it_happens']
+
 """A chunk of time for which weather has been predicted. Goes with the DayOfWeather to build out a forecast"""
 class WeatherTimeSlice(models.Model):
     def __unicode__(self):
@@ -42,6 +50,11 @@ class WeatherTimeSlice(models.Model):
     apparent_temperature = models.IntegerField(default=0)
     cloud_cover_amount = models.IntegerField(default=0)
     day_of_occurance = models.ForeignKey(DayOfWeather)
+
+    class Meta:
+        # sort by "the date" in descending order unless
+        # overridden in the query with order_by()
+        ordering = ['start_time']
 
 """ A launch and its sea level altitude, acceptable range of wind directions to fly in, and warnings about how to launch"""
 class Launch(models.Model):

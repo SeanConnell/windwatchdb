@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 {% if site %}
-<h2>{{ site.name }}</h2>
+<h2>{{ site.name }} gathered at {{site.last_weather_update}}</h2>
+<i><h3>{{ site.city }}, {{ site.state }} </h3></i>
 {% endif %}
 {% if weather_list %} 
-    <b>List of Days:</b>  
-    <br> 
     <table border="1"> 
     {% for day in weather_list %} 
         <tr> 
