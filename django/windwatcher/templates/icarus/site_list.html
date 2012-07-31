@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if site_list %}
+    <table border="1">
+    <th>Site Weather</th>
+    <th>Associated City</th>
+    <th>State</th>
+    {% for site in site_list %}
+        <tr>
+            <td> <a href="/site/{{site.id}}">{{site}}</a></td>
+            <td> {{site.city}} </td>
+            <td> {{site.state}} </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endif %}
+{% endblock %}
