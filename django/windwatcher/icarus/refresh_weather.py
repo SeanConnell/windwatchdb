@@ -5,9 +5,12 @@ import sys
 from datetime import date, timedelta
 from datetime import datetime 
 import re
-
+import getpass
+user = getpass.getuser()
 #Get windwatcher and django on the import path
-sys.path.append('/home/sean/django/windwatcher')
+
+spath = "/home/" +  user + "/windwatchdb/django/windwatcher"
+sys.path.append(spath)
 from django.core.management import setup_environ
 import settings
 setup_environ(settings)

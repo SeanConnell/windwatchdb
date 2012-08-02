@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/sean/django/windwatcher/windwatchdb',                      # Or path to database file if using sqlite3.
+        'NAME': '/home/sean/windwatchdb/django/windwatcher/icarus/windwatchdb',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -102,8 +102,8 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'windwatcher.urls'
 
 TEMPLATE_DIRS = (
-	"/home/sean/django/windwatcher/templates",
-	"/home/sean/django/windwatcher/templates/icarus",
+	"./templates",
+	"./templates/icarus",
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
