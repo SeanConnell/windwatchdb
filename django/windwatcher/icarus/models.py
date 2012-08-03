@@ -8,6 +8,15 @@ from datetime import timedelta as td
 A site has only compatible launches and landings, such that any landing can be reached from any launch"""
 class Site(models.Model):
 
+    def __unicode__(self):
+            return self.name
+    name = models.CharField(max_length=200)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    lat = models.DecimalField(max_digits=12, decimal_places=6) #lat and lon for the point defining the site
+    lon = models.DecimalField(max_digits=12, decimal_places=6)
+    last_weather_refresh = models.DateTimeField(null=True)
+
     #Acts as an enum more or less
     wind_conditions_good = {
         'no lift':False,
@@ -27,8 +36,8 @@ class Site(models.Model):
     Takes a site object
     returns a dict of flyable launches with format [launch_id]:['no lift'|'poor'|'fair'|'good'|'dangerous wind']"""
     #TODO:Fill in stub to pull weather for site and check against landing specifics
-    def _landing_check():
-        print "Landing check stub" 
+    def _landing_check( landing ):
+        print "Landing checks for %s on %s landing." % (landing.name,landing.site)
         return {54:'good',63:'good'}
 
     """Checks weather conditions for all launches associated with a site
@@ -115,8 +124,8 @@ class Launch(models.Model):
     flyable_wind_direction_min = models.IntegerField(default=0)
     flyable_wind_direction_max = models.IntegerField(default=0)
     flyable_wind_speed = models.IntegerField(default=0)
-    launch_warnings = models.CharField(max_length=50000)
-    launch_description = models.CharField(max_length=50000)
+    warnings = models.CharField(max_length=50000)
+    flight_description = models.CharField(max_length=50000)
 
 """ A landing and its sea level altitude, and a description of how to do the approach"""    
 class Landing(models.Model):
@@ -129,5 +138,5 @@ class Landing(models.Model):
     flyable_wind_direction_min = models.IntegerField(default=0)
     flyable_wind_direction_max = models.IntegerField(default=0)
     flyable_wind_speed = models.IntegerField(default=0)
-    approach_warnings = models.CharField(max_length=50000)
-    approach_description = models.CharField(max_length=50000)
+    warnings = models.CharField(max_length=50000)
+    flight_description = models.CharField(max_length=50000)
