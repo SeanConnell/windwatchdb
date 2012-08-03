@@ -107,6 +107,7 @@ class WeatherTimeSlice(models.Model):
     apparent_temperature = models.IntegerField(default=0)
     cloud_cover_amount = models.IntegerField(default=0)
     day_of_occurance = models.ForeignKey(DayOfWeather)
+    flyability = models.CharField(max_length=50)
 
     class Meta:
         # sort by "the date" in descending order unless
@@ -117,26 +118,36 @@ class WeatherTimeSlice(models.Model):
 class Launch(models.Model):
     def __unicode__(self):
         return unicode(self.name + " launch for " + self.site.name)
-
+    #Note: the wind speed and dir should either be relative to the forecasts or use "offset" for the site's effect on weather
     name = models.CharField(max_length=200)
     site = models.ForeignKey(Site)
     altitude = models.IntegerField(default=0)
+    #Offsets to try and account for site/local effects
+    wind_speed_offset = models.IntegerField(default=0)
+    wind_direction_offset = models.IntegerField(default=0)
     flyable_wind_direction_min = models.IntegerField(default=0)
     flyable_wind_direction_max = models.IntegerField(default=0)
     flyable_wind_speed = models.IntegerField(default=0)
+    #Possible pitfalls of the launch, things to worry about
     warnings = models.CharField(max_length=50000)
+    #How to correctly launch here
     flight_description = models.CharField(max_length=50000)
 
 """ A landing and its sea level altitude, and a description of how to do the approach"""    
 class Landing(models.Model):
     def __unicode__(self):
         return unicode(self.name + " landing for " + self.site.name)
-
+    #Note: the wind speed and dir should either be relative to the forecasts or use "offset" for the site's effect on weather
     name = models.CharField(max_length=200)
     site = models.ForeignKey(Site)
     altitude = models.IntegerField(default=0)    
+    #Offsets to try and account for site/local effects
+    wind_speed_offset = models.IntegerField(default=0)
+    wind_direction_offset = models.IntegerField(default=0)
     flyable_wind_direction_min = models.IntegerField(default=0)
     flyable_wind_direction_max = models.IntegerField(default=0)
     flyable_wind_speed = models.IntegerField(default=0)
+    #Possible pitfalls of the launch, things to worry about
     warnings = models.CharField(max_length=50000)
+    #How to correctly launch here
     flight_description = models.CharField(max_length=50000)
