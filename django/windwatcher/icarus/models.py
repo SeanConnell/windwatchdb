@@ -98,7 +98,7 @@ class DayOfWeather(models.Model):
 class WeatherTimeSlice(models.Model):
     def __unicode__(self):
         return unicode("Weather beginning at " + str(self.start_time))
-
+    #TODO:fix start time
     start_time = models.DateTimeField()
     wind_direction = models.IntegerField(default=0)
     wind_speed = models.IntegerField(default=0)
@@ -127,7 +127,8 @@ class Launch(models.Model):
     wind_direction_offset = models.IntegerField(default=0)
     flyable_wind_direction_min = models.IntegerField(default=0)
     flyable_wind_direction_max = models.IntegerField(default=0)
-    flyable_wind_speed = models.IntegerField(default=0)
+    flyable_wind_speed_min = models.IntegerField(default=0)
+    flyable_wind_speed_max = models.IntegerField(default=0)
     #Possible pitfalls of the launch, things to worry about
     warnings = models.CharField(max_length=50000)
     #How to correctly launch here
@@ -146,7 +147,8 @@ class Landing(models.Model):
     wind_direction_offset = models.IntegerField(default=0)
     flyable_wind_direction_min = models.IntegerField(default=0)
     flyable_wind_direction_max = models.IntegerField(default=0)
-    flyable_wind_speed = models.IntegerField(default=0)
+    flyable_wind_speed_min = models.IntegerField(default=0)
+    flyable_wind_speed_max = models.IntegerField(default=0)
     #Possible pitfalls of the launch, things to worry about
     warnings = models.CharField(max_length=50000)
     #How to correctly launch here
