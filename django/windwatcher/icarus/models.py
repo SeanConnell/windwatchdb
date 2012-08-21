@@ -36,7 +36,7 @@ class Site(models.Model):
     Takes a site object
     returns a dict of flyable launches with format [launch_id]:['no lift'|'poor'|'fair'|'good'|'dangerous wind']"""
     #TODO:Fill in stub to pull weather for site and check against landing specifics
-    def _landing_check( landing ):
+    def _landing_check( self,landing ):
         print "Landing checks for %s on %s landing." % (landing.name,landing.site)
         return {54:'good',63:'good'}
 
@@ -44,14 +44,14 @@ class Site(models.Model):
     Takes a site object
     returns a dict of flyable launches with format [launch_id]:['no lift'|'poor'|'fair'|'good'|'dangerous wind']"""
     #TODO:Fill in stub to pull weather for site and check against launch specifics
-    def _launch_check():
+    def _launch_check(self):
         print "Launch check stub" 
         return {323:'dangerous wind',32:'fair',43:'poor'}
 
     """Checks if there are at least 1 fair|good launch and 1 'fair'|'good' landing
     Takes a site object
     returns fair if the best case is two are fair, good if one is good, and excellent if both are good"""
-    def site_check():
+    def site_check(self):
         print "Site check stub" 
         #return list of known words for site conditions, this function is naive about which launch/landing it is, don't care
         #TODO: add in object passing down to private functions
@@ -97,8 +97,8 @@ class DayOfWeather(models.Model):
 """A chunk of time for which weather has been predicted. Goes with the DayOfWeather to build out a forecast"""
 class WeatherTimeSlice(models.Model):
     def __unicode__(self):
-        return unicode("Weather beginning at " + str(self.start_time))
-    #TODO:fix start time
+        return unicode("Weather beginning at %s" % str(self.start_time))
+    #TODO:fix start time having the year and shit in it
     start_time = models.DateTimeField()
     wind_direction = models.IntegerField(default=0)
     wind_speed = models.IntegerField(default=0)
