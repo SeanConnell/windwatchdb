@@ -4,7 +4,6 @@ from datetime import date, timedelta
 from datetime import datetime 
 import re
 
-
 #Get windwatcher and django on the import path
 #Fix this later
 import getpass
