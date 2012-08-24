@@ -3,14 +3,13 @@
 {% block content %}
 {% if site_list %}
     <table border="1">
-    <th>Site Weather</th>
-    <th>Associated City</th>
-    <th>State</th>
+    <th>Launch Name</th>
+    <th>Associated Site</th>
+    <th>Min Flyable Wind</th>
+    <th>Max Flyable Wind</th>
     {% for site in site_list %}
         <tr>
-            <td> <a href="/site/{{site.id}}">{{site}}</a></td>
-            <td> {{site.city}} </td>
-            <td> {{site.state}} </td>
+            <td> {{site.name}}</td>
         </tr>
     {% endfor %}
     </table>

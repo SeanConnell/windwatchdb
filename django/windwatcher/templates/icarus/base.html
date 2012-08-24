@@ -10,11 +10,6 @@ body {
     background-color: black;
     font-size:200%
 }
-#footer {
-    position:absolute;
-    bottom:0;
-    color: white
-}
 
 B {font-family:serif, helvetica; font-weight:bold;color:white;}
 h1 {font-family:serif, helvetica; font-weight:bold;color:white;}
@@ -34,9 +29,6 @@ th {font-family:serif, helvetica; font-weight:bold;color:white;}
     <div id="footer-spacer"></div>
 </div>
 <div id="footer">
-{% block footer %} 
-Page brought into existence at {% now "H:i F jS, Y" %}
-{% endblock %}
 </div>
 </body>
 </html>
