@@ -7,6 +7,7 @@ from django.core.management import setup_environ
 import settings 
 setup_environ(settings) 
 
+
 from django.http import HttpResponse
 from django.template import Context, loader
 from icarus.models import *
@@ -15,17 +16,19 @@ import datetime, time
 def index(request):
     template = loader.get_template('icarus/index.html')
     site_list = Site.objects.all().order_by('name') 
+    weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
     flyable_dict = {}
     for site in site_list:
-        flyable_dict[site.id] = site_check(site)
+        for day in weather_list:
+            print site.site_check(site,day)
     dt_utc = datetime.datetime.utcnow()
     # convert UTC to local time
     dt_local = dt_utc - datetime.timedelta(seconds=time.altzone)
     context = Context({
-        'launch_list': launch_list,
-        'launch_dict': launch_dict,
-        'landing_list': landing_list,
-        'launch_dict': launch_dict,
+        #'launch_list': launch_list,
+        #'launch_dict': launch_dict,
+        #'landing_list': landing_list,
+        #'launch_dict': launch_dict,
         'datetime': dt_local.strftime("%A the %d, %B %Y at %r"),
         'site_list':site_list,
         'weather_list':weather_list,

@@ -37,13 +37,13 @@ class Site(models.Model):
         'too cross':False
     }
 
-    def empty(seq):
+    def empty(self, seq):
         try:
-            return all(map(empty, seq))
+            return all(map(self.empty, seq))
         except TypeError:
             return False
 
-    def _timeslice_flight_check( ground, wts ):
+    def _timeslice_flight_check(self, ground, wts):
         #If this wts has flyability, no need to recalculate
         if wts.flyability:
             return wts.flyability
@@ -85,12 +85,12 @@ class Site(models.Model):
 
     """returns a list of dicts of wts start times {start_time:condition} eg {some_dt_object:'fair'}"""
     #TODO check sunrise times. Currently naively assumes 6AM - 5PM as flyable times
-    def _day_flight_check( ground, wts_day ):
+    def _day_flight_check(self, ground, wts_day):
         conditions_list = []
         for wts in WeatherTimeSlice.objects.filter(day_of_occurance=wts_day):
             #print wts
             #Add all the timeslice conditions to the list
-            conditions_list.append({wts.start_time:_timeslice_flight_check(ground, wts)})
+            conditions_list.append({wts.start_time:self._timeslice_flight_check(ground, wts)})
         #print conditions_list
         daytime_conditions = [[conditions for start_time,condition in conditions.iteritems() if time(hour=6) < start_time.time() < time(hour=17)] for conditions in conditions_list]
         #print daytime_conditions
@@ -100,7 +100,7 @@ class Site(models.Model):
     Takes a site object
     returns a dict of flyable launches and wts landing ids and dicts of wts statuses
     format: {landing.id:[{start_time:condition},more of those 1 entry dicts, etc]}"""
-    def _landing_check( site,check_day):
+    def _landing_check(self, site, check_day):
         landing_status_dict = {}
         landing_list = Landing.objects.filter(site=site)
         for landing in landing_list:
@@ -112,7 +112,7 @@ class Site(models.Model):
     """Checks weather conditions for all launches associated with a site
     Takes a site object
     returns a dict of flyable launches with format [launch_id]:['no lift'|'poor'|'fair'|'good'|'dangerous wind']"""
-    def _launching_check( site,check_day ):
+    def _launching_check(self, site, check_day):
         launch_status_dict = {}
         launch_list = Launch.objects.filter(site=site)
         for launch in launch_list:
@@ -126,8 +126,8 @@ class Site(models.Model):
     good is one good one fair
     fair is two fairs
     nothing means unflyable"""
-    def _add_timeslice_condition(weather_list,time,condition):
-        time = time.strftime(time_format)
+    def _add_timeslice_condition(self, weather_list,time,condition):
+        time = time.strftime(Site.time_format)
         if condition != 'good' or 'fair': # keep this restricted to known inputs here... 
             return # we won't use anything but good conditions 
         if time in weather_list:
@@ -146,27 +146,27 @@ class Site(models.Model):
     """Checks if there are at least 1 fair|good launch and 1 'fair'|'good' landing
     Takes a site object and a day of weather to check against
     returns fair if the best case is two are fair, good if one is good, and excellent if both are good"""
-    def site_check( site, day, timelist=False):
+    def site_check(self, site, day):
         #return list of known words for site conditions, this function is naive about which launch/landing it is, don't care. We are looking for total flyability
-        landings_conditions = [ condition_list for launch_id,condition_list in _landing_check(site,day).iteritems()]
+        landings_conditions = [ condition_list for launch_id,condition_list in self._landing_check(site,day).iteritems()]
         #print "landing conditions:",landings_conditions
-        if empty(landings_conditions):
+        if self.empty(landings_conditions):
             return 'Unflyable'
         #landability =  [ flyability for start_time,flyability in landings_conditions if wind_conditions_good[flyability] ]
         #TODO: Fix this list comprehension BS with lists everywhere
         flyability_dict = {}
         for timeslice_condition in landings_conditions[0]:
-            if not empty(timeslice_condition):
+            if not self.empty(timeslice_condition):
                 for start_time,flyability in timeslice_condition[0].iteritems():
                     self._add_timeslice_condition(flyability_dict,start_time,flyability)
                     #print start_time,flyability
         launching_conditions = [ condition_list for launch_id,condition_list in self._launching_check(site,day).iteritems()]
-        if empty(launching_conditions):
+        if self.empty(launching_conditions):
             return 'Unflyable'
         for timeslice_condition in launching_conditions[0]:
-            if not empty(timeslice_condition):
+            if not self.empty(timeslice_condition):
                 for start_time,flyability in timeslice_condition[0].iteritems():
-                    self._add_timeslice_condition(self.flyability_dict,start_time,flyability)
+                    self._add_timeslice_condition(flyability_dict,start_time,flyability)
         return flyability_dict
 
 """All weather objects are collected into this queue for easy access"""
@@ -217,28 +217,32 @@ class WeatherTimeSlice(models.Model):
 
 """ A launch and its sea level altitude, acceptable range of wind directions to fly in, and warnings about how to launch"""
 class Launch(models.Model):
+
     def __unicode__(self):
         return unicode(self.name + " launch for " + self.site.name)
-        #Note: the wind speed and dir should either be relative to the forecasts or use "offset" for the site's effect on weather
-        name = models.CharField(max_length=200)
-        site = models.ForeignKey(Site)
-        altitude = models.IntegerField(default=0)
-        #Offsets to try and account for site/local effects
-        wind_speed_offset = models.IntegerField(default=0)
-        wind_direction_offset = models.IntegerField(default=0)
-        flyable_wind_direction_min = models.IntegerField(default=0)
-        flyable_wind_direction_max = models.IntegerField(default=0)
-        flyable_wind_speed_min = models.IntegerField(default=0)
-        flyable_wind_speed_max = models.IntegerField(default=0)
-        #Possible pitfalls of the launch, things to worry about
-        warnings = models.CharField(max_length=50000)
-        #How to correctly launch here
-        flight_description = models.CharField(max_length=50000)
+
+    #Note: the wind speed and dir should either be relative to the forecasts or use "offset" for the site's effect on weather
+    name = models.CharField(max_length=200)
+    site = models.ForeignKey(Site)
+    altitude = models.IntegerField(default=0)
+    #Offsets to try and account for site/local effects
+    wind_speed_offset = models.IntegerField(default=0)
+    wind_direction_offset = models.IntegerField(default=0)
+    flyable_wind_direction_min = models.IntegerField(default=0)
+    flyable_wind_direction_max = models.IntegerField(default=0)
+    flyable_wind_speed_min = models.IntegerField(default=0)
+    flyable_wind_speed_max = models.IntegerField(default=0)
+    #Possible pitfalls of the launch, things to worry about
+    warnings = models.CharField(max_length=50000)
+    #How to correctly launch here
+    flight_description = models.CharField(max_length=50000)
 
 """ A landing and its sea level altitude, and a description of how to do the approach"""    
 class Landing(models.Model):
+
     def __unicode__(self):
         return unicode(self.name + " landing for " + self.site.name)
+
     #Note: the wind speed and dir should either be relative to the forecasts or use "offset" for the site's effect on weather
     name = models.CharField(max_length=200)
     site = models.ForeignKey(Site)
