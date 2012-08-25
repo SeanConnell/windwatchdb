@@ -1,0 +1,5 @@
+Do this as root and pick size, that example is 8M
+mkfs -q /dev/ram1 8192
+mkdir -p /ramcache
+mount /dev/ram1 /ramcache
+df -H | grep ramcache
