@@ -4,6 +4,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
+    ('Your Name', 'your_email@example.com'),
     # ('Your Name', 'your_email@example.com'),
 )
 
@@ -28,6 +29,9 @@ DATABASES = {
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'America/Los_Angeles'
+
+# Used to format time strings
+TIME_FORMAT = '%Y%m%d%M'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html

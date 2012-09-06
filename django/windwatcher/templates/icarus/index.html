@@ -1,18 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if site_list %}
+{% if weather_list %}
+
     <table border="1">
-    <th>Launch Name</th>
-    <th>Associated Site</th>
-    <th>Min Flyable Wind</th>
-    <th>Max Flyable Wind</th>
-    {% for site in site_list %}
-        <tr>
-            <td> {{site.name}}</td>
-        </tr>
-    {% endfor %}
+        <th></th>
+
+        {% for dow in weather_list %}
+            <th>{{dow}}</th>
+        {% endfor %}
+
+        {% for row in conditions_table %}
+            <tr>
+            {% for column in row %}
+                <td> {{column}} </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
     </table>
+
 {% endif %}
 <ul>
   <li><a href="https://twitter.com/seanrconnell" rel="me">@seanrconnell on Twitter</a></li>

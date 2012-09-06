@@ -3,6 +3,9 @@ from django.db import models
 from datetime import datetime as dt
 from datetime import time
 from datetime import timedelta as td
+#from settings import TIME_FORMAT
+
+TIME_FORMAT = '%Y%m%d%M'
 
 """Holds the site coords for the NWDB lookup as well as name of site and a list of launches and landings
 A site has only compatible launches and landings, such that any landing can be reached from any launch"""
@@ -25,7 +28,6 @@ class Site(models.Model):
     everything else is fair. All wind directions must be within the middle 2/3 of the wind angle to get a good rating 
     if not, they get fair. If no in the range at all, get not flyable"""
     #TODO ask John his opinion about these 'fair' 'good' rating systems
-    time_format = "%Y%m%d%M"
 
     #Acts as a constant time lookup for if a condition is good or not
     wind_conditions_good = {
@@ -48,10 +50,10 @@ class Site(models.Model):
         if wts.flyability:
             return wts.flyability
         #Otherwise we're at a new wts, time to get mins and maxes and calculate deltas
-        #print "flyable wind speed: %d - %d" % (ground.flyable_wind_speed_min ,ground.flyable_wind_speed_max)
-        #print "checking against this speed:   %d" % (wts.wind_speed)
-        #print "flyable wind angle: %d - %d" % (ground.flyable_wind_direction_min ,ground.flyable_wind_direction_max)
-        #print "checking against this dir  :   %d" % (wts.wind_direction)
+        ##print "flyable wind speed: %d - %d" % (ground.flyable_wind_speed_min ,ground.flyable_wind_speed_max)
+        ##print "checking against this speed:   %d" % (wts.wind_speed)
+        ##print "flyable wind angle: %d - %d" % (ground.flyable_wind_direction_min ,ground.flyable_wind_direction_max)
+        ##print "checking against this dir  :   %d" % (wts.wind_direction)
         
         #Flyable values for this launch/landing
         amax,amin = (ground.flyable_wind_direction_max + ground.wind_direction_offset, ground.flyable_wind_direction_min + ground.wind_direction_offset)
@@ -80,7 +82,7 @@ class Site(models.Model):
         else:
             wts.flyability ='fair' #if it isn't no lift, poor, dangerous wind, or good, it must be fair
         wts.save()
-        #print wts,wts.flyability
+        ##print wts,wts.flyability
         return wts.flyability
 
     """returns a list of dicts of wts start times {start_time:condition} eg {some_dt_object:'fair'}"""
@@ -88,12 +90,12 @@ class Site(models.Model):
     def _day_flight_check(self, ground, wts_day):
         conditions_list = []
         for wts in WeatherTimeSlice.objects.filter(day_of_occurance=wts_day):
-            #print wts
+            ##print wts
             #Add all the timeslice conditions to the list
             conditions_list.append({wts.start_time:self._timeslice_flight_check(ground, wts)})
-        #print conditions_list
+        ##print conditions_list
         daytime_conditions = [[conditions for start_time,condition in conditions.iteritems() if time(hour=6) < start_time.time() < time(hour=17)] for conditions in conditions_list]
-        #print daytime_conditions
+        ##print daytime_conditions
         return daytime_conditions
 
     """Checks weather conditions for all landings associated with a site
@@ -104,9 +106,9 @@ class Site(models.Model):
         landing_status_dict = {}
         landing_list = Landing.objects.filter(site=site)
         for landing in landing_list:
-            print "Landing check for the %s landing at %s" % (landing.name,landing.site) 
+            #print "Landing check for the %s landing at %s" % (landing.name,landing.site) 
             landing_status_dict[landing.id] = self._day_flight_check( landing, check_day) 
-        print landing_status_dict
+        #print landing_status_dict
         return landing_status_dict
 
     """Checks weather conditions for all launches associated with a site
@@ -116,9 +118,9 @@ class Site(models.Model):
         launch_status_dict = {}
         launch_list = Launch.objects.filter(site=site)
         for launch in launch_list:
-            print "Landing check for the %s landing at %s" % (launch.name,launch.site) 
+            #print "Landing check for the %s landing at %s" % (launch.name,launch.site) 
             launch_status_dict[launch.id] = self._day_flight_check( launch, check_day) 
-        print launch_status_dict
+        #print launch_status_dict
         return launch_status_dict
 
     """Deals with merging conditions, should just make this a fuckin' int
@@ -127,7 +129,8 @@ class Site(models.Model):
     fair is two fairs
     nothing means unflyable"""
     def _add_timeslice_condition(self, weather_list,time,condition):
-        time = time.strftime(Site.time_format)
+        #FIXME get settings imports working to use settings.TIME_FORMAT
+        time = time.strftime(TIME_FORMAT)
         if condition != 'good' or 'fair': # keep this restricted to known inputs here... 
             return # we won't use anything but good conditions 
         if time in weather_list:
@@ -147,27 +150,38 @@ class Site(models.Model):
     Takes a site object and a day of weather to check against
     returns fair if the best case is two are fair, good if one is good, and excellent if both are good"""
     def site_check(self, site, day):
+        flyability_dict = {}
+        unflyable = 'Unflyable'
+        possible_conditions = ['Excellent', 'Good', 'Fair', 'Poor']
         #return list of known words for site conditions, this function is naive about which launch/landing it is, don't care. We are looking for total flyability
         landings_conditions = [ condition_list for launch_id,condition_list in self._landing_check(site,day).iteritems()]
-        #print "landing conditions:",landings_conditions
+        ##print "landing conditions:",landings_conditions
         if self.empty(landings_conditions):
-            return 'Unflyable'
+            return unflyable
         #landability =  [ flyability for start_time,flyability in landings_conditions if wind_conditions_good[flyability] ]
         #TODO: Fix this list comprehension BS with lists everywhere
-        flyability_dict = {}
         for timeslice_condition in landings_conditions[0]:
             if not self.empty(timeslice_condition):
                 for start_time,flyability in timeslice_condition[0].iteritems():
                     self._add_timeslice_condition(flyability_dict,start_time,flyability)
-                    #print start_time,flyability
+                    ##print start_time,flyability
         launching_conditions = [ condition_list for launch_id,condition_list in self._launching_check(site,day).iteritems()]
         if self.empty(launching_conditions):
-            return 'Unflyable'
+            return unflyable
         for timeslice_condition in launching_conditions[0]:
             if not self.empty(timeslice_condition):
                 for start_time,flyability in timeslice_condition[0].iteritems():
                     self._add_timeslice_condition(flyability_dict,start_time,flyability)
-        return flyability_dict
+        if self.empty(flyability_dict):
+            return unflyable
+        #print flyability_dict
+        #Conditions are ordered from best to worst to always return best case
+        for condition in possible_conditions:
+            #print condition,flyability_dict.values()
+            if condition in flyability_dict.values():
+                #print condition
+                return condition
+        #return flyability_dict
 
 """All weather objects are collected into this queue for easy access"""
 class WeatherWatchQueue(models.Model):
@@ -183,6 +197,12 @@ class WeatherWatchQueue(models.Model):
 class DayOfWeather(models.Model):
     def __unicode__(self):
         return unicode(self.date_it_happens.strftime("%A, %d. %B %Y"))
+
+    def as_machine_timestring(self):
+        return self.date_it_happens.strftime(TIME_FORMAT)
+
+    def as_human_timestring(self):
+        return self.date_it_happens.strftime("%A, %d")
 
     date_it_happens = models.DateTimeField()
     prediction_date = models.DateTimeField()

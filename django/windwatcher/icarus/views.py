@@ -12,26 +12,34 @@ from django.http import HttpResponse
 from django.template import Context, loader
 from icarus.models import *
 import datetime, time
+import pprint
+
+TIME_FORMAT = '%Y%m%d%M'
 
 def index(request):
     template = loader.get_template('icarus/index.html')
-    site_list = Site.objects.all().order_by('name') 
+    site_list = Site.objects.all().order_by('name')
     weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
-    flyable_dict = {}
+    weather_list = [ weather.as_human_timestring() for weather in weather_list ]
+    weather_list = list(set(weather_list))
+    #days = [ day for day.date_it_happens.strftime(TIME_FORMAT) in weather_list ]
+    matrix = []
     for site in site_list:
+        row = []
+        row.append(site.name)
         for day in weather_list:
-            print site.site_check(site,day)
+            row.append(site.site_check(site,day))
+        matrix.append(row)
+
     dt_utc = datetime.datetime.utcnow()
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(matrix)
     # convert UTC to local time
     dt_local = dt_utc - datetime.timedelta(seconds=time.altzone)
     context = Context({
-        #'launch_list': launch_list,
-        #'launch_dict': launch_dict,
-        #'landing_list': landing_list,
-        #'launch_dict': launch_dict,
-        'datetime': dt_local.strftime("%A the %d, %B %Y at %r"),
-        'site_list':site_list,
+        'conditions_table':matrix,
         'weather_list':weather_list,
+        'datetime': dt_local.strftime("%A the %d, %B %Y at %r"),
         })
     return HttpResponse(template.render(context))
 
