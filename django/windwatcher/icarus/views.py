@@ -11,18 +11,17 @@ setup_environ(settings)
 from django.http import HttpResponse
 from django.template import Context, loader
 from icarus.models import *
+#Fancy order preserving function
+from uniqify import uniqify
 import datetime, time
-import pprint
 
 TIME_FORMAT = '%Y%m%d%M'
 
 def index(request):
     template = loader.get_template('icarus/index.html')
     site_list = Site.objects.all().order_by('name')
-    weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
-    weather_list = [ weather.as_human_timestring() for weather in weather_list ]
-    weather_list = list(set(weather_list))
-    #days = [ day for day.date_it_happens.strftime(TIME_FORMAT) in weather_list ]
+    raw_weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
+    weather_list = uniqify(raw_weather_list, lambda x: x.as_human_timestring())
     matrix = []
     for site in site_list:
         row = []
@@ -32,13 +31,11 @@ def index(request):
         matrix.append(row)
 
     dt_utc = datetime.datetime.utcnow()
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(matrix)
     # convert UTC to local time
     dt_local = dt_utc - datetime.timedelta(seconds=time.altzone)
     context = Context({
         'conditions_table':matrix,
-        'weather_list':weather_list,
+        'weather_list':map(lambda x: x.as_human_timestring,weather_list),
         'datetime': dt_local.strftime("%A the %d, %B %Y at %r"),
         })
     return HttpResponse(template.render(context))
@@ -53,7 +50,7 @@ def site_list(request):
     context = Context({
         'datetime': dt_local.strftime("%A the %d, %B %Y at %r"),
         'site_list':site_list,
-        'weather_list':weather_list,
+        'weather_list':weather_string_list,
         })
     return HttpResponse(template.render(context))
 

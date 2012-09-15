@@ -105,6 +105,7 @@ class Site(models.Model):
     def _landing_check(self, site, check_day):
         landing_status_dict = {}
         landing_list = Landing.objects.filter(site=site)
+        #print landing_list,site
         for landing in landing_list:
             #print "Landing check for the %s landing at %s" % (landing.name,landing.site) 
             landing_status_dict[landing.id] = self._day_flight_check( landing, check_day) 
@@ -131,7 +132,11 @@ class Site(models.Model):
     def _add_timeslice_condition(self, weather_list,time,condition):
         #FIXME get settings imports working to use settings.TIME_FORMAT
         time = time.strftime(TIME_FORMAT)
-        if condition != 'good' or 'fair': # keep this restricted to known inputs here... 
+        #print "time,condition",time,condition
+        #print "Weather List",weather_list
+        acceptable_conditions = ['good','fair']
+        if condition not in acceptable_conditions: # keep this restricted to known inputs here... 
+            #print "Bad weather, got:",condition
             return # we won't use anything but good conditions 
         if time in weather_list:
             if weather_list[time] == 'Excellent':
@@ -142,37 +147,49 @@ class Site(models.Model):
             elif weather_list[time] == 'Fair':
                 if condition == 'good':
                     weather_list[time] = 'Good'
-            
         else:
             weather_list[time] = condition
+        #print "Edited weather list",weather_list
 
     """Checks if there are at least 1 fair|good launch and 1 'fair'|'good' landing
     Takes a site object and a day of weather to check against
     returns fair if the best case is two are fair, good if one is good, and excellent if both are good"""
     def site_check(self, site, day):
         flyability_dict = {}
+        #day is passed as id
+        #day = DayOfWeather.objects.get(id=day_id)
+        #print "got this",day 
+        landing_list = Landing.objects.filter(site=site)
         unflyable = 'Unflyable'
         possible_conditions = ['Excellent', 'Good', 'Fair', 'Poor']
         #return list of known words for site conditions, this function is naive about which launch/landing it is, don't care. We are looking for total flyability
         landings_conditions = [ condition_list for launch_id,condition_list in self._landing_check(site,day).iteritems()]
+        #print landings_conditions
         ##print "landing conditions:",landings_conditions
         if self.empty(landings_conditions):
+            #print "Empty landing zero"
             return unflyable
         #landability =  [ flyability for start_time,flyability in landings_conditions if wind_conditions_good[flyability] ]
         #TODO: Fix this list comprehension BS with lists everywhere
         for timeslice_condition in landings_conditions[0]:
             if not self.empty(timeslice_condition):
                 for start_time,flyability in timeslice_condition[0].iteritems():
+                    #print "st time,flyability",start_time,flyability
                     self._add_timeslice_condition(flyability_dict,start_time,flyability)
                     ##print start_time,flyability
         launching_conditions = [ condition_list for launch_id,condition_list in self._launching_check(site,day).iteritems()]
         if self.empty(launching_conditions):
+            #print "empty launch first"
             return unflyable
         for timeslice_condition in launching_conditions[0]:
+            #print "Timeslice",timeslice_condition
             if not self.empty(timeslice_condition):
                 for start_time,flyability in timeslice_condition[0].iteritems():
                     self._add_timeslice_condition(flyability_dict,start_time,flyability)
-        if self.empty(flyability_dict):
+        #print "Checking emptiness of flyabiilty dict",flyability_dict
+        #if self.empty(flyability_dict):
+        if flyability_dict.keys() == [] or flyability_dict.values() == []:
+            #print "empty flyability second"
             return unflyable
         #print flyability_dict
         #Conditions are ordered from best to worst to always return best case
