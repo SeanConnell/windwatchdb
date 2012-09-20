@@ -15,6 +15,14 @@ from icarus.models import *
 from uniqify import uniqify
 import datetime, time
 
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+handler = logging.FileHandler('icarus/logs.%s' % (__name__))
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler) 
+logger.setLevel(logging.DEBUG)
+
 TIME_FORMAT = '%Y%m%d%M'
 
 def index(request):
