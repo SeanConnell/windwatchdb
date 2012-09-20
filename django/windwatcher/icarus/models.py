@@ -4,6 +4,16 @@ from datetime import datetime as dt
 from datetime import time
 from datetime import timedelta as td
 #from settings import TIME_FORMAT
+# import the logging library
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+handler = logging.FileHandler('icarus/logs.%s' % (__name__))
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler) 
+logger.setLevel(logging.DEBUG)
 
 TIME_FORMAT = '%Y%m%d%M'
 
@@ -50,10 +60,9 @@ class Site(models.Model):
         if wts.flyability:
             return wts.flyability
         #Otherwise we're at a new wts, time to get mins and maxes and calculate deltas
-        ##print "flyable wind speed: %d - %d" % (ground.flyable_wind_speed_min ,ground.flyable_wind_speed_max)
-        ##print "checking against this speed:   %d" % (wts.wind_speed)
-        ##print "flyable wind angle: %d - %d" % (ground.flyable_wind_direction_min ,ground.flyable_wind_direction_max)
-        ##print "checking against this dir  :   %d" % (wts.wind_direction)
+        logger.debug( "checking against this speed:   %d" % (wts.wind_speed))
+        logger.debug( "flyable wind angle: %d - %d" % (ground.flyable_wind_direction_min ,ground.flyable_wind_direction_max))
+        logger.debug( "checking against this dir  :   %d" % (wts.wind_direction))
         
         #Flyable values for this launch/landing
         amax,amin = (ground.flyable_wind_direction_max + ground.wind_direction_offset, ground.flyable_wind_direction_min + ground.wind_direction_offset)
@@ -82,7 +91,7 @@ class Site(models.Model):
         else:
             wts.flyability ='fair' #if it isn't no lift, poor, dangerous wind, or good, it must be fair
         wts.save()
-        ##print wts,wts.flyability
+        logger.debug("wts object: %s, flyability: %s" % (wts,wts.flyability))
         return wts.flyability
 
     """returns a list of dicts of wts start times {start_time:condition} eg {some_dt_object:'fair'}"""
@@ -90,12 +99,11 @@ class Site(models.Model):
     def _day_flight_check(self, ground, wts_day):
         conditions_list = []
         for wts in WeatherTimeSlice.objects.filter(day_of_occurance=wts_day):
-            ##print wts
             #Add all the timeslice conditions to the list
             conditions_list.append({wts.start_time:self._timeslice_flight_check(ground, wts)})
-        ##print conditions_list
+        logger.debug("Resultant wts-es that were in flyable days with their flyability: %s" % (conditions_list))
         daytime_conditions = [[conditions for start_time,condition in conditions.iteritems() if time(hour=6) < start_time.time() < time(hour=17)] for conditions in conditions_list]
-        ##print daytime_conditions
+        logger.debug("wts-es that were in daytime: %s" % daytime_conditions)
         return daytime_conditions
 
     """Checks weather conditions for all landings associated with a site
@@ -105,11 +113,10 @@ class Site(models.Model):
     def _landing_check(self, site, check_day):
         landing_status_dict = {}
         landing_list = Landing.objects.filter(site=site)
-        #print landing_list,site
         for landing in landing_list:
-            #print "Landing check for the %s landing at %s" % (landing.name,landing.site) 
-            landing_status_dict[landing.id] = self._day_flight_check( landing, check_day) 
-        #print landing_status_dict
+            logger.debug( "Landing check for the %s landing at %s" % (landing.name, landing.site))
+            landing_status_dict[landing.id] = self._day_flight_check(landing, check_day)
+        logger.debug("Resultant landing status dict: %s" % (landing_status_dict))
         return landing_status_dict
 
     """Checks weather conditions for all launches associated with a site
@@ -119,9 +126,9 @@ class Site(models.Model):
         launch_status_dict = {}
         launch_list = Launch.objects.filter(site=site)
         for launch in launch_list:
-            #print "Landing check for the %s landing at %s" % (launch.name,launch.site) 
+            logger.debug( "Launching check for the %s landing at %s" % (launch.name,launch.site) )
             launch_status_dict[launch.id] = self._day_flight_check( launch, check_day) 
-        #print launch_status_dict
+        logger.debug("Resultant launching dict: %s" % (launch_status_dict))
         return launch_status_dict
 
     """Deals with merging conditions, should just make this a fuckin' int
@@ -129,27 +136,32 @@ class Site(models.Model):
     good is one good one fair
     fair is two fairs
     nothing means unflyable"""
-    def _add_timeslice_condition(self, weather_list,time,condition):
+    def _add_timeslice_condition(self, weather, time, condition):
         #FIXME get settings imports working to use settings.TIME_FORMAT
         time = time.strftime(TIME_FORMAT)
-        #print "time,condition",time,condition
-        #print "Weather List",weather_list
+        logger.debug("time: %s, condition %s" %(time,condition))
+        logger.debug("Weather: %s" % weather)
         acceptable_conditions = ['good','fair']
         if condition not in acceptable_conditions: # keep this restricted to known inputs here... 
-            #print "Bad weather, got:",condition
+            logger.debug("Weather condition not acceptable, got: %s" % condition)
             return # we won't use anything but good conditions 
-        if time in weather_list:
-            if weather_list[time] == 'Excellent':
+        logger.debug("Weather condition acceptable, got: %s" % condition)
+        if time in weather.keys():
+            if weather[time] == 'Excellent':
+                logger.debug("Set to Excellent")
                 return
-            elif weather_list[time] == 'Good': 
+            elif weather[time] == 'Good': 
                 if condition == 'good':
-                    weather_list[time] = 'Excellent'
-            elif weather_list[time] == 'Fair':
+                    weather[time] = 'Excellent'
+                    logger.debug("Set to Excellent")
+            elif weather[time] == 'Fair':
                 if condition == 'good':
-                    weather_list[time] = 'Good'
+                    weather[time] = 'Good'
+                    logger.debug("Set to Good")
         else:
-            weather_list[time] = condition
-        #print "Edited weather list",weather_list
+            weather[time] = "Fair"
+            logger.debug("Set to Fair")
+        logger.debug("Edited weather: %s" % weather)
 
     """Checks if there are at least 1 fair|good launch and 1 'fair'|'good' landing
     Takes a site object and a day of weather to check against
@@ -158,45 +170,46 @@ class Site(models.Model):
         flyability_dict = {}
         #day is passed as id
         #day = DayOfWeather.objects.get(id=day_id)
-        #print "got this",day 
+        logger.debug("Site check for %s" %(day))
         landing_list = Landing.objects.filter(site=site)
         unflyable = 'Unflyable'
         possible_conditions = ['Excellent', 'Good', 'Fair', 'Poor']
         #return list of known words for site conditions, this function is naive about which launch/landing it is, don't care. We are looking for total flyability
         landings_conditions = [ condition_list for launch_id,condition_list in self._landing_check(site,day).iteritems()]
-        #print landings_conditions
-        ##print "landing conditions:",landings_conditions
+        logger.debug( "landing conditions: %s" % (landings_conditions))
         if self.empty(landings_conditions):
-            #print "Empty landing zero"
+            logger.debug("Empty landing zero")
             return unflyable
         #landability =  [ flyability for start_time,flyability in landings_conditions if wind_conditions_good[flyability] ]
         #TODO: Fix this list comprehension BS with lists everywhere
         for timeslice_condition in landings_conditions[0]:
             if not self.empty(timeslice_condition):
                 for start_time,flyability in timeslice_condition[0].iteritems():
-                    #print "st time,flyability",start_time,flyability
+                    logger.debug("st time: %s, flyability %s" % (start_time,flyability))
+                    logger.debug("Flyability dict: %s" % (flyability_dict))
                     self._add_timeslice_condition(flyability_dict,start_time,flyability)
-                    ##print start_time,flyability
+                    logger.debug("Flyability dict: %s" % (flyability_dict))
         launching_conditions = [ condition_list for launch_id,condition_list in self._launching_check(site,day).iteritems()]
         if self.empty(launching_conditions):
-            #print "empty launch first"
+            logger.debug("empty launch first")
             return unflyable
         for timeslice_condition in launching_conditions[0]:
-            #print "Timeslice",timeslice_condition
+            logger.debug("Timeslice: %s" %(timeslice_condition))
             if not self.empty(timeslice_condition):
                 for start_time,flyability in timeslice_condition[0].iteritems():
                     self._add_timeslice_condition(flyability_dict,start_time,flyability)
-        #print "Checking emptiness of flyabiilty dict",flyability_dict
+        logger.debug("Checking emptiness of flyabiilty dict: %s" %(flyability_dict))
         #if self.empty(flyability_dict):
         if flyability_dict.keys() == [] or flyability_dict.values() == []:
-            #print "empty flyability second"
+            logger.debug("empty flyability second")
             return unflyable
-        #print flyability_dict
+        #logger.debug( flyability_dict)
         #Conditions are ordered from best to worst to always return best case
+        logger.debug("Iterating over flyability dict: %s" % (flyability_dict))
         for condition in possible_conditions:
-            #print condition,flyability_dict.values()
+            #logger.debug( condition,flyability_dict.values())
             if condition in flyability_dict.values():
-                #print condition
+                logger.debug("Returning this: %s" % (condition))
                 return condition
         #return flyability_dict
 
