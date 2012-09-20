@@ -56,6 +56,7 @@ class Site(models.Model):
             return False
 
     def _timeslice_flight_check(self, ground, wts):
+        #TODO Move all of this wind speed logic into the ground object
         #If this wts has flyability, no need to recalculate
         if wts.flyability:
             return wts.flyability
@@ -265,11 +266,22 @@ class WeatherTimeSlice(models.Model):
         # overridden in the query with order_by()
         ordering = ['start_time']
 
+#TODO: Do some class called Ground and make launch and landing inherit from it to dedup this stuff
 """ A launch and its sea level altitude, acceptable range of wind directions to fly in, and warnings about how to launch"""
 class Launch(models.Model):
+    #TODO: The min/max angle thing is broken as it has problems going around 0. Need to rewrite it
 
     def __unicode__(self):
         return unicode(self.name + " launch for " + self.site.name)
+
+    "Returns a boolean if a wind angle is in the correct range for flight"
+    def angle_in_range(self,angle):
+        print "Implement me!"
+        return True
+    "Returns a boolean if a wind speed is in the correct range for flight"
+    def speed_in_range(self,speed):
+        print "Implement me!"
+        return True
 
     #Note: the wind speed and dir should either be relative to the forecasts or use "offset" for the site's effect on weather
     name = models.CharField(max_length=200)
@@ -293,6 +305,16 @@ class Landing(models.Model):
     def __unicode__(self):
         return unicode(self.name + " landing for " + self.site.name)
 
+    "Returns a boolean if a wind angle is in the correct range for flight"
+    def angle_in_range(self,angle):
+        print "Implement me!"
+        return True
+    "Returns a boolean if a wind speed is in the correct range for flight"
+    def speed_in_range(self,speed):
+        print "Implement me!"
+        return True
+
+    #Note: the wind speed and dir should either be relative to the forecasts or use "offset" for the site's effect on weather
     #Note: the wind speed and dir should either be relative to the forecasts or use "offset" for the site's effect on weather
     name = models.CharField(max_length=200)
     site = models.ForeignKey(Site)
