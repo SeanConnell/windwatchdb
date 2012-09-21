@@ -266,13 +266,12 @@ class WeatherTimeSlice(models.Model):
         # overridden in the query with order_by()
         ordering = ['start_time']
 
-#TODO: Do some class called Ground and make launch and landing inherit from it to dedup this stuff
-""" A launch and its sea level altitude, acceptable range of wind directions to fly in, and warnings about how to launch"""
-class Launch(models.Model):
-    #TODO: The min/max angle thing is broken as it has problems going around 0. Need to rewrite it
+"Ground is whatever various piece of ground (launch, landing, whatever) that is relevant to a hang glider"
+class Ground(models.Model):
 
-    def __unicode__(self):
-        return unicode(self.name + " launch for " + self.site.name)
+    class Meta:
+        abstract = True
+        ordering = ['name']
 
     "Returns a boolean if a wind angle is in the correct range for flight"
     def angle_in_range(self,angle):
@@ -299,35 +298,22 @@ class Launch(models.Model):
     #How to correctly launch here
     flight_description = models.CharField(max_length=50000)
 
-""" A landing and its sea level altitude, and a description of how to do the approach"""    
-class Landing(models.Model):
+"A launch zone"
+class Launch(Ground):
+    #TODO: The min/max angle thing is broken as it has problems going around 0. Need to rewrite it
+
+    def __unicode__(self):
+        return unicode(self.name + " launch for " + self.site.name)
+
+    class Meta(Ground.Meta):
+        db_table = 'launch_info'
+
+
+"A landing zone"
+class Landing(Ground):
 
     def __unicode__(self):
         return unicode(self.name + " landing for " + self.site.name)
 
-    "Returns a boolean if a wind angle is in the correct range for flight"
-    def angle_in_range(self,angle):
-        print "Implement me!"
-        return True
-    "Returns a boolean if a wind speed is in the correct range for flight"
-    def speed_in_range(self,speed):
-        print "Implement me!"
-        return True
-
-    #Note: the wind speed and dir should either be relative to the forecasts or use "offset" for the site's effect on weather
-    #Note: the wind speed and dir should either be relative to the forecasts or use "offset" for the site's effect on weather
-    name = models.CharField(max_length=200)
-    site = models.ForeignKey(Site)
-    altitude = models.IntegerField(default=0)    
-    #Offsets to try and account for site/local effects
-    wind_speed_offset = models.IntegerField(default=0)
-    wind_direction_offset = models.IntegerField(default=0)
-    flyable_wind_direction_min = models.IntegerField(default=0)
-    flyable_wind_direction_max = models.IntegerField(default=0)
-    flyable_wind_speed_min = models.IntegerField(default=0)
-    flyable_wind_speed_max = models.IntegerField(default=0)
-    #Possible pitfalls of the launch, things to worry about
-    warnings = models.CharField(max_length=50000)
-    #How to correctly launch here
-    flight_description = models.CharField(max_length=50000)
-
+    class Meta(Ground.Meta):
+        db_table = 'launding_info'
