@@ -2,7 +2,6 @@
 from urllib import *
 import xml.etree.ElementTree as xml 
 import sys
-from datetime import date, timedelta
 from datetime import datetime 
 import re
 
@@ -56,7 +55,7 @@ def update_weather(site):
     """Parses relevant information into a weather time slice"""
     def create_wtime_slice(time, data_dict):
         wtslice = WeatherTimeSlice()
-        wtslice.temperature = int(data_dict['temperature'])
+        #wtslice.temperature = int(data_dict['temperature'])
         wtslice.wind_speed = int(data_dict['wind_speed'])
         wtslice.wind_direction = int(data_dict['wind_direction'])
         wtslice.start_time = datetime.strptime(time,'%H:%M:%S') 
@@ -84,7 +83,6 @@ def update_weather(site):
     #close the object like a good citizen
     weather_f.close()
     #parse out some weather data for saving into the django class for the ORM
-    #xml.fromstring(weather)
     #collect time keys and date ranges into hash 
     wxml = xml.fromstring(weather)
     wxml = wxml.find('data')
