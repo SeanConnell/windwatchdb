@@ -2,6 +2,7 @@
 from django.db import models
 # import the logging library
 import logging
+from datetime import datetime
 from unflyable import Unflyable
 from join_dict import join_dict, add
 from compare_angle import compare_angle
@@ -55,7 +56,7 @@ class Site(models.Model):
         return int(wts.flyability)
 
     """returns a list of dicts of wts start times {start_time:condition} eg {some_dt_object:'fair'}"""
-    #TODO check sunrise times, they should be in the DayOfWeather. Currently naively assumes 6AM - 5PM as flyable times TODO:Make this work after other stuff does
+    #TODO check sunrise times, they should be in the DayOfWeather. Currently naively assumes 6AM - 5PM as flyable times
     """def daytime_flights(self, ground, wts_day):
 
         if self.empty(conditions_list):
@@ -156,6 +157,8 @@ class DayOfWeather(models.Model):
     max_temperature = models.IntegerField() #future use
     min_temperature = models.IntegerField() #future use
     weather_stream = models.ForeignKey(WeatherWatchQueue) #holds thew weather for this site
+    sunrise = models.DateTimeField(default = datetime.now())
+    sunset = models.DateTimeField(default = datetime.now())
 
     class Meta:
         # sort by "the date" in descending order unless
@@ -211,18 +214,18 @@ class Ground(models.Model):
     flight_description = models.CharField(max_length=50000)
 
     "Get tolerance rating for wind,angle,etc"
-    def check_tolerance(self, desired, given, condition_tolerance, acceptable_tolerance):
+    def check_tolerance(self, given, desired, condition_tolerance, acceptable_tolerance):
         for percent_tolerance in Ground.tolerances:
             tolerance = round(percent_tolerance*desired) + condition_tolerance
-            if acceptable_tolerance(desired,given,tolerance):
+            if acceptable_tolerance(given, desired, tolerance):
                 return Ground.flyability_of[percent_tolerance]
         return 0 #Default case is unflyable aka 0 
 
     def check_wind_speed(self, wts):
-        return self.check_tolerance(self.flyable_wind_speed, wts.wind_speed, self.speed_tolerance, compare_speed)
+        return self.check_tolerance(wts.wind_speed, self.flyable_wind_speed, self.speed_tolerance, compare_speed)
  
     def check_wind_dir(self, wts):
-        return self.check_tolerance(self.flyable_wind_speed, wts.wind_direction, self.angle_tolerance, compare_angle)
+        return self.check_tolerance(wts.wind_direction, self.flyable_wind_speed, self.angle_tolerance, compare_angle)
 
 "A launch zone"
 class Launch(Ground):
