@@ -1,9 +1,5 @@
 #!/usr/bin/python
 import sys
-from datetime import date, timedelta
-from datetime import datetime 
-import re
-
 #Get windwatcher and django on the import path
 #Fix this later
 import getpass
@@ -24,15 +20,15 @@ for site in site_list:
     site.save()
     print "Saving",site
 
-testlaunchone = Launch(name="Test Launch One",site=testsite1,flyable_wind_speed_min=1,flyable_wind_speed_max=25,flyable_wind_direction_min=40,flyable_wind_direction_max=330)
-testlaunchtwo = Launch(name="Test Launch Two",site=testsite2,flyable_wind_speed_min=9,flyable_wind_speed_max=15,flyable_wind_direction_min=140,flyable_wind_direction_max=330)
+testlaunchone = Launch(name="Test Launch One",site=testsite1,flyable_wind_speed=12,flyable_wind_speed_tolerance=6,flyable_wind_direction=330,flyable_wind_direction_tolerance=90)
+testlaunchtwo = Launch(name="Test Launch Two",site=testsite2,flyable_wind_speed=10,flyable_wind_speed_tolerance=3,flyable_wind_direction=140,flyable_wind_direction_tolerance=33)
 launch_list = [testlaunchone,testlaunchtwo]
 for launch in launch_list:
     launch.save()
     print "Saving",launch
 
-testlandingone = Landing(name="Test Landing One",site=testsite1,flyable_wind_speed_min=4,flyable_wind_speed_max=19,flyable_wind_direction_min=100,flyable_wind_direction_max=350)
-testlandingtwo = Landing(name="Test Landing Two",site=testsite2,flyable_wind_speed_min=7,flyable_wind_speed_max=15,flyable_wind_direction_min=10,flyable_wind_direction_max=250)
+testlandingone = Landing(name="Test Landing One",site=testsite1,flyable_wind_speed=5,flyable_wind_speed_tolerance=9,flyable_wind_direction=230,flyable_wind_direction_tolerance=20)
+testlandingtwo = Landing(name="Test Landing Two",site=testsite2,flyable_wind_speed=3,flyable_wind_speed_tolerance=19,flyable_wind_direction=130,flyable_wind_direction_tolerance=30)
 landing_list = [testlandingone,testlandingtwo]
 
 for landing in landing_list:
