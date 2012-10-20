@@ -1,10 +1,11 @@
 #!/usr/bin/python
 from django.db import models
-from datetime import time
-#from settings import TIME_FORMAT
 # import the logging library
 import logging
 from unflyable import Unflyable
+from join_dict import join_dict, add
+from compare_angle import compare_angle
+from compare_speed import compare_speed
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -15,8 +16,6 @@ logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
 TIME_FORMAT = '%Y%m%d%M'
-
-#TODO: Factor out like almost all of these methods, they don't have anything to do with this class
 
 """Holds the site coords for the NWDB lookup as well as name of site and a list of launches and landings
 A site has only compatible launches and landings, such that any landing can be reached from any launch"""
@@ -114,37 +113,15 @@ class Site(models.Model):
         else:
             return ground_status
 
-    "Combines two dicts that have the same value for a set key"
-    def join_dict(self, d1, d2, combine_func):
-        logger.debug("Joining dicts %s and %s" % (d1,d2))
-
-        resultant = {}
-        keys1 = set(d1.keys())
-        keys2 = set(d2.keys())
-
-        #Get keys common to both
-        common_keys = keys1.intersection(keys2)
-
-        for key in common_keys:
-            resultant[key] = combine_func(d1[key],d2[key])
-
-        logger.debug("Resultant dict: %s" % resultant)
-        return resultant
-
-    "Add two things together with the + operator"
-    def add(self, a, b):
-        return a+b
-
     "Pulls together the launches and landings status and adds values together to get best case flyability"
     def find_max_flyability(self, launches, landings):
         conditions = []
         flyability = []
         for launch in launches:
             for landing in landings:
-                conditions.append(self.join_dict(launches[launch],landings[landing],self.add))
+                conditions.append(join_dict(launches[launch],landings[landing],add))
         for condition in conditions:
             flyability.extend(condition.values())
-        print flyability
         return max(flyability)
 
     def site_check(self, site, day):
@@ -233,27 +210,6 @@ class Ground(models.Model):
     #How to correctly launch here
     flight_description = models.CharField(max_length=50000)
 
-    def restrict_angle(self, angle):
-        "make sure any angle falls in the [0..360) range"
-        return angle % 360
-
-    def compare_angle(self, angle, target_angle, tolerance):
-        tolerance= abs(tolerance) # same meaning, easier logic
-
-        angle = self.restrict_angle(angle)
-        upper_limit = self.restrict_angle(target_angle + tolerance)
-        lower_limit = self.restrict_angle(target_angle - tolerance)
-
-        if upper_limit < lower_limit: # when target_angle close to -180
-            upper_limit+= 360
-
-        return (lower_limit <= angle <= upper_limit
-            or lower_limit <= angle + 360 <= upper_limit)
-
-    def compare_speed(self, speed, target_speed, tolerance):
-        print "implement compare speed!"
-        return True 
-
     "Get tolerance rating for wind,angle,etc"
     def check_tolerance(self, desired, given, condition_tolerance, acceptable_tolerance):
         for percent_tolerance in Ground.tolerances:
@@ -263,10 +219,10 @@ class Ground(models.Model):
         return 0 #Default case is unflyable aka 0 
 
     def check_wind_speed(self, wts):
-        return self.check_tolerance(self.flyable_wind_speed, wts.wind_speed, self.speed_tolerance, self.compare_speed)
+        return self.check_tolerance(self.flyable_wind_speed, wts.wind_speed, self.speed_tolerance, compare_speed)
  
     def check_wind_dir(self, wts):
-        return self.check_tolerance(self.flyable_wind_speed, wts.wind_direction, self.angle_tolerance, self.compare_angle)
+        return self.check_tolerance(self.flyable_wind_speed, wts.wind_direction, self.angle_tolerance, compare_angle)
 
 "A launch zone"
 class Launch(Ground):
