@@ -28,6 +28,7 @@ TIME_FORMAT = '%Y%m%d%M'
 def index(request):
     template = loader.get_template('icarus/index.html')
     site_list = Site.objects.all().order_by('name')
+    logger.debug("Getting flyability for %s sites" % site_list)
     raw_weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
     weather_list = uniqify(raw_weather_list, lambda x: x.as_human_timestring())
     matrix = []
