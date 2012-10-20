@@ -31,7 +31,7 @@ for site in site_list:
     print "Saving",site
 
 sollie_w = Launch(name="West",site=sollie,flyable_wind_speed_min=7,flyable_wind_speed_max=15,flyable_wind_direction_min=240,flyable_wind_direction_max=330)
-sollie_n = Launch(name="North",site=sollie)
+sollie_n = Launch(name="North",site=sollie,flyable_wind_speed_min=8,flyable_wind_speed_max=16,flyable_wind_direction_min=300,flyable_wind_direction_max=330)
 kiwanda_nnw = Launch(name="NNW",site=kiwanda)
 petersons_lower = Launch(name="Lower Launch",site=petersons_top)
 petersons_upper = Launch(name="Upper Launch",site=petersons_bot)
