@@ -1,6 +1,5 @@
 #!/usr/bin/python
 from django.db import models
-# import the logging library
 import logging
 from datetime import datetime
 from unflyable import Unflyable
@@ -118,11 +117,14 @@ class Site(models.Model):
     def find_max_flyability(self, launches, landings):
         conditions = []
         flyability = []
+
         for launch in launches:
             for landing in landings:
                 conditions.append(join_dict(launches[launch],landings[landing],add))
+
         for condition in conditions:
             flyability.extend(condition.values())
+
         return max(flyability)
 
     def site_check(self, site, day):
@@ -138,8 +140,8 @@ class Site(models.Model):
 """All weather objects are collected into this queue for easy access"""
 class WeatherWatchQueue(models.Model):
     def __unicode__(self):
-        return unicode("Days of forecast weather for " + str(self.relevant_site))
-    relevant_site = models.ForeignKey(Site) #which site the weather is for
+        return unicode("Days of forecast weather for %s" % str(self.relevant_site))
+    relevant_site = models.ForeignKey(Site) #the site the weather is for
 
 """Holds a bunch of timeslice predictions for that day's weather"""
 class DayOfWeather(models.Model):
@@ -160,15 +162,16 @@ class DayOfWeather(models.Model):
     sunrise = models.DateTimeField(default = datetime.now())
     sunset = models.DateTimeField(default = datetime.now())
 
+    # sort by "the date" in descending order unless
+    # overridden in the query with order_by()
     class Meta:
-        # sort by "the date" in descending order unless
-        # overridden in the query with order_by()
         ordering = ['date_it_happens']
 
 """A chunk of time for which weather has been predicted. Goes with the DayOfWeather to build out a forecast"""
 class WeatherTimeSlice(models.Model):
     def __unicode__(self):
         return unicode("Weather beginning at %s" % str(self.start_time))
+
     #TODO:fix start time having the year and shit in it
     start_time = models.DateTimeField()
     wind_direction = models.IntegerField(default=0)
@@ -201,6 +204,7 @@ class Ground(models.Model):
     name = models.CharField(max_length=200)
     site = models.ForeignKey(Site)
     altitude = models.IntegerField(default=0)
+
     #Offsets to try and account for site/local effects
     wind_speed_offset = models.IntegerField(default=0)
     wind_direction_offset = models.IntegerField(default=0)
@@ -208,6 +212,7 @@ class Ground(models.Model):
     flyable_wind_direction_tolerance = models.IntegerField(default=0)
     flyable_wind_speed = models.IntegerField(default=0)
     flyable_wind_speed_tolerance = models.IntegerField(default=0)
+
     #Possible pitfalls of the launch, things to worry about
     warnings = models.CharField(max_length=50000)
     #How to correctly launch here
@@ -219,7 +224,7 @@ class Ground(models.Model):
             tolerance = round(percent_tolerance*desired) + condition_tolerance
             if acceptable_tolerance(given, desired, tolerance):
                 return Ground.flyability_of[percent_tolerance]
-        return 0 #Default case is unflyable aka 0 
+        return 0 #Default case is unflyable aka 0
 
     def check_wind_speed(self, wts):
         return self.check_tolerance(wts.wind_speed, self.flyable_wind_speed, self.speed_tolerance, compare_speed)
@@ -230,18 +235,14 @@ class Ground(models.Model):
 "A launch zone"
 class Launch(Ground):
 
-    type = "Launch"
     def __unicode__(self):
         return unicode("%s launch for %s" % (self.name, self.site.name))
 
     class Meta(Ground.Meta):
         db_table = 'launch_info'
 
-
 "A landing zone"
 class Landing(Ground):
-
-    type = "Landing"
 
     def __unicode__(self):
         return unicode("%s landing for %s" % (self.name, self.site.name))
