@@ -7,7 +7,7 @@ Replace this with more appropriate tests for your application.
 
 from django.test import TestCase
 from icarus.models import Ground,Launch,Landing,WeatherTimeSlice
-from compare_angle import compare_angle
+from compare_angles import compare_angles
 from compare_speed import compare_speed
 from join_dict import join_dict, add
 from datetime import datetime
@@ -56,7 +56,7 @@ class JoinDictTest(TestCase):
 
         self.assertEqual(join_dict(a, b, add), expected_result)
 
-    #Had to do it, because you never know when 1 + 1 might not be 2
+    #Because you never know when 1 + 1 might not be 2
     def test_add_func(self):
         self.assertEqual(add(1,1),2)
 
@@ -101,60 +101,60 @@ class CompareAngleTest(TestCase):
 
     #test cases for non wrapping angle tolerances
     def test_in_tol_given_above(self):
-        self.assertTrue(compare_angle(180, 150, 45))
+        self.assertTrue(compare_angles(180, 150, 45))
 
     def test_in_tol_target_above(self):
-        self.assertTrue(compare_angle(150, 180, 45))
+        self.assertTrue(compare_angles(150, 180, 45))
 
     def test_in_tol_angles_same(self):
-        self.assertTrue(compare_angle(180, 180, 45))
+        self.assertTrue(compare_angles(180, 180, 45))
 
     def test_in_tol_distance_equal_to_tol_given_above(self):
-        self.assertTrue(compare_angle(180, 150, 30))
+        self.assertTrue(compare_angles(180, 150, 30))
 
     def test_in_tol_distance_equal_to_tol_target_above(self):
-        self.assertTrue(compare_angle(150, 180, 30))
+        self.assertTrue(compare_angles(150, 180, 30))
 
     #Test angles wrapping around 0/360
     def test_in_tol_wrapped_around_positive(self):
-        self.assertTrue(compare_angle(330, 60, 120))
+        self.assertTrue(compare_angles(330, 60, 120))
 
     def test_in_tol_wrapped_around_negative(self):
-        self.assertTrue(compare_angle(60, 330, 120))
+        self.assertTrue(compare_angles(60, 330, 120))
 
     def test_all_angle_tol_by_wrap(self):
-        self.assertTrue(compare_angle(1,359,180))
+        self.assertTrue(compare_angles(1,359,180))
 
     def test_all_angle_tol_no_wrap(self):
-        self.assertTrue(compare_angle(1,359,360))
+        self.assertTrue(compare_angles(1,359,360))
 
     def test_all_360_0_wrap_negative(self):
-        self.assertTrue(compare_angle(0,360,15))
+        self.assertTrue(compare_angles(0,360,15))
 
     def test_all_360_0_wrap_positive(self):
-        self.assertTrue(compare_angle(0,360,15))
+        self.assertTrue(compare_angles(0,360,15))
 
     def test_outside_tol_given_above(self):
-        self.assertFalse(compare_angle(180, 90, 45))
+        self.assertFalse(compare_angles(180, 90, 45))
 
     def test_outside_tol_target_above(self):
-        self.assertFalse(compare_angle(90, 180, 45))
+        self.assertFalse(compare_angles(90, 180, 45))
 
     def test_outside_tol_by_one_given_above(self):
-        self.assertFalse(compare_angle(90, 180, 89))
+        self.assertFalse(compare_angles(90, 180, 89))
 
     def test_outside_tol_by_one_target_above(self):
-        self.assertFalse(compare_angle(180, 90, 89))
+        self.assertFalse(compare_angles(180, 90, 89))
 
     #Test negative angles/tolerances
     def test_negative_in_tol_target_above(self):
-        self.assertTrue(compare_angle(-90, -180, 120))
+        self.assertTrue(compare_angles(-90, -180, 120))
 
     def test_negative_in_tol_given_above(self):
-        self.assertTrue(compare_angle(-180, -90, 120))
+        self.assertTrue(compare_angles(-180, -90, 120))
 
     def test_neg_tol_in_range(self):
-        self.assertTrue(compare_angle(180, 150, -45))
+        self.assertTrue(compare_angles(180, 150, -45))
 
     def test_neg_tol_out_range(self):
-        self.assertFalse(compare_angle(180, 150, -15))
+        self.assertFalse(compare_angles(180, 150, -15))

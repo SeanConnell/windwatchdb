@@ -4,7 +4,7 @@ import logging
 from datetime import datetime
 from unflyable import Unflyable
 from join_dict import join_dict, add
-from compare_angle import compare_angle
+from compare_angles import compare_angles
 from compare_speed import compare_speed
 
 # Get an instance of a logger
@@ -230,7 +230,7 @@ class Ground(models.Model):
         return self.check_tolerance(wts.wind_speed, self.flyable_wind_speed, self.speed_tolerance, compare_speed)
  
     def check_wind_dir(self, wts):
-        return self.check_tolerance(wts.wind_direction, self.flyable_wind_speed, self.angle_tolerance, compare_angle)
+        return self.check_tolerance(wts.wind_direction, self.flyable_wind_speed, self.angle_tolerance, compare_angles)
 
 "A launch zone"
 class Launch(Ground):
