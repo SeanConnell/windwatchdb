@@ -1,0 +1,1587 @@
+[
+    {
+        "pk": 1,
+        "model": "icarus.site",
+        "fields": {
+            "city": "Testcity",
+            "name": "Test Site One",
+            "lon": -123.787594,
+            "state": "TestState",
+            "lat": 45.476624,
+            "last_weather_refresh": "2012-10-20 16:14:26"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "icarus.site",
+        "fields": {
+            "city": "Testtowne",
+            "name": "Test Site Two",
+            "lon": -123.787594,
+            "state": "TestState",
+            "lat": 45.476624,
+            "last_weather_refresh": "2012-10-20 16:14:27"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "icarus.site",
+        "fields": {
+            "city": "Testcity",
+            "name": "Test Site One",
+            "lon": -123.787594,
+            "state": "TestState",
+            "lat": 45.476624,
+            "last_weather_refresh": null
+        }
+    },
+    {
+        "pk": 4,
+        "model": "icarus.site",
+        "fields": {
+            "city": "Testcity",
+            "name": "Test Site One",
+            "lon": -123.787594,
+            "state": "TestState",
+            "lat": 45.476624,
+            "last_weather_refresh": null
+        }
+    },
+    {
+        "pk": 1,
+        "model": "icarus.weatherwatchqueue",
+        "fields": {
+            "relevant_site": 1
+        }
+    },
+    {
+        "pk": 2,
+        "model": "icarus.weatherwatchqueue",
+        "fields": {
+            "relevant_site": 2
+        }
+    },
+    {
+        "pk": 1,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-20 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 1,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-20 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 2,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-21 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 1,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-21 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 2,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-22 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 1,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-22 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 2,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-23 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 1,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:27",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-23 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 2,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-24 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 1,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:27",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-24 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 2,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-25 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 1,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:27",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-25 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 2,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-26 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 1,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:27",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-26 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 2,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:26",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-27 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 1,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "icarus.dayofweather",
+        "fields": {
+            "prediction_date": "2012-10-20 16:14:27",
+            "max_temperature": -100,
+            "date_it_happens": "2012-10-27 00:00:00",
+            "sunset": "2012-10-20 16:14:10",
+            "weather_stream": 2,
+            "min_temperature": -100,
+            "sunrise": "2012-10-20 16:14:10"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 20,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 02:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 240,
+            "day_of_occurance": 2,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 02:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 3,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 24,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 11,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 02:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 4,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 50,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 20,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 02:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 240,
+            "day_of_occurance": 10,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 55,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 02:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 11,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 65,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 11,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 02:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 12,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 8,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 17,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 250,
+            "day_of_occurance": 2,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 3,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 23,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 160,
+            "day_of_occurance": 4,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 28,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 150,
+            "day_of_occurance": 5,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 34,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 6,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 38,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 6,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 230,
+            "day_of_occurance": 7,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 40,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 8,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 49,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 17,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 250,
+            "day_of_occurance": 10,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 57,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 11,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 64,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 160,
+            "day_of_occurance": 12,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 69,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 150,
+            "day_of_occurance": 13,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 75,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 14,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 79,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 6,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 230,
+            "day_of_occurance": 15,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 81,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 05:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 16,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 5,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 14,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 08:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 240,
+            "day_of_occurance": 2,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 08:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 3,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 21,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 08:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 160,
+            "day_of_occurance": 4,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 46,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 14,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 08:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 240,
+            "day_of_occurance": 10,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 54,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 08:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 11,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 62,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 08:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 160,
+            "day_of_occurance": 12,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 6,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 16,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 210,
+            "day_of_occurance": 2,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 10,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 170,
+            "day_of_occurance": 3,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 22,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 160,
+            "day_of_occurance": 4,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 29,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 160,
+            "day_of_occurance": 5,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 33,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 6,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 37,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 6,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 250,
+            "day_of_occurance": 7,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 41,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 8,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 47,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 16,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 210,
+            "day_of_occurance": 10,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 58,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 10,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 170,
+            "day_of_occurance": 11,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 63,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 160,
+            "day_of_occurance": 12,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 70,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 160,
+            "day_of_occurance": 13,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 74,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 14,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 78,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 6,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 250,
+            "day_of_occurance": 15,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 82,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 11:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 16,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 7,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 17,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 14:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 210,
+            "day_of_occurance": 2,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 10,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 14:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 170,
+            "day_of_occurance": 3,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 25,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 14:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 160,
+            "day_of_occurance": 4,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 48,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 17,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 14:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 210,
+            "day_of_occurance": 10,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 56,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 10,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 14:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 170,
+            "day_of_occurance": 11,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 66,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 14:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 160,
+            "day_of_occurance": 12,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 1,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 18,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 250,
+            "day_of_occurance": 1,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 220,
+            "day_of_occurance": 2,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 3,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 20,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 10,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 150,
+            "day_of_occurance": 4,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 27,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 11,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 5,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 31,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 11,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 210,
+            "day_of_occurance": 6,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 35,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 6,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 250,
+            "day_of_occurance": 7,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 39,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 8,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 42,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 18,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 250,
+            "day_of_occurance": 9,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 45,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 220,
+            "day_of_occurance": 10,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 53,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 11,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 61,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 10,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 150,
+            "day_of_occurance": 12,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 68,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 11,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 13,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 72,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 11,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 210,
+            "day_of_occurance": 14,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 76,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 6,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 250,
+            "day_of_occurance": 15,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 80,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 17:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 16,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 2,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 16,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 20:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 240,
+            "day_of_occurance": 1,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 20:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 220,
+            "day_of_occurance": 2,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 18,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 20:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 3,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 43,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 16,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 20:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 240,
+            "day_of_occurance": 9,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 51,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 20:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 220,
+            "day_of_occurance": 10,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 59,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 20:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 11,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 3,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 240,
+            "day_of_occurance": 1,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 2,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 19,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 11,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 3,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 26,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 150,
+            "day_of_occurance": 4,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 30,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 5,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 32,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 200,
+            "day_of_occurance": 6,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 36,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 7,
+            "flyability": "3"
+        }
+    },
+    {
+        "pk": 44,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 240,
+            "day_of_occurance": 9,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 52,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 10,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 60,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 11,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 11,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 67,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 9,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 150,
+            "day_of_occurance": 12,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 71,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 12,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 180,
+            "day_of_occurance": 13,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 73,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 200,
+            "day_of_occurance": 14,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 77,
+        "model": "icarus.weathertimeslice",
+        "fields": {
+            "wind_speed": 8,
+            "temperature": 0,
+            "cloud_cover_amount": 0,
+            "start_time": "1900-01-01 23:00:00",
+            "chance_precipitation": 0,
+            "apparent_temperature": 0,
+            "wind_direction": 190,
+            "day_of_occurance": 15,
+            "flyability": ""
+        }
+    },
+    {
+        "pk": 3,
+        "model": "icarus.launch",
+        "fields": {
+            "flyable_wind_direction": 180,
+            "flight_description": "",
+            "name": "Test Launch",
+            "wind_direction_offset": 0,
+            "altitude": 0,
+            "warnings": "",
+            "site": 4,
+            "wind_speed_offset": 0,
+            "flyable_wind_direction_tolerance": 45,
+            "flyable_wind_speed_tolerance": 3,
+            "flyable_wind_speed": 12
+        }
+    },
+    {
+        "pk": 1,
+        "model": "icarus.launch",
+        "fields": {
+            "flyable_wind_direction": 330,
+            "flight_description": "",
+            "name": "Test Launch One",
+            "wind_direction_offset": 0,
+            "altitude": 0,
+            "warnings": "",
+            "site": 1,
+            "wind_speed_offset": 0,
+            "flyable_wind_direction_tolerance": 90,
+            "flyable_wind_speed_tolerance": 6,
+            "flyable_wind_speed": 12
+        }
+    },
+    {
+        "pk": 2,
+        "model": "icarus.launch",
+        "fields": {
+            "flyable_wind_direction": 140,
+            "flight_description": "",
+            "name": "Test Launch Two",
+            "wind_direction_offset": 0,
+            "altitude": 0,
+            "warnings": "",
+            "site": 2,
+            "wind_speed_offset": 0,
+            "flyable_wind_direction_tolerance": 33,
+            "flyable_wind_speed_tolerance": 3,
+            "flyable_wind_speed": 10
+        }
+    },
+    {
+        "pk": 1,
+        "model": "icarus.landing",
+        "fields": {
+            "flyable_wind_direction": 230,
+            "flight_description": "",
+            "name": "Test Landing One",
+            "wind_direction_offset": 0,
+            "altitude": 0,
+            "warnings": "",
+            "site": 1,
+            "wind_speed_offset": 0,
+            "flyable_wind_direction_tolerance": 20,
+            "flyable_wind_speed_tolerance": 9,
+            "flyable_wind_speed": 5
+        }
+    },
+    {
+        "pk": 2,
+        "model": "icarus.landing",
+        "fields": {
+            "flyable_wind_direction": 130,
+            "flight_description": "",
+            "name": "Test Landing Two",
+            "wind_direction_offset": 0,
+            "altitude": 0,
+            "warnings": "",
+            "site": 2,
+            "wind_speed_offset": 0,
+            "flyable_wind_direction_tolerance": 30,
+            "flyable_wind_speed_tolerance": 19,
+            "flyable_wind_speed": 3
+        }
+    }
+]
