@@ -7,7 +7,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
      url(r'^$', 'icarus.views.index', name='home'),
-    # url(r'^windwatcher/', include('windwatcher.foo.urls')),
 
      url(r'^site_list/$', 'icarus.views.site_list'),
     # Uncomment the admin/doc line below to enable admin documentation:

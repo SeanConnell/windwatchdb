@@ -1,11 +1,10 @@
-# Django settings for windwatcher project.
+# Django settings for icarus project.
 
 DEBUG = True 
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Your Name', 'your_email@example.com'),
-    # ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
@@ -103,7 +102,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'windwatcher.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
 	"./templates",
