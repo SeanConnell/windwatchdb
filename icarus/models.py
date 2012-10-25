@@ -2,7 +2,7 @@
 from django.db import models
 import logging
 from datetime import datetime
-from unflyable import Unflyable
+from unflyable import UnflyableError
 from join_dict import join_dict, add
 from compare_angles import compare_angles
 from compare_speed import compare_speed
@@ -59,13 +59,13 @@ class Site(models.Model):
     """def daytime_flights(self, ground, wts_day):
 
         if self.empty(conditions_list):
-            raise Unflyable("Empty conditions_list")
+            raise UnflyableError("Empty conditions_list")
 
         logger.debug("Resultant wts-es that were in flyable days with their flyability: %s" % (conditions_list))
         daytime_conditions = [[conditions for start_time,condition in conditions.iteritems() if time(hour=6) < start_time.time() < time(hour=17)] for conditions in conditions_list]
 
         if self.empty(daytime_conditions):
-            raise Unflyable("No flights during the day")
+            raise UnflyableError("No flights during the day")
 
         logger.debug("wts-es that were in daytime: %s" % daytime_conditions)
         return daytime_conditions"""
@@ -88,7 +88,7 @@ class Site(models.Model):
         logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
         landing_list = Landing.objects.filter(site=site)
         if self.empty(landing_list):
-            raise Unflyable("No landings for site %s" %site)
+            raise UnflyableError("No landings for site %s" %site)
         logger.debug("Landing list is %s" % landing_list)
         return self.get_ground_conditions(landing_list, check_day)
 
@@ -96,7 +96,7 @@ class Site(models.Model):
         logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
         launches_list = Launch.objects.filter(site=site)
         if self.empty(launches_list):
-            raise Unflyable("No launches for site %s" %site)
+            raise UnflyableError("No launches for site %s" %site)
         logger.debug("Launches list is %s" % launches_list)
         return self.get_ground_conditions(launches_list, check_day)
 
@@ -109,7 +109,7 @@ class Site(models.Model):
 
         logger.debug("Resultant ground status dict: %s" % (ground_status))
         if self.empty(ground_status.iteritems()):
-            raise Unflyable("Ground status has no statuses")
+            raise UnflyableError("Ground status has no statuses")
         else:
             return ground_status
 

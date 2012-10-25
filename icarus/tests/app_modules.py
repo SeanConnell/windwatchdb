@@ -7,10 +7,9 @@ Replace this with more appropriate tests for your application.
 
 from django.test import TestCase
 from icarus.models import Site,Launch,Landing,WeatherTimeSlice,DayOfWeather
-from compare_angles import compare_angles
-from compare_speed import compare_speed
-from join_dict import join_dict, add
-from datetime import datetime
+from icarus.compare_angles import compare_angles
+from icarus.compare_speed import compare_speed
+from icarus.join_dict import join_dict, add
 
 class LaunchTest(TestCase):
     fixtures = ['icarus_models_test_data.json']
