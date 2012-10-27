@@ -56,14 +56,16 @@ def update_weather(site):
     def create_wtime_slice(time, data_dict):
         wtslice = WeatherTimeSlice()
         #wtslice.temperature = int(data_dict['temperature'])
-        wtslice.wind_speed = int(data_dict['wind_speed'])
-        wtslice.wind_direction = int(data_dict['wind_direction'])
-        wtslice.start_time = datetime.strptime(time,'%H:%M:%S') 
+        try:
+            wtslice.wind_speed = int(data_dict['wind_speed'])
+            wtslice.wind_direction = int(data_dict['wind_direction'])
+            wtslice.start_time = datetime.strptime(time,'%H:%M:%S') 
+        except KeyError:
+            print "NOAA fucked up, left out some data. Ignoring and continuing"
         return wtslice
 
     """Parses out relevant information into models and saves them"""
     def create_day_of_weather(date):
-        #save objects
         dofweat = DayOfWeather()
         dofweat.prediction_date = datetime.now()
         dofweat.date_it_happens = datetime.strptime(date,'%Y/%m/%d') 
@@ -76,25 +78,25 @@ def update_weather(site):
         soap_query += '&' + arg + '=' + args_list[arg] 
 
     print "Executing: [" +  soap_query + "]"
-    #Yeah, urllib has some support for forms, but whatever, this works well
     weather_f = urlopen(soap_query)
-    #get the data from the file like object
     weather = weather_f.read()
-    #close the object like a good citizen
     weather_f.close()
+
     #parse out some weather data for saving into the django class for the ORM
     #collect time keys and date ranges into hash 
     wxml = xml.fromstring(weather)
     wxml = wxml.find('data')
+
     #build first level of dict
     tl_list = wxml.findall('time-layout')
     lk_dict = {}
+
     #put in time ranges into appropriate keys
     for tl in tl_list:
         tk = tl.find('layout-key').text
         lk_dict[tk] = []
         for svt in tl.findall('start-valid-time'):
-               lk_dict[tk].append({'time' : svt.text})
+            lk_dict[tk].append({'time' : svt.text})
 
     #get data for time ranges
     param_list = wxml.findall('parameters')
@@ -114,28 +116,28 @@ def update_weather(site):
         tk = tl.find('layout-key').text
         for tslice in lk_dict[tk]:
             time = tslice['time']
-            time_dict[time] = {} 
+            time_dict[time] = {}
             for param in tslice.keys():
                 if param != 'time':
                     time_dict[time][param] = tslice[param]
 
-    #this is hackey in a bad way
-    #fix data structure to be day.time instead of daytime 
-
     #build up the stupid multidimensional dict. God I've been writing too much perl...
     day_data_dict = {}
-    for day in time_dict.keys():
-        daytime = parse_timestring(day)
-        date = daytime['date_it_happens'].strftime('%Y/%m/%d')
-        time = daytime['start_time'].strftime('%H:%M:%S')
-        day_data_dict[date] = {}
-    for day in time_dict.keys():
-        daytime = parse_timestring(day)
-        date = daytime['date_it_happens'].strftime('%Y/%m/%d')
-        time = daytime['start_time'].strftime('%H:%M:%S')
-        day_data_dict[date][time] = {}
-        for data in time_dict[day].keys():
-            day_data_dict[date][time][data] = time_dict[day][data]
+    try:
+        for day in time_dict.keys():
+            daytime = parse_timestring(day)
+            date = daytime['date_it_happens'].strftime('%Y/%m/%d')
+            time = daytime['start_time'].strftime('%H:%M:%S')
+            day_data_dict[date] = {}
+        for day in time_dict.keys():
+            daytime = parse_timestring(day)
+            date = daytime['date_it_happens'].strftime('%Y/%m/%d')
+            time = daytime['start_time'].strftime('%H:%M:%S')
+            day_data_dict[date][time] = {}
+            for data in time_dict[day].keys():
+                day_data_dict[date][time][data] = time_dict[day][data]
+    except KeyError:
+        print "NOAA fucked up, missing data in this returned data... Ignoring this chunk"
 
     day_list = day_data_dict.keys()
     day_list.sort()
@@ -148,6 +150,7 @@ def update_weather(site):
         print "saving day of weather",dow
         dow.save()
         for wts in day_data_dict[day].keys():
+            print day_data_dict
             wslice = create_wtime_slice(wts,day_data_dict[day][wts])
             wslice.day_of_occurance = dow
             wslice.save()

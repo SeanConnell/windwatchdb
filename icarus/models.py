@@ -43,16 +43,7 @@ class Site(models.Model):
     Takes a launch/landing and a wts """
     #TODO ask John his opinion about these 'fair' 'good' rating systems
 
-    "Returns an int representing flyability"
-    def generate_wts_flyability(self, ground, wts):
-        #If this wts has flyability, no need to recalculate
-        if wts.flyability:
-            return int(wts.flyability)
 
-        #FIXME: There is a minimum requirement for both of these, otherwise unflyable
-        wts.flyability = Site.flyability_metric[ground.check_wind_speed(wts) + ground.check_wind_dir(wts)]
-        wts.save()
-        return int(wts.flyability)
 
     """returns a list of dicts of wts start times {start_time:condition} eg {some_dt_object:'fair'}"""
     #TODO check sunrise times, they should be in the DayOfWeather. Currently naively assumes 6AM - 5PM as flyable times
@@ -73,20 +64,43 @@ class Site(models.Model):
     "Returns {time:flyability}"
     def get_day_flyability(self, ground, day):
         day_flyability = {}
-        for wts in WeatherTimeSlice.objects.filter(day_of_occurance=day):
+
+        weather_slices = WeatherTimeSlice.objects.filter(day_of_occurance=day)
+
+        if self.empty(weather_slices):
+            raise UnflyableError("No weather time slices")
+
+        for wts in weather_slices:
             wts_time,flyability = self.get_wts_flyability(ground,wts)
             day_flyability[wts_time]=flyability
 
         logger.debug("Flyability for day %s: %s" % (day.id, day_flyability))
+
+        if self.empty(day_flyability):
+            raise UnflyableError("Empty day_flyability")
+
         return day_flyability
 
     "Returns a tuple of time,condition"
     def get_wts_flyability(self, ground, wts):
         return (wts.start_time,self.generate_wts_flyability(ground, wts))
- 
+
+    "Returns an int representing flyability"
+    def generate_wts_flyability(self, ground, wts):
+        #If this wts has flyability, no need to recalculate
+        if wts.flyability:
+            return int(wts.flyability)
+
+        #FIXME: There is a minimum requirement for both of these, otherwise unflyable
+        wts.flyability = Site.flyability_metric[ground.check_wind_speed(wts) + ground.check_wind_dir(wts)]
+        wts.save()
+        logger.debug("This particular timeslice's flyability: %d" % int(wts.flyability))
+        return int(wts.flyability)
+
     def get_landing_conditions(self, site, check_day):
         logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
         landing_list = Landing.objects.filter(site=site)
+
         if self.empty(landing_list):
             raise UnflyableError("No landings for site %s" %site)
         logger.debug("Landing list is %s" % landing_list)
@@ -95,6 +109,7 @@ class Site(models.Model):
     def get_launching_conditions(self, site, check_day):
         logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
         launches_list = Launch.objects.filter(site=site)
+
         if self.empty(launches_list):
             raise UnflyableError("No launches for site %s" %site)
         logger.debug("Launches list is %s" % launches_list)
@@ -120,10 +135,13 @@ class Site(models.Model):
 
         for launch in launches:
             for landing in landings:
-                conditions.append(join_dict(launches[launch],landings[landing],add))
+                conditions.append(join_dict(launches[launch], landings[landing], add))
 
         for condition in conditions:
             flyability.extend(condition.values())
+
+        if flyability == []:
+            raise UnflyableError("Problem joining conditions for flyability calculation. Empty flyability")
 
         return max(flyability)
 
@@ -235,6 +253,8 @@ class Ground(models.Model):
 "A launch zone"
 class Launch(Ground):
 
+    type = "launch"
+
     def __unicode__(self):
         return unicode("%s launch for %s" % (self.name, self.site.name))
 
@@ -243,6 +263,8 @@ class Launch(Ground):
 
 "A landing zone"
 class Landing(Ground):
+
+    type = "landing"
 
     def __unicode__(self):
         return unicode("%s landing for %s" % (self.name, self.site.name))

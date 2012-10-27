@@ -42,3 +42,12 @@ class LaunchTest(TestCase):
 
     def test_check_wind_direction(self):
         pass
+
+class SiteTest(TestCase):
+
+    "Found a bug where an empty flyability can happen, and the max function hates that"
+    def test_empty_flyability_in_find_max_flyability():
+        pass
+
+    "TODO: Test all the function models for empty input args or things that will generate empty output args"
+
