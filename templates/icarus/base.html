@@ -25,6 +25,7 @@ th {font-family:serif, helvetica; font-weight:bold;color:white;}
 </div>
 <h1>{{ title|default:"Wing Weather" }}</h1>
 <div id="content">
+  <img src="{{ STATIC_URL }}static/images/hang_glider.jpeg" alt="Wing Weather!" / >
     {% block content %} {% endblock %}
     <div id="footer-spacer"></div>
 </div>
