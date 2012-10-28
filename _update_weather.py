@@ -150,7 +150,6 @@ def update_weather(site):
         print "saving day of weather",dow
         dow.save()
         for wts in day_data_dict[day].keys():
-            print day_data_dict
             wslice = create_wtime_slice(wts,day_data_dict[day][wts])
             wslice.day_of_occurance = dow
             wslice.save()
