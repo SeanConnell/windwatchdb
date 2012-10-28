@@ -11,8 +11,18 @@ import settings
 setup_environ(settings)
 from icarus.models import *
 
-testsite1 = Site(name="Test Site One",lat=45.476624,lon=-123.787594,city="Testcity",state="TestState")
-testsite2 = Site(name="Test Site Two",lat=45.476624,lon=-123.787594,city="Testtowne",state="TestState")
+testsite1 = Site(name="Test Site One",
+        lat=45.476624,
+        lon=-123.787594,
+        city="Testcity",
+        state="TestState")
+
+testsite2 = Site(name="Test Site Two",
+        lat=45.476624,
+        lon=-123.787594,
+        city="Testtowne",
+        state="TestState")
+
 site_list = [testsite1,testsite2]
 
 print "Importing site list"
@@ -20,15 +30,41 @@ for site in site_list:
     site.save()
     print "Saving",site
 
-testlaunchone = Launch(name="Test Launch One",site=testsite1,flyable_wind_speed=12,flyable_wind_speed_tolerance=6,flyable_wind_direction=330,flyable_wind_direction_tolerance=90)
-testlaunchtwo = Launch(name="Test Launch Two",site=testsite2,flyable_wind_speed=10,flyable_wind_speed_tolerance=3,flyable_wind_direction=140,flyable_wind_direction_tolerance=33)
+testlaunchone = Launch(
+        name="Test Launch One",
+        site=testsite1,
+        flyable_wind_speed=12,
+        flyable_wind_speed_tolerance=6,
+        flyable_wind_direction=330,
+        flyable_wind_direction_tolerance=90)
+
+testlaunchtwo = Launch(
+        name="Test Launch Two",
+        site=testsite2,
+        flyable_wind_speed=10,
+        flyable_wind_speed_tolerance=3,
+        flyable_wind_direction=140,
+        flyable_wind_direction_tolerance=33)
+
 launch_list = [testlaunchone,testlaunchtwo]
 for launch in launch_list:
     launch.save()
     print "Saving",launch
 
-testlandingone = Landing(name="Test Landing One",site=testsite1,flyable_wind_speed=5,flyable_wind_speed_tolerance=9,flyable_wind_direction=230,flyable_wind_direction_tolerance=20)
-testlandingtwo = Landing(name="Test Landing Two",site=testsite2,flyable_wind_speed=3,flyable_wind_speed_tolerance=19,flyable_wind_direction=130,flyable_wind_direction_tolerance=30)
+testlandingone = Landing(name="Test Landing One",
+        site=testsite1,
+        flyable_wind_speed=5,
+        flyable_wind_speed_tolerance=9,
+        flyable_wind_direction=230,
+        flyable_wind_direction_tolerance=20)
+
+testlandingtwo = Landing(name="Test Landing Two",
+        site=testsite2,
+        flyable_wind_speed=3,
+        flyable_wind_speed_tolerance=19,
+        flyable_wind_direction=130,
+        flyable_wind_direction_tolerance=30)
+
 landing_list = [testlandingone,testlandingtwo]
 
 for landing in landing_list:

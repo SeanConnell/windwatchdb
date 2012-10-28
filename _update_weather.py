@@ -87,6 +87,10 @@ def update_weather(site):
     wxml = xml.fromstring(weather)
     wxml = wxml.find('data')
 
+    if wxml is None:
+        print "NOAA fucked up, missing data in this returned data... bailing"
+        return
+
     #build first level of dict
     tl_list = wxml.findall('time-layout')
     lk_dict = {}
