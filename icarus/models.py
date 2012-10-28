@@ -169,8 +169,11 @@ class DayOfWeather(models.Model):
     def as_machine_timestring(self):
         return self.date_it_happens.strftime(TIME_FORMAT)
 
-    def as_human_timestring(self):
+    def as_long_human_timestring(self):
         return self.date_it_happens.strftime("%A, %d")
+
+    def as_short_human_timestring(self):
+        return self.date_it_happens.strftime("%m/%d")
 
     date_it_happens = models.DateTimeField()
     prediction_date = models.DateTimeField()

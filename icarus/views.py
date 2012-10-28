@@ -30,7 +30,7 @@ def index(request):
     site_list = Site.objects.all().order_by('name')
     logger.debug("Getting flyability for %s sites" % site_list)
     raw_weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
-    weather_list = uniqify(raw_weather_list, lambda x: x.as_human_timestring())
+    weather_list = uniqify(raw_weather_list, lambda x: x.as_short_human_timestring())
     matrix = []
     for site in site_list:
         row = []
@@ -44,7 +44,7 @@ def index(request):
     dt_local = dt_utc - datetime.timedelta(seconds=time.altzone)
     context = Context({
         'conditions_table':matrix,
-        'weather_list':map(lambda x: x.as_human_timestring,weather_list),
+        'weather_list':map(lambda x: x.as_short_human_timestring,weather_list),
         'datetime': dt_local.strftime("%A the %d, %B %Y at %r"),
         })
     return HttpResponse(template.render(context))
