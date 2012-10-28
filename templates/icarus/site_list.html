@@ -2,17 +2,17 @@
 
 {% block content %}
 {% if site_list %}
-    <table border="1">
-    <th>Site Weather</th>
-    <th>Associated City</th>
-    <th>State</th>
+    <span class="row">
+        <span class="slot-0">Site Weather</th>
+        <span class="slot-1">Associated City</th>
+        <span class="slot-2">State</th>
+    </span>
     {% for site in site_list %}
-        <tr>
-            <td> <a href="/site/{{site.id}}">{{site}}</a></td>
-            <td> {{site.city}} </td>
-            <td> {{site.state}} </td>
-        </tr>
+        <span class="row">
+            <span="slot-0"> <a href="/site/{{site.id}}">{{site}}</a></span?>
+            <span="slot-1"> {{site.city}} </span>
+            <span="slot-2"> {{site.state}} </span>
+        </span>
     {% endfor %}
-    </table>
 {% endif %}
 {% endblock %}

@@ -2,34 +2,20 @@
 "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<style type="text/css">
-body {
-    color: white
-    margin: 0;
-    padding: 0;
-    background-color: black;
-    font-size:200%
-}
-
-B {font-family:serif, helvetica; font-weight:bold;color:white;}
-h1 {font-family:serif, helvetica; font-weight:bold;color:white;}
-h2 {font-family:serif, helvetica; font-weight:bold;color:white;}
-h3 {font-family:serif, helvetica; font-weight:bold;color:white;}
-td {font-family:serif, helvetica; font-weight:bold;color:white;}
-th {font-family:serif, helvetica; font-weight:bold;color:white;}
-</style>
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}static/css/720_grid.css" media="screen" />
 </head>
 <body>
+<div class="grid">
 <div id="navigation">
-    {% block header %} {% endblock %}
+  {% block header %} {% endblock %}
 </div>
 <h1>{{ title|default:"Wing Weather" }}</h1>
 <div id="content">
-  <img src="{{ STATIC_URL }}static/images/hang_glider.jpeg" alt="Wing Weather!" / >
-    {% block content %} {% endblock %}
-    <div id="footer-spacer"></div>
+  {% block content %} {% endblock %}
+  <div id="footer-spacer"></div>
 </div>
 <div id="footer">
+</div>
 </div>
 </body>
 </html>
