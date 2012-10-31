@@ -10,7 +10,7 @@ setup_environ(settings)
 
 from django.http import HttpResponse
 from django.template import Context, loader
-from icarus.models import *
+from icarus.models import Site, DayOfWeather, logging, WeatherWatchQueue, WeatherTimeSlice
 #Fancy order preserving function
 from uniqify import uniqify
 import datetime, time
@@ -52,10 +52,11 @@ def index(request):
 def site_list(request):
     template = loader.get_template('icarus/site_list.html')
     site_list = Site.objects.all().order_by('name') 
-    weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
+    #weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
     dt_utc = datetime.datetime.utcnow()
     # convert UTC to local time
     dt_local = dt_utc - datetime.timedelta(seconds=time.altzone)
+    weather_string_list = ["Implement me!", "Yeah, me too!", "And smoke while you're doing it!"]
     context = Context({
         'datetime': dt_local.strftime("%A the %d, %B %Y at %r"),
         'site_list':site_list,
