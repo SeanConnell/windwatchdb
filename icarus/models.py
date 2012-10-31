@@ -6,6 +6,7 @@ from unflyable import UnflyableError
 from join_dict import join_dict, add
 from compare_angles import compare_angles
 from compare_speed import compare_speed
+from empty import empty
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -22,12 +23,6 @@ A site has only compatible launches and landings, such that any landing can be r
 class Site(models.Model):
 
     flyability_metric = {6:"6",5:"5",4:"4",3:"3",2:"2",1:"1",0:"0"}
-
-    def empty(self, seq):
-        try:
-            return all(map(self.empty, seq))
-        except TypeError:
-            return False
 
     def __unicode__(self):
             return self.name
@@ -49,13 +44,13 @@ class Site(models.Model):
     #TODO check sunrise times, they should be in the DayOfWeather. Currently naively assumes 6AM - 5PM as flyable times
     """def daytime_flights(self, ground, wts_day):
 
-        if self.empty(conditions_list):
+        if empty(conditions_list):
             raise UnflyableError("Empty conditions_list")
 
         logger.debug("Resultant wts-es that were in flyable days with their flyability: %s" % (conditions_list))
         daytime_conditions = [[conditions for start_time,condition in conditions.iteritems() if time(hour=6) < start_time.time() < time(hour=17)] for conditions in conditions_list]
 
-        if self.empty(daytime_conditions):
+        if empty(daytime_conditions):
             raise UnflyableError("No flights during the day")
 
         logger.debug("wts-es that were in daytime: %s" % daytime_conditions)
@@ -67,7 +62,7 @@ class Site(models.Model):
 
         weather_slices = WeatherTimeSlice.objects.filter(day_of_occurance=day)
 
-        if self.empty(weather_slices):
+        if empty(weather_slices):
             raise UnflyableError("No weather time slices")
 
         for wts in weather_slices:
@@ -76,7 +71,7 @@ class Site(models.Model):
 
         logger.debug("Flyability for day %s: %s" % (day.id, day_flyability))
 
-        if self.empty(day_flyability):
+        if empty(day_flyability):
             raise UnflyableError("Empty day_flyability")
 
         return day_flyability
@@ -101,7 +96,7 @@ class Site(models.Model):
         logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
         landing_list = Landing.objects.filter(site=site)
 
-        if self.empty(landing_list):
+        if empty(landing_list):
             raise UnflyableError("No landings for site %s" %site)
         logger.debug("Landing list is %s" % landing_list)
         return self.get_ground_conditions(landing_list, check_day)
@@ -110,7 +105,7 @@ class Site(models.Model):
         logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
         launches_list = Launch.objects.filter(site=site)
 
-        if self.empty(launches_list):
+        if empty(launches_list):
             raise UnflyableError("No launches for site %s" %site)
         logger.debug("Launches list is %s" % launches_list)
         return self.get_ground_conditions(launches_list, check_day)
@@ -123,7 +118,7 @@ class Site(models.Model):
             ground_status[ground] = self.get_day_flyability(ground, check_day)
 
         logger.debug("Resultant ground status dict: %s" % (ground_status))
-        if self.empty(ground_status.iteritems()):
+        if empty(ground_status.iteritems()):
             raise UnflyableError("Ground status has no statuses")
         else:
             return ground_status
