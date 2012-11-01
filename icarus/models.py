@@ -26,6 +26,7 @@ class Site(models.Model):
 
     def __unicode__(self):
             return self.name
+
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
@@ -34,94 +35,20 @@ class Site(models.Model):
     last_weather_refresh = models.DateTimeField(null=True)
     flight_time_window = "FIXME" #make this a date time range, or if neccesary make a day begin and day end
 
-    """Actually does the boilerplate of checking weather conditions using duck typing
-    Takes a launch/landing and a wts """
     #TODO ask John his opinion about these 'fair' 'good' rating systems
+    """TODO check sunrise times, they should be in the DayOfWeather. 
+    Currently naively assumes 6AM - 5PM as flyable times 
+    Might be able to do this with a Django query filter"""
 
+    def site_check(self, site, day):
+        logger.debug("Site check for %s" %(day))
 
+        #this gets us {ground:{time:condition}}
+        launch_conditions = self.get_launching_conditions(site,day)
+        landing_conditions = self.get_landing_conditions(site,day)
 
-    """returns a list of dicts of wts start times {start_time:condition} eg {some_dt_object:'fair'}"""
-    #TODO check sunrise times, they should be in the DayOfWeather. Currently naively assumes 6AM - 5PM as flyable times
-    """def daytime_flights(self, ground, wts_day):
-
-        if empty(conditions_list):
-            raise UnflyableError("Empty conditions_list")
-
-        logger.debug("Resultant wts-es that were in flyable days with their flyability: %s" % (conditions_list))
-        daytime_conditions = [[conditions for start_time,condition in conditions.iteritems() if time(hour=6) < start_time.time() < time(hour=17)] for conditions in conditions_list]
-
-        if empty(daytime_conditions):
-            raise UnflyableError("No flights during the day")
-
-        logger.debug("wts-es that were in daytime: %s" % daytime_conditions)
-        return daytime_conditions"""
-
-    "Returns {time:flyability}"
-    def get_day_flyability(self, ground, day):
-        day_flyability = {}
-
-        weather_slices = WeatherTimeSlice.objects.filter(day_of_occurance=day)
-
-        if empty(weather_slices):
-            raise UnflyableError("No weather time slices")
-
-        for wts in weather_slices:
-            wts_time,flyability = self.get_wts_flyability(ground,wts)
-            day_flyability[wts_time]=flyability
-
-        logger.debug("Flyability for day %s: %s" % (day.id, day_flyability))
-
-        if empty(day_flyability):
-            raise UnflyableError("Empty day_flyability")
-
-        return day_flyability
-
-    "Returns a tuple of time,condition"
-    def get_wts_flyability(self, ground, wts):
-        return (wts.start_time,self.generate_wts_flyability(ground, wts))
-
-    "Returns an int representing flyability"
-    def generate_wts_flyability(self, ground, wts):
-        #If this wts has flyability, no need to recalculate
-        if wts.flyability:
-            return int(wts.flyability)
-
-        #FIXME: There is a minimum requirement for both of these, otherwise unflyable
-        wts.flyability = Site.flyability_metric[ground.check_wind_speed(wts) + ground.check_wind_dir(wts)]
-        wts.save()
-        logger.debug("This particular timeslice's flyability: %d" % int(wts.flyability))
-        return int(wts.flyability)
-
-    def get_landing_conditions(self, site, check_day):
-        logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
-        landing_list = Landing.objects.filter(site=site)
-
-        if empty(landing_list):
-            raise UnflyableError("No landings for site %s" %site)
-        logger.debug("Landing list is %s" % landing_list)
-        return self.get_ground_conditions(landing_list, check_day)
-
-    def get_launching_conditions(self, site, check_day):
-        logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
-        launches_list = Launch.objects.filter(site=site)
-
-        if empty(launches_list):
-            raise UnflyableError("No launches for site %s" %site)
-        logger.debug("Launches list is %s" % launches_list)
-        return self.get_ground_conditions(launches_list, check_day)
-
-    "Returns {ground:{time:condition}}"
-    def get_ground_conditions(self, ground_list, check_day):
-        ground_status = {}
-        for ground in ground_list:
-            logger.debug( "Ground check for the %s ground at %s" % (ground.name, ground.site))
-            ground_status[ground] = self.get_day_flyability(ground, check_day)
-
-        logger.debug("Resultant ground status dict: %s" % (ground_status))
-        if empty(ground_status.iteritems()):
-            raise UnflyableError("Ground status has no statuses")
-        else:
-            return ground_status
+        #perform a join to get only common times 
+        return self.find_max_flyability(launch_conditions,landing_conditions)
 
     "Pulls together the launches and landings status and adds values together to get best case flyability"
     def find_max_flyability(self, launches, landings):
@@ -140,15 +67,72 @@ class Site(models.Model):
 
         return max(flyability)
 
-    def site_check(self, site, day):
-        logger.debug("Site check for %s" %(day))
+    def get_launching_conditions(self, site, check_day):
+        logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
+        launches_list = Launch.objects.filter(site=site)
 
-        #this gets us {ground:{time:condition}}
-        launch_conditions = self.get_launching_conditions(site,day)
-        landing_conditions = self.get_landing_conditions(site,day)
+        if empty(launches_list):
+            raise UnflyableError("No launches for site %s" %site)
+        logger.debug("Launches list is %s" % launches_list)
+        return self.get_ground_conditions(launches_list, check_day)
 
-        #perform a join to get only common times 
-        return self.find_max_flyability(launch_conditions,landing_conditions)
+    def get_landing_conditions(self, site, check_day):
+        logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
+        landing_list = Landing.objects.filter(site=site)
+
+        if empty(landing_list):
+            raise UnflyableError("No landings for site %s" %site)
+        logger.debug("Landing list is %s" % landing_list)
+        return self.get_ground_conditions(landing_list, check_day)
+
+    "Returns {ground:{time:condition}}"
+    def get_ground_conditions(self, ground_list, check_day):
+        ground_status = {}
+        for ground in ground_list:
+            logger.debug( "Ground check for the %s ground at %s" % (ground.name, ground.site))
+            ground_status[ground] = self.get_day_flyability(ground, check_day)
+
+        logger.debug("Resultant ground status dict: %s" % (ground_status))
+        if empty(ground_status.iteritems()):
+            raise UnflyableError("Ground status has no statuses")
+        else:
+            return ground_status
+
+    "Returns {time:flyability}"
+    def get_day_flyability(self, ground, day):
+        day_flyability = {}
+
+        weather_slices = WeatherTimeSlice.objects.filter(day_of_occurance=day)
+
+        if empty(weather_slices):
+            raise UnflyableError("No weather time slices")
+
+        for wts in weather_slices:
+            wts_time,flyability = self.get_wts_flyability(ground, wts)
+            day_flyability[wts_time]=flyability
+
+        logger.debug("Flyability for day %s: %s" % (day.id, day_flyability))
+
+        if empty(day_flyability):
+            raise UnflyableError("Empty day_flyability")
+
+        return day_flyability
+
+    "Returns a tuple of time,condition"
+    def get_wts_flyability(self, ground, wts):
+        return (wts.start_time, self.generate_wts_flyability(ground, wts))
+
+    "Returns an int representing flyability"
+    def generate_wts_flyability(self, ground, wts):
+        #If this wts has flyability, no need to recalculate
+        if wts.flyability:
+            return int(wts.flyability)
+
+        #FIXME: There is a minimum requirement for both of these, otherwise unflyable
+        wts.flyability = Site.flyability_metric[ground.check_wind_speed(wts) + ground.check_wind_dir(wts)]
+        wts.save()
+        logger.debug("This particular timeslice's flyability: %d" % int(wts.flyability))
+        return int(wts.flyability)
 
 """All weather objects are collected into this queue for easy access"""
 class WeatherWatchQueue(models.Model):
@@ -229,9 +213,9 @@ class Ground(models.Model):
     flyable_wind_speed = models.IntegerField(default=0)
     flyable_wind_speed_tolerance = models.IntegerField(default=0)
 
-    #Possible pitfalls of the launch, things to worry about
+    #Possible pitfalls of the launch/landing, things to worry about
     warnings = models.CharField(max_length=50000)
-    #How to correctly launch here
+    #How to correctly launch/land here
     flight_description = models.CharField(max_length=50000)
 
     "Get tolerance rating for wind,angle,etc"
@@ -243,10 +227,22 @@ class Ground(models.Model):
         return 0 #Default case is unflyable aka 0
 
     def check_wind_speed(self, wts):
-        return self.check_tolerance(wts.wind_speed, self.flyable_wind_speed, self.speed_tolerance, compare_speed)
+        """Duck typing at work, read it like:
+        check the windspeed for flyably wind
+        speeds with this tolerance using compare speed"""
+        return self.check_tolerance(
+                wts.wind_speed, 
+                self.flyable_wind_speed, 
+                self.speed_tolerance, 
+                compare_speed)
  
     def check_wind_dir(self, wts):
-        return self.check_tolerance(wts.wind_direction, self.flyable_wind_speed, self.angle_tolerance, compare_angles)
+        #Same as above, except for wind direction (angle)
+        return self.check_tolerance(
+                wts.wind_direction, 
+                self.flyable_wind_speed, 
+                self.angle_tolerance, 
+                compare_angles)
 
 "A launch zone"
 class Launch(Ground):
