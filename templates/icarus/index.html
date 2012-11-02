@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if weather_list %}
 
-    <table border="0">
+{% if weather_list %}
+<div class="row">
+    <div class=class="slot-0-1-2-3-4-5">
+        <table border="0">
         <th></th>
 
         {% for dow in weather_list %}
-            <th>{{dow}}</th>
+            <th class="site_name">{{dow}}</th>
         {% endfor %}
 
         {% for row in conditions_table %}
@@ -17,12 +19,9 @@
             {% endfor %}
             </tr>
         {% endfor %}
-    </table>
-
+        </table>
+    </div>
+</div>
 {% endif %}
-<ul>
-  <li><a href="https://twitter.com/seanrconnell" rel="me">@seanrconnell on Twitter</a></li>
-  <li><a href="https://github.com/seanconnell" rel="me">Github</a></li>
-  <li><a href="http://facebook.com/seanconnell" rel="me">Facebook</a></li>
-</ul>
+
 {% endblock %}

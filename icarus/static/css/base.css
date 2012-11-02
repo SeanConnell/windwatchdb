@@ -204,3 +204,9 @@ a.bttn {
 	text-align: center;
 	max-width: none;
 }
+body{
+  color:rgb(150,150,150);
+  margin:0;
+  padding:0;
+  background-color:rgb(25,25,25);
+}
