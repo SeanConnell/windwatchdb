@@ -20,8 +20,8 @@
   </div>
 
   <div class="row logo">
-    <div class="slot-1-2-3-4">
-      <h1>{{ title|default:"Wing Weather" }}</h1>
+    <div class="slot-0-1-2-3">
+      <h1 id="logo">{{ title|default:"Wing Weather" }}</h1>
     </div>
   </div>
 
@@ -29,28 +29,20 @@
     {% block content %} {% endblock %}
   </div>
 
-<div class="row spacer">
-<div class="slot-0-1-2-3-4-5"><p></p></div>
-</div>
-
   {% block footer %}
 
     <div class="row">
 
-      <div class="slot-0-1 contact-me"> 
+      <div class="slot-0 contact-me"> 
         <a href="http://seanconnell.org" rel="Personal Site">SeanConnell.org</a>
       </div> 
 
-      <div class="slot-4-5 contact-me"> 
+      <div class="slot-1 contact-me"> 
         <a href="https://twitter.com/seanrconnell" rel="Twitter">@seanrconnell on Twitter</a>
       </div> 
 
-      <div class="slot-3 contact-me"> 
-        <a href="https://github.com/seanconnell" rel="Github">Github</a>
-      </div> 
-
       <div class="slot-2 contact-me"> 
-        <a href="http://facebook.com/seanconnell" rel="Facebook">Facebook</a>
+        <a href="https://github.com/seanconnell" rel="Github">Github</a>
       </div> 
 
     </div>
