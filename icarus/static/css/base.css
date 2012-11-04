@@ -73,7 +73,6 @@ h5, h6 {
 a, a:link, a:visited {
 	color: #11bad3;
 	text-decoration: none;
-	border-bottom: 1px solid #11bad3;
 }
 
 a:hover, a:active {
@@ -87,7 +86,9 @@ img {
 }
 
 #logo {
+  text-align:left;
 	padding-bottom: 0;
+  font-weight:bold;
 }
 
 .logo {
@@ -109,10 +110,7 @@ img {
 }
 
 a.bttn {
-	border-right: 1px solid #0087a0;
-	border-bottom: 1px solid #0087a0;
-	background: #11bad3;
-	color: #fff;
+	background: rgb(75,75,75);
 	display: inline-block;
 	font-family: sommet-slab-1, sommet-slab-2, Georgia, serif;
 	font-size: 1.2em;
@@ -127,14 +125,6 @@ a.bttn {
 	max-width: none;
 }
 
-th{
-  padding-right:10px;
-}
-
-td{
-  padding-right:10px;
-}
-
 body{
   color:rgb(240,250,280);
   margin:0;
@@ -142,6 +132,24 @@ body{
   background-color:rgb(25,25,25);
   tbody tr:nth-child(even) td {background: #bbeebb;}
 }
+
 tbody tr:nth-child(even) td {background: rgb(25,25,25)}
 tbody tr:nth-child(odd) td {background: rgb(75,75,75)}
-th {background:rgb(75,75,75)}
+th {
+  padding:10px;
+  font-weight:bold;
+  font-variant:small-caps;
+  text-align:left;
+}
+
+td{
+  padding:10px;
+}
+#navigation{
+  font-variant:small-caps;
+  text-align:center;
+}
+
+#footer{
+  text-align:center;
+}
