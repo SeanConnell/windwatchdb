@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls.defaults import patterns, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -7,15 +7,14 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
      url(r'^$', 'icarus.views.index', name='home'),
-
-     url(r'^site_list/$', 'icarus.views.site_list'),
     # Uncomment the admin/doc line below to enable admin documentation:
-     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-     url(r'^admin/', include(admin.site.urls)),
+    # url(r'^admin/', include(admin.site.urls)),
 
-     url(r'^site/(.*)', 'icarus.views.site'),
-
-     url(r'^day/(.*):(.*)', 'icarus.views.weather_day'),
+    url(r'^site/site:([0-9]+)', 'icarus.views.site'),
+    #List of sites if the user wants to look at a specific one for some reason
+    url(r'^site/list', 'icarus.views.site_list'),
+    url(r'^about', 'icarus.views.about'),
 )

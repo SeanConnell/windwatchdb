@@ -2,17 +2,25 @@
 
 {% block content %}
 {% if site_list %}
-    <span class="row">
-        <span class="slot-0">Site Weather</th>
-        <span class="slot-1">Associated City</th>
-        <span class="slot-2">State</th>
-    </span>
-    {% for site in site_list %}
-        <span class="row">
-            <span="slot-0"> <a href="/site/{{site.id}}">{{site}}</a></span?>
-            <span="slot-1"> {{site.city}} </span>
-            <span="slot-2"> {{site.state}} </span>
-        </span>
-    {% endfor %}
+<div class="row">
+    <div class=class="slot-0-1-2-3">
+        <table border="0">
+
+        <th>Site Name</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Latitude, Longitude</th>
+        <th>Flight Window</th>
+
+        {% for row in site_table %}
+            <tr>
+            {% for column in row %}
+                <td> {{column}} </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+
+        </table>
+    </div>
 {% endif %}
 {% endblock %}

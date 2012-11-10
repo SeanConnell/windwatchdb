@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h4>Why WingWeather?</h4>
+<p>I'm a Hang II pilot, and I started out flying in Oregon. We have a large diversity of hang gliding sites here in the Pacific Northwest, and I found myself having trouble keeping
+track of which ones would be good in various conditions, especially when the weather on the coast might be (and often is) completely different from weather
+inland. WingWeather is my stab at a solution to this.</p>
+<h4>How does it work?</h4>
+<p>WingWeather pulls weather forecast information out of the NOAA <a href="http://www.nws.noaa.gov/ndfd/">NDFD</a>, which provides high quality weather
+forecasts. It then compares this against sets of known rules for a list of hang gliding site launches and landings to assign a 'flyability' rating for that day.
+This is based on how close the wind speed and direction is to optimal values. To be flyable, a site must meet minimal criteria for at least one launch and landing.</p>
+<h4>Why do so many sites have similar scores?</h4>
+<p>The NDFD weather data is split into grids covering fairly large areas of land. As such, if launches and landings between two closely situated sites
+have similar requisite conditions, the sites will likely have similar scores.</p>
+<h4>Why is the site so minimal?</h4>
+<p>When I'm trying to find out weather for hang gliding sites, I'm usually on the side of a mountain somewhere next to some cows dancing around trying
+to get a signal. I wanted WingWeather to read well on mobile devices as well as load quickly in case of intermitted connections, which I expect to
+be the norm rather than the exception.</p>
+
+<h3>Website by Sean Connell</h3>
+{% endblock %}
+
+{% block footer %}
+    <div class="row">
+
+      <div class="slot-0 contact-me">
+        <a class="bttn" href="http://seanconnell.org" rel="Personal Site">SeanConnell.org</a>
+      </div>
+
+      <div class="slot-1 contact-me">
+        <a class="bttn" href="https://twitter.com/seanrconnell" rel="Twitter">@seanrconnell</a>
+      </div>
+
+      <div class="slot-2 contact-me">
+        <a class="bttn" href="https://github.com/seanconnell" rel="Github">Github</a>
+      </div>
+
+    </div>
+{% endblock %}

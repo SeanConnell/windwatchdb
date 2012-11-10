@@ -2,51 +2,40 @@
 "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}static/css/base.css" media="screen" />
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}static/css/base.css" media="screen" />
+  <title>WingWeather: Find a flyable Hang Gliding site now!</title>
+  {% load static %}
+  {% get_static_prefix as STATIC_PREFIX %}
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <link rel="stylesheet" href="{{ static_url }}static/css/base.css" type="text/css" media="all">
-  <link rel="stylesheet" href="{{ static_url }}static/css/720_grid.css" type="text/css" media="screen and (min-width: 720px)">
-  <link rel="stylesheet" href="{{ static_url }}static/css/986_grid.css" type="text/css" media="screen and (min-width: 986px)">
-  <link rel="stylesheet" href="{{ static_url }}static/css/1236_grid.css" media="screen and (min-width: 1236px)" >
+  <link rel="stylesheet" href="{{ STATIC_PREFIX }}css/base.css" type="text/css" media="all">
+  <link rel="stylesheet" href="{{ STATIC_PREFIX }}css/720_grid.css" type="text/css" media="screen and (min-width: 720px)">
+  <link rel="stylesheet" href="{{ STATIC_PREFIX }}css/986_grid.css" type="text/css" media="screen and (min-width: 986px)">
+  <link rel="stylesheet" href="{{ STATIC_PREFIX }}css/1236_grid.css" media="screen and (min-width: 1236px)" >
 </head>
 <body>
 
 <div class="grid">
 
-  <div id="navigation">
-    {% block header %} {% endblock %}
+<div class="row logo">
+  <div class="slot-0-1-2">
+    <h1 id="logo">{{ title|default:"Wing Weather" }}</h1>
+  </div>
+</div>
+
+ <div class="row" id="navigation">
+    {% block nav %}
+      <div class="slot-0">{% block nav-home %}<a class="bttn" href="/">Flyability</a>{% endblock %}</div>
+      <div class="slot-1">{% block nav-site-list %}<a class="bttn" href="/site/list">Site List</a>{% endblock %}</div>
+      <div class="slot-2">{% block nav-about %}<a class="bttn" href="/about">About</a>{% endblock %}</div>
+    {% endblock %}
   </div>
 
-  <div class="row logo">
-    <div class="slot-0-1-2-3">
-      <h1 id="logo">{{ title|default:"Wing Weather" }}</h1>
-    </div>
-  </div>
-
-  <div id="content">
+ <div id="content">
     {% block content %} {% endblock %}
   </div>
 
+  <div id="footer">
   {% block footer %}
-
-    <div class="row">
-
-      <div class="slot-0 contact-me"> 
-        <a href="http://seanconnell.org" rel="Personal Site">SeanConnell.org</a>
-      </div> 
-
-      <div class="slot-1 contact-me"> 
-        <a href="https://twitter.com/seanrconnell" rel="Twitter">@seanrconnell on Twitter</a>
-      </div> 
-
-      <div class="slot-2 contact-me"> 
-        <a href="https://github.com/seanconnell" rel="Github">Github</a>
-      </div> 
-
-    </div>
-
   {% endblock %}
   </div>
 

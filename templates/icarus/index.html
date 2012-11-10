@@ -6,10 +6,10 @@
 <div class="row">
     <div class=class="slot-0-1-2-3">
         <table border="0">
-        <th></th>
+        <th>Site Name</th>
 
         {% for dow in weather_list %}
-            <th class="site_name">{{dow}}</th>
+            <th>{{dow}}</th>
         {% endfor %}
 
         {% for row in conditions_table %}
@@ -21,7 +21,6 @@
         {% endfor %}
         </table>
     </div>
-    <div class="slot-4-5"><p></p></div>
 </div>
 {% endif %}
 
