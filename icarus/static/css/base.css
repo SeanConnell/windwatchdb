@@ -42,9 +42,8 @@ strong {
 p {
 	margin: 0 0 0.5em;
   padding:10px;
-	max-width: 634px;
-  box-shadow: 0px 0px 14px rgb(68,68,68);
-  background-color: rgb(55,55,55);
+  box-shadow: 0px 0px 14px #014D57;
+  background-color: #0F3F46;
   border-top-right-radius: 15px 2px;
   border-top-left-radius: 15px 2px;
   border-bottom-right-radius: 15px 2px;
@@ -65,23 +64,27 @@ h1 {
 
 h2 {
 	font-size: 2em;
+  color: #BC7D44;
 }
 
 h3 {
 	font-size: 1.5em;
+  color: #BC7D44;
 }
 
 h4 {
 	font-size: 1.25em;
   padding-bottom:10px;
+  color: #BC7D44;
 }
 
 h5, h6 {
 	font-size: 1em;
+  color: #BC7D44;
 }
 
 a, a:link, a:visited {
-	color: #11bad3;
+  color:#BCBDA4;
 	text-decoration: none;
 }
 
@@ -89,6 +92,7 @@ a:hover, a:active {
 	background: #00a9c2;
 	border-color: #00a9c2;
 	color: #fff;
+  text-shadow: 0px 0px 10px  #398E9A; 
 }
 
 img {
@@ -102,7 +106,9 @@ img {
 }
 
 .logo {
-	color: #eee;
+	border-color: #00a9c2;
+  text-shadow: 0px 0px 4px  #398E9A; 
+  color:#398E9A;
 	font-family: sommet-slab-1, sommet-slab-2, Georgia, serif;
 	font-weight: normal;
 	font-size: 1.2em;
@@ -120,7 +126,7 @@ img {
 }
 
 a.bttn {
-	background: rgb(55,55,55);
+	background: #00373F;
 	display: inline-block;
 	font-family: sommet-slab-1, sommet-slab-2, Georgia, serif;
 	font-size: 1.2em;
@@ -131,7 +137,7 @@ a.bttn {
   border-top-left-radius: 15px 2px;
   border-bottom-right-radius: 15px 2px;
   border-bottom-left-radius: 15px 2px;
-  box-shadow: 0px 0px 14px rgb(68,68,68);
+  box-shadow: 0px 0px 14px #0F3F45;
 }
 
 .footer p {
@@ -141,17 +147,17 @@ a.bttn {
 }
 
 body{
-  color:rgb(240,250,280);
+  color:#BCBDA4;
   margin:0;
   padding:0;
   background-color:rgb(30,15,5);
 }
 
 tbody tr:nth-child(even) td {
-  background-color: rgb(70,55,40);
+  background-color: #00373F;
 }
 tbody tr:nth-child(odd) td {
-  background-color: rgb(55,55,55);
+  background-color: #673100;
 }
 
 table{

@@ -17,16 +17,18 @@
 <div class="grid">
 
 <div class="row logo">
-  <div class="slot-0-1-2">
+  <div class="slot-0-1-2-3-4-5">
     <h1 id="logo">{{ title|default:"Wing Weather" }}</h1>
   </div>
 </div>
 
  <div class="row" id="navigation">
     {% block nav %}
-      <div class="slot-0">{% block nav-home %}<a class="bttn" href="/">Flyability</a>{% endblock %}</div>
-      <div class="slot-1">{% block nav-site-list %}<a class="bttn" href="/site/list">Site List</a>{% endblock %}</div>
-      <div class="slot-2">{% block nav-about %}<a class="bttn" href="/about">About</a>{% endblock %}</div>
+      <div class="slot-0-1"><p></p></div>
+      <div class="slot-2-3">{% block nav-home %}<a class="bttn" href="/">Flyability</a>{% endblock %}
+      {% block nav-site-list %}<a class="bttn" href="/site/list">Site List</a>{% endblock %}
+      {% block nav-about %}<a class="bttn" href="/about">About</a>{% endblock %}</div>
+      <div class="slot-4-5"><p></p></div>
     {% endblock %}
   </div>
 
@@ -35,8 +37,13 @@
   </div>
 
   <div id="footer">
-  {% block footer %}
-  {% endblock %}
+    {% block footer %}     
+    <div class="row">
+
+      <div class="slot-0-1-2-3-4-5"><p></p></div>
+
+    </div>
+    {% endblock %}
   </div>
 
 </div>

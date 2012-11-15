@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="row">
+<div class="slot-0-1-2-3-4-5">
 <h4>Why WingWeather?</h4>
 <p>I'm a Hang II pilot, and I started out flying in Oregon. We have a large diversity of hang gliding sites here in the Pacific Northwest, and I found myself having trouble keeping
 track of which ones would be good in various conditions, especially when the weather on the coast might be (and often is) completely different from weather
@@ -16,24 +18,22 @@ have similar requisite conditions, the sites will likely have similar scores.</p
 <p>When I'm trying to find out weather for hang gliding sites, I'm usually on the side of a mountain somewhere next to some cows dancing around trying
 to get a signal. I wanted WingWeather to read well on mobile devices as well as load quickly in case of intermitted connections, which I expect to
 be the norm rather than the exception.</p>
+</div>
+</div>
 
-<h3>Website by Sean Connell</h3>
 {% endblock %}
 
 {% block footer %}
     <div class="row">
+    <h3>Website by Sean Connell</h3>
 
-      <div class="slot-0 contact-me">
+      <div class="slot-0"><p></p></div>
+      <div class="slot-1-2-3-4 contact-me">
         <a class="bttn" href="http://seanconnell.org" rel="Personal Site">SeanConnell.org</a>
-      </div>
-
-      <div class="slot-1 contact-me">
         <a class="bttn" href="https://twitter.com/seanrconnell" rel="Twitter">@seanrconnell</a>
-      </div>
-
-      <div class="slot-2 contact-me">
         <a class="bttn" href="https://github.com/seanconnell" rel="Github">Github</a>
       </div>
+      <div class="slot-5"><p></p></div>
 
     </div>
 {% endblock %}
