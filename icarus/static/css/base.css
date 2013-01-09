@@ -64,27 +64,35 @@ h1 {
 
 h2 {
 	font-size: 2em;
-  color: #BC7D44;
+  color:#398E9A;
+  font-weight:bold;
 }
 
 h3 {
+  box-shadow: 0px 0px 14px #014D57;
+  font-variant:small-caps;
 	font-size: 1.5em;
-  color: #BC7D44;
+  color:#398E9A;
+  font-weight:bold;
+  background: rgb(55,55,55);
+  padding-left:10px;
 }
 
 h4 {
 	font-size: 1.25em;
   padding-bottom:10px;
-  color: #BC7D44;
+  color:#398E9A;
+  font-weight:bold;
 }
 
 h5, h6 {
 	font-size: 1em;
-  color: #BC7D44;
+  color:#398E9A;
+  font-weight:bold;
 }
 
 a, a:link, a:visited {
-  color:#BCBDA4;
+  color:#ECEDD4;
 	text-decoration: none;
 }
 
@@ -95,11 +103,25 @@ a:hover, a:active {
   text-shadow: 0px 0px 10px  #398E9A; 
 }
 
+td a{
+  width:100%;
+  height:100%;
+  display:block;
+  text-align:center;
+}
+td a:hover{
+  background:rgb(200,200,200);
+  color:rgb(15,15,15);
+}
+
 img {
 	max-width: 100%;
 }
 
+
+
 #logo {
+	border-color: #00a9c2;
   text-align:center;
 	padding-bottom: 0;
   font-weight:bold;
@@ -107,7 +129,6 @@ img {
 
 .logo {
 	border-color: #00a9c2;
-  text-shadow: 0px 0px 4px  #398E9A; 
   color:#398E9A;
 	font-family: sommet-slab-1, sommet-slab-2, Georgia, serif;
 	font-weight: normal;
@@ -131,8 +152,11 @@ a.bttn {
 	font-family: sommet-slab-1, sommet-slab-2, Georgia, serif;
 	font-size: 1.2em;
 	font-weight: bold;
-	margin: 0.5em 0;
-	padding: 0.5em 0.75em;
+  margin-top:10px;
+  margin-bottom:10px;
+  margin-right:50px;
+  margin-left:50px;
+	padding: 0.5em 0.5em;
   border-top-right-radius: 15px 2px;
   border-top-left-radius: 15px 2px;
   border-bottom-right-radius: 15px 2px;
@@ -150,14 +174,14 @@ body{
   color:#BCBDA4;
   margin:0;
   padding:0;
-  background-color:rgb(30,15,5);
+  background-color:rgb(70,80,90);
 }
 
 tbody tr:nth-child(even) td {
   background-color: #00373F;
 }
 tbody tr:nth-child(odd) td {
-  background-color: #673100;
+  background-color: #10474F;
 }
 
 table{
@@ -165,20 +189,31 @@ table{
 }
 th {
   background: rgb(55,55,55);
-  padding:10px;
+  padding:15px;
   font-weight:bold;
   font-variant:small-caps;
-  text-align:left;
+  text-align:center;
+  font-size:125%;
 }
 
 td{
-  padding:10px;
+  font-weight:bolder;
+  padding:15px;
 }
+
 #navigation{
   font-variant:small-caps;
   text-align:center;
+  font-size:125%;
 }
 
 #footer{
   text-align:center;
+}
+
+.nil{
+	margin: 0 0 0.5em;
+  padding:0px;
+  box-shadow: 0px 0px 14px #014D57;
+  border--radius: 0px;
 }

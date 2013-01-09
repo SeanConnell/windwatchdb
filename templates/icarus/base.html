@@ -24,11 +24,11 @@
 
  <div class="row" id="navigation">
     {% block nav %}
-      <div class="slot-0-1"><p></p></div>
-      <div class="slot-2-3">{% block nav-home %}<a class="bttn" href="/">Flyability</a>{% endblock %}
+      <div class="slot-0"><p class="nil"></p></div>
+      <div class="slot-1-2-3-4">{% block nav-home %}<a class="bttn" href="/">Flyability</a>{% endblock %}
       {% block nav-site-list %}<a class="bttn" href="/site/list">Site List</a>{% endblock %}
       {% block nav-about %}<a class="bttn" href="/about">About</a>{% endblock %}</div>
-      <div class="slot-4-5"><p></p></div>
+      <div class="slot-5"><p class="nil"></p></div>
     {% endblock %}
   </div>
 
@@ -37,10 +37,10 @@
   </div>
 
   <div id="footer">
-    {% block footer %}     
+    {% block footer %}
     <div class="row">
 
-      <div class="slot-0-1-2-3-4-5"><p></p></div>
+      <div class="slot-0-1-2-3-4-5"><p class="nil"></p></div>
 
     </div>
     {% endblock %}

@@ -40,12 +40,14 @@ class Site(models.Model):
     Currently naively assumes 6AM - 5PM as flyable times 
     Might be able to do this with a Django query filter"""
 
-    def site_check(self, site, day):
-        logger.debug("Site check for %s" %(day))
+    def site_check(self, day):
+
+        if logger:
+            logger.debug("Site check for %s" %(day))
 
         #this gets us {ground:{time:condition}}
-        launch_conditions = self.get_launching_conditions(site,day)
-        landing_conditions = self.get_landing_conditions(site,day)
+        launch_conditions = self.get_launching_conditions(day)
+        landing_conditions = self.get_landing_conditions(day)
 
         #perform a join to get only common times 
         return self.find_max_flyability(launch_conditions,landing_conditions)
@@ -67,32 +69,43 @@ class Site(models.Model):
 
         return max(flyability)
 
-    def get_launching_conditions(self, site, check_day):
-        logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
-        launches_list = Launch.objects.filter(site=site)
+    def get_launching_conditions(self, check_day):
+
+        launches_list = Launch.objects.filter(site=self)
 
         if empty(launches_list):
-            raise UnflyableError("No launches for site %s" %site)
-        logger.debug("Launches list is %s" % launches_list)
+            raise UnflyableError("No launches for site %s" %self)
+
+        if logger:
+            logger.debug("Flyable landings with %s site on %s day" % (self,check_day))
+            logger.debug("Launches list is %s" % launches_list)
+
         return self.get_ground_conditions(launches_list, check_day)
 
-    def get_landing_conditions(self, site, check_day):
-        logger.debug("Flyable landings with %s site on %s day" % (site,check_day))
-        landing_list = Landing.objects.filter(site=site)
+    def get_landing_conditions(self, check_day):
+        landing_list = Landing.objects.filter(site=self)
 
         if empty(landing_list):
-            raise UnflyableError("No landings for site %s" %site)
-        logger.debug("Landing list is %s" % landing_list)
+            raise UnflyableError("No landings for site %s" %self)
+
+        if logger:
+            logger.debug("Landing list is %s" % landing_list)
+            logger.debug("Flyable landings with %s site on %s day" % (self,check_day))
+
         return self.get_ground_conditions(landing_list, check_day)
 
     "Returns {ground:{time:condition}}"
     def get_ground_conditions(self, ground_list, check_day):
         ground_status = {}
         for ground in ground_list:
-            logger.debug( "Ground check for the %s ground at %s" % (ground.name, ground.site))
             ground_status[ground] = self.get_day_flyability(ground, check_day)
+            if logger:
+                logger.debug( "Ground check for the %s ground at %s" % (ground.name, ground.site))
 
-        logger.debug("Resultant ground status dict: %s" % (ground_status))
+
+        if logger:
+            logger.debug("Resultant ground status dict: %s" % (ground_status))
+
         if empty(ground_status.iteritems()):
             raise UnflyableError("Ground status has no statuses")
         else:
@@ -111,7 +124,8 @@ class Site(models.Model):
             wts_time,flyability = self.get_wts_flyability(ground, wts)
             day_flyability[wts_time]=flyability
 
-        logger.debug("Flyability for day %s: %s" % (day.id, day_flyability))
+        if logger:
+            logger.debug("Flyability for day %s: %s" % (day.id, day_flyability))
 
         if empty(day_flyability):
             raise UnflyableError("Empty day_flyability")
@@ -131,7 +145,9 @@ class Site(models.Model):
         #FIXME: There is a minimum requirement for both of these, otherwise unflyable
         wts.flyability = Site.flyability_metric[ground.check_wind_speed(wts) + ground.check_wind_dir(wts)]
         wts.save()
-        logger.debug("This particular timeslice's flyability: %d" % int(wts.flyability))
+        if logger:
+            logger.debug("This particular timeslice's flyability: %d" % int(wts.flyability))
+
         return int(wts.flyability)
 
 """All weather objects are collected into this queue for easy access"""
@@ -192,7 +208,7 @@ class WeatherTimeSlice(models.Model):
 class Ground(models.Model):
 
     tolerances = [0.10,0.20,0.50]
-    flyability_of  = { 0.10:3,0.20:2,0.50:1}
+    flyability_of  = {0.10:3,0.20:2,0.50:1}
     speed_tolerance = 0.15 #wind speeds have an additional 15% tolerance
     angle_tolerance = 0.05 #wind angle have an additional 5% tolerance
 

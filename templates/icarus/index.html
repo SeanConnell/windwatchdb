@@ -15,7 +15,7 @@
         {% for row in conditions_table %}
             <tr>
             {% for column in row %}
-                <td> {{column}} </td>
+                <td> <a href="/{{column.link}}/{{column.id}}">{{column.value}}</a> </td>
             {% endfor %}
             </tr>
         {% endfor %}

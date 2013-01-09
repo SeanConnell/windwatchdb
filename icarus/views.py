@@ -13,7 +13,6 @@ from django.template import Context, loader
 from icarus.models import Site, DayOfWeather, logging, WeatherWatchQueue, WeatherTimeSlice
 #Fancy order preserving function
 from uniqify import uniqify
-import datetime, time
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -29,23 +28,12 @@ def index(request):
     template = loader.get_template('icarus/index.html')
     site_list = Site.objects.all().order_by('name')
     logger.debug("Getting flyability for %s sites" % site_list)
-    raw_weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
-    weather_list = uniqify(raw_weather_list, lambda x: x.as_short_human_timestring())
-    matrix = []
-    for site in site_list:
-        row = []
-        row.append(site.name)
-        for day in weather_list:
-            row.append(site.site_check(site,day))
-        matrix.append(row)
+    weather_list = _get_unique_weather_list()
+    flyability_table = _generate_flyability_table(site_list, _get_unique_weather_list())
 
-    dt_utc = datetime.datetime.utcnow()
-    # convert UTC to local time
-    dt_local = dt_utc - datetime.timedelta(seconds=time.altzone)
     context = Context({
-        'conditions_table':matrix,
+        'conditions_table':flyability_table,
         'weather_list':map(lambda x: x.as_short_human_timestring,weather_list),
-        'datetime': dt_local.strftime("%A the %d, %B %Y at %r"),
         })
     return HttpResponse(template.render(context))
 
@@ -54,7 +42,6 @@ def site(request,site_id=None):
     site = Site.objects.get(id=site_id)
     wwq = WeatherWatchQueue.objects.get(relevant_site=site)
     weather_list = DayOfWeather.objects.filter(weather_stream=wwq)
-    matrix = []
     for day in weather_list:
         row = []
         weather_slices = WeatherTimeSlice.objects.filter(day_of_occurance=day)
@@ -93,3 +80,23 @@ def about(request):
     context = Context({
         })
     return HttpResponse(template.render(context))
+
+def _get_unique_weather_list():
+    raw_weather_list = DayOfWeather.objects.all().order_by('date_it_happens')
+    return uniqify(raw_weather_list, lambda x: x.as_short_human_timestring())
+
+def _generate_flyability_table(site_list, weather_list):
+    flyability_table = []
+    for site in site_list:
+        row = []
+        row.append({'value':site.name,
+                    'id':site.id,
+                    'link':'site'})
+
+        for day in weather_list:
+            row.append({'value':site.site_check(day),
+                        'id':day.id,
+                        'link':'day'})
+
+        flyability_table.append(row)
+    return flyability_table
