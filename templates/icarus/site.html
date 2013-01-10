@@ -3,26 +3,24 @@
 {% if site %}
 <h3>{{ site.name }} weather gathered at  {{ site.last_weather_refresh|date:"H:i F jS" }}</h3>
 <h4>{{ site.city }}, {{ site.state }} </h4>
-{% endif %}
-{% if weather_list %} 
-    <table border="0"> 
-    <div class=class="slot-0-1-2-3">                                             
-        <table border="0">                                                       
-        <th>Site Name</th>                                                       
-                                                                               
-        {% for dow in weather_list %}                                          
-            <th>{{dow}}</th>                                                   
-        {% endfor %}                                                           
-                                                                               
-        {% for row in conditions_table %}                                      
-            <tr>                                                               
-            {% for column in row %}                                            
-                <td> {{column}} </td>                                          
-            {% endfor %}                                                       
-            </tr>                                                              
-        {% endfor %}                                                           
-        </table>
-    </div>  
-{% endif %} 
-{% endblock %}
+<div class="row">
+    <div class="slot-0-1-2-3-4-5">
+        <table border="0" width="100%">
+        <th>Site Name</th>
 
+        {% for dow in weather_list %}
+            <th>{{dow}}</th>
+        {% endfor %}
+
+        {% for row in conditions_table %}
+            <tr>
+            {% for column in row %}
+            <td> {{column}} </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

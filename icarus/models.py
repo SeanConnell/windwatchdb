@@ -188,6 +188,16 @@ class WeatherTimeSlice(models.Model):
     def __unicode__(self):
         return unicode("Weather beginning at %s" % str(self.start_time))
 
+    def as_machine_timestring(self):
+        return self.start_time.strftime(TIME_FORMAT)
+
+    def as_long_human_timestring(self):
+        return self.start_time.strftime("%A, %d")
+
+    def as_short_human_timestring(self):
+        return self.start_time.strftime("%m/%d")
+
+
     #TODO:fix start time having the year and shit in it
     start_time = models.DateTimeField()
     wind_direction = models.IntegerField(default=0)
@@ -206,6 +216,9 @@ class WeatherTimeSlice(models.Model):
 
 "Ground is whatever various piece of ground (launch, landing, whatever) that is relevant to a hang glider"
 class Ground(models.Model):
+
+    def as_machine_timestring(self):
+        return self.name.replace(' ','_').replace(',','').replace('\'','').replace('\"','')
 
     tolerances = [0.10,0.20,0.50]
     flyability_of  = {0.10:3,0.20:2,0.50:1}

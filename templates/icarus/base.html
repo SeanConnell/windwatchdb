@@ -16,19 +16,19 @@
 
 <div class="grid">
 
-<div class="row logo">
-  <div class="slot-0-1-2-3-4-5">
-    <h1 id="logo">{{ title|default:"Wing Weather" }}</h1>
-  </div>
-</div>
+{% block title %}
+  <h2>{{ title }}</h2>
+{% endblock %}
 
  <div class="row" id="navigation">
     {% block nav %}
-      <div class="slot-0"><p class="nil"></p></div>
-      <div class="slot-1-2-3-4">{% block nav-home %}<a class="bttn" href="/">Flyability</a>{% endblock %}
-      {% block nav-site-list %}<a class="bttn" href="/site/list">Site List</a>{% endblock %}
-      {% block nav-about %}<a class="bttn" href="/about">About</a>{% endblock %}</div>
-      <div class="slot-5"><p class="nil"></p></div>
+        <div class="slot-0-1-2-3-4-5">
+          <h3>
+          {% block nav-home %}<a class="nav" href="/">Flyability</a>{% endblock %}
+          {% block nav-site-list %}<a class="nav" href="/site/list">Site List</a>{% endblock %}
+          {% block nav-about %}<a class="nav" href="/about">About</a>{% endblock %}
+          </h3>
+        </div>
     {% endblock %}
   </div>
 
