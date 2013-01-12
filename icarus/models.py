@@ -197,6 +197,9 @@ class WeatherTimeSlice(models.Model):
     def as_short_human_timestring(self):
         return self.start_time.strftime("%m/%d")
 
+    def as_hour(self):
+        return self.start_time.strftime("%H")
+
 
     #TODO:fix start time having the year and shit in it
     start_time = models.DateTimeField()

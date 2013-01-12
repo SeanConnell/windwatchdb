@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 {% if site %}
-<h3>{{ site.name }} weather gathered at  {{ site.last_weather_refresh|date:"H:i F jS" }}</h3>
-<h4>{{ site.city }}, {{ site.state }} </h4>
+<h3>{{ site.name }} (located in {{ site.city }}, {{ site.state }}) forecast predicted on  {{ site.last_weather_refresh|date:"H:i F jS" }}</h3>
 <div class="row">
     <div class="slot-0-1-2-3-4-5">
         <table border="0" width="100%">
-        <th>Site Name</th>
 
+        <th>Hour of Prediction</th>
         {% for dow in weather_list %}
             <th>{{dow}}</th>
         {% endfor %}
@@ -15,7 +14,11 @@
         {% for row in conditions_table %}
             <tr>
             {% for column in row %}
-            <td> {{column}} </td>
+                {% if column.link %}
+                <td> <a href="/{{column.link}}/{{column.id}}">{{column.value}}</a> </td>
+                {% else %}
+                <td>{{column.value}}</td>
+                {% endif %}
             {% endfor %}
             </tr>
         {% endfor %}

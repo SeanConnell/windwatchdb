@@ -26,14 +26,7 @@ kiwanda = Site(
         city="Pacific City",
         state="Oregon")
 
-petersons_top = Site(
-        name="Peterson's Butte",
-        lat=44.441134,
-        lon=-123.013916,
-        city="Corvallis",
-        state="Oregon")
-
-petersons_bot = Site(
+petersons = Site(
         name="Peterson's Butte",
         lat=44.441134,
         lon=-123.013916,
@@ -64,8 +57,7 @@ oceanside = Site(
 site_list = [
         sollie,
         kiwanda,
-        petersons_top,
-        petersons_bot,
+        petersons,
         dog,
         cape_lookout,
         oceanside]
@@ -97,11 +89,11 @@ kiwanda_nnw = Launch(
 
 petersons_lower = Launch(
         name="Lower Launch",
-        site=petersons_top)
+        site=petersons)
 
 petersons_upper = Launch(
         name="Upper Launch",
-        site=petersons_bot)
+        site=petersons)
 
 dog_north = Launch(
         name="North",
@@ -160,19 +152,19 @@ kiwanda_top = Landing(
 
 petersons_west_long= Landing(
         name="Further Field for top launch",
-        site=petersons_bot)
+        site=petersons)
 
 petersons_west_short = Landing(
         name="Shorter Field for top launch",
-        site=petersons_bot)
+        site=petersons)
 
 petersons_south_short = Landing(
         name="Shorter Field before power lines",
-        site=petersons_top)
+        site=petersons)
 
 petersons_south_long = Landing(
         name="Longer Field after power lines",
-        site=petersons_top)
+        site=petersons)
 
 dog_beach = Landing(
         name="Landing Field When Water is Low",
@@ -212,13 +204,12 @@ for landing in landing_list:
 #Create WWQs here after Sites have IDs
 wwq1 = WeatherWatchQueue(relevant_site=sollie)
 wwq2 = WeatherWatchQueue(relevant_site=kiwanda)
-wwq3 = WeatherWatchQueue(relevant_site=petersons_bot)
-wwq4 = WeatherWatchQueue(relevant_site=petersons_top)
-wwq5 = WeatherWatchQueue(relevant_site=dog)
-wwq6 = WeatherWatchQueue(relevant_site=cape_lookout)
-wwq7 = WeatherWatchQueue(relevant_site=oceanside)
+wwq3 = WeatherWatchQueue(relevant_site=petersons)
+wwq4 = WeatherWatchQueue(relevant_site=dog)
+wwq5 = WeatherWatchQueue(relevant_site=cape_lookout)
+wwq6 = WeatherWatchQueue(relevant_site=oceanside)
 
-wwq_list = [wwq1,wwq2,wwq3,wwq4,wwq5,wwq6,wwq7]
+wwq_list = [wwq1,wwq2,wwq3,wwq4,wwq5,wwq6]
 
 for wwq in wwq_list:
     wwq.save()

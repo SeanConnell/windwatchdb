@@ -8,6 +8,7 @@ import re
 #Get windwatcher and django on the import path
 sys.path.append('/home/sean/django/windwatcher')
 from django.core.management import setup_environ
+from _delete_weather import delete_weather
 import settings
 setup_environ(settings)
 from icarus.models import *
@@ -145,6 +146,7 @@ def update_weather(site):
 
     day_list = day_data_dict.keys()
     day_list.sort()
+
     for day in day_list:
         dow = create_day_of_weather(day)
         #find WWQ for the site
