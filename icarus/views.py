@@ -2,7 +2,7 @@
 #for debugging uncomment and run in ipython
 
 import sys
-sys.path.append('/home/sean/windwatchdb/django/windwatcher/')
+sys.path.append('/home/sean/repos/windwatchdb')
 from django.core.management import setup_environ
 import settings 
 setup_environ(settings) 
@@ -109,14 +109,11 @@ def about(request):
         })
     return HttpResponse(template.render(context))
 
-#FIXME: need to get cache clearing to work first
-#@memoize
 def _get_unique_weather_list(site):
     wwq = WeatherWatchQueue.objects.get(relevant_site=site)
     raw_weather_list = DayOfWeather.objects.filter(weather_stream=wwq).order_by('date_it_happens')
     return uniqify(raw_weather_list, lambda x: x.as_machine_timestring())
 
-#@memoize
 def _get_unique_slices_list(day):
     weather_slices = WeatherTimeSlice.objects.filter(day_of_occurance=day)
     return uniqify(weather_slices, lambda x: x.id)
@@ -139,7 +136,6 @@ def _generate_flyability_table(site_list):
         flyability_table.append(row)
     return flyability_table
 
-#@memoize
 def _get_wts_flyability(site, wts):
     grounds = []
     grounds.append(Launch.objects.filter(site=site))
