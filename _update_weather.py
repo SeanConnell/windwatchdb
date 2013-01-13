@@ -62,7 +62,8 @@ def update_weather(site):
             wtslice.wind_direction = int(data_dict['wind_direction'])
             wtslice.start_time = datetime.strptime(time,'%H:%M:%S') 
         except KeyError:
-            print "NOAA fucked up, left out some data. Ignoring and continuing"
+            print "NOAA fucked up, left out some data. Skipping this WTS"
+            return None
         return wtslice
 
     """Parses out relevant information into models and saves them"""
@@ -157,5 +158,8 @@ def update_weather(site):
         dow.save()
         for wts in day_data_dict[day].keys():
             wslice = create_wtime_slice(wts,day_data_dict[day][wts])
+            if wslice is None:
+                continue
+
             wslice.day_of_occurance = dow
             wslice.save()

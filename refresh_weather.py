@@ -14,7 +14,7 @@ setup_environ(settings)
 from icarus.models import *
 from _update_weather import update_weather
 from _delete_weather import delete_weather
-from icarus.memoize import clear_cache
+#from icarus.memoize import clear_cache
 
 
 site_list = Site.objects.all()
@@ -27,5 +27,5 @@ for site in site_list:
     site.last_weather_refresh = datetime.now()
     site.save()
 
-print "Clearing memoization caches"
-clear_cache()
+#print "Clearing memoization caches"
+#clear_cache()
