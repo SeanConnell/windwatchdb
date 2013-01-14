@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^site/([0-9]+)', 'icarus.views.site'),
+    url(r'^site/(w+)', 'icarus.views.site'),
     #List of sites if the user wants to look at a specific one for some reason
     url(r'^site/list', 'icarus.views.site_list'),
     url(r'^about', 'icarus.views.about'),

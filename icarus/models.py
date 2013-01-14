@@ -27,7 +27,9 @@ class Site(models.Model):
     def __unicode__(self):
             return self.name
 
+
     name = models.CharField(max_length=200)
+    nameid = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     lat = models.DecimalField(max_digits=12, decimal_places=6) #lat and lon for the point defining the site
@@ -220,8 +222,6 @@ class WeatherTimeSlice(models.Model):
 "Ground is whatever various piece of ground (launch, landing, whatever) that is relevant to a hang glider"
 class Ground(models.Model):
 
-    def as_machine_timestring(self):
-        return self.name.replace(' ','_').replace(',','').replace('\'','').replace('\"','')
 
     tolerances = [0.10,0.20,0.50]
     flyability_of  = {0.10:3,0.20:2,0.50:1}

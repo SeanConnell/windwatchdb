@@ -11,6 +11,7 @@ from django.core.management import setup_environ
 import settings
 setup_environ(settings)
 from icarus.models import *
+from icarus.sanitize_string import sanitize_string
 
 sollie = Site(
         name="Sollie Smith",
@@ -64,6 +65,7 @@ site_list = [
 
 print "Importing site list"
 for site in site_list:
+    site.nameid = sanitize_string(site.name)
     site.save()
     print "Saving",site
 
@@ -214,4 +216,5 @@ wwq_list = [wwq1,wwq2,wwq3,wwq4,wwq5,wwq6]
 for wwq in wwq_list:
     wwq.save()
     print "Saving",wwq
+
 
