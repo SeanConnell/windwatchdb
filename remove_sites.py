@@ -12,20 +12,11 @@ from django.core.management import setup_environ
 import settings
 setup_environ(settings)
 from icarus.models import *
-from _update_weather import update_weather
-from _delete_weather import delete_weather
-#from icarus.memoize import clear_cache
-
 
 site_list = Site.objects.all()
 for site in site_list:
-    print "Updating Predictions for %s" % site
-    print "Deleting previous Predictions"
-    delete_weather(site)
-    print "Getting new Weather Predictions"
-    update_weather(site)
-    site.last_weather_refresh = datetime.now()
-    site.save()
+    print "Deleting site ", site
+    site.delete()
 
 #print "Clearing memoization caches"
 #clear_cache()
