@@ -6,16 +6,16 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-     url(r'^$', 'icarus.views.index', name='home'),
+     url(r'^$', 'icarus.views.index'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^site/(w+)', 'icarus.views.site'),
-    #List of sites if the user wants to look at a specific one for some reason
     url(r'^site/list', 'icarus.views.site_list'),
+    url(r'^site/(.*)', 'icarus.views.site'),
+    #List of sites if the user wants to look at a specific one for some reason
     url(r'^about', 'icarus.views.about'),
     url(r'^day/([0-9]+)', 'icarus.views.day'),
 )

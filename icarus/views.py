@@ -13,7 +13,7 @@ from django.template import Context, loader
 from icarus.models import Site, DayOfWeather, logging, WeatherWatchQueue, WeatherTimeSlice, Launch, Landing
 #Fancy order preserving function
 from uniqify import uniqify
-from memoize import memoize
+from sanitize_string import sanitize_string
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -24,6 +24,7 @@ logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
 TIME_FORMAT = '%Y%m%d%M'
+MIN_FLY_SCORE = 3
 
 def index(request):
     template = loader.get_template('icarus/index.html')
@@ -41,22 +42,24 @@ def index(request):
         })
     return HttpResponse(template.render(context))
 
-def site(request, site_id=None):
+def site(request, site_name=None):
     template = loader.get_template('icarus/site.html')
-    site = Site.objects.get(id=site_id)
+    site = Site.objects.get(nameid=sanitize_string(site_name))
     weather_list = _get_unique_weather_list(site)
     flipped_table = []
-    max_length = 0
+
     #NOAA's weird time buckets. I think this is garunteed
     time_to_index = {'01':0, '04':1, '07':2, '10':3, '13':4, '16':5, '19':6, '22': 7}
     times = [{'value':time} for time in ['1:00', '4:00', '7:00', '10:00', '13:00', '16:00', '19:00', '22:00']]
+
     TABLE_HEIGHT = 8
     flipped_table.append(times)
+
     for day in weather_list:
         column = [{'value':'No Prediction'} for i in range(TABLE_HEIGHT)]
         for wts in _get_unique_slices_list(day):
-            flyability = _get_wts_flyability(site, wts) 
-            column[ time_to_index[wts.as_hour()] ] = {'value':flyability}
+            raw_flyability = _get_wts_flyability(site, wts) 
+            column[ time_to_index[wts.as_hour()] ] = {'value':_wts_flyability(raw_flyability)}
         flipped_table.append(column)
 
     flyability_table = zip(*flipped_table)
@@ -124,7 +127,7 @@ def _generate_flyability_table(site_list):
         row = []
         #site name/info
         row.append({'value':site.name,
-                    'id':site.id,
+                    'id':site.nameid,
                     'link':'site'})
 
         #flyability ratings
@@ -148,3 +151,6 @@ def _get_wts_flyability(site, wts):
 
     return flyability
 
+def _wts_flyability(wtses):
+    acceptable_wts = [value for value in wtses if value >= MIN_FLY_SCORE]
+    return sum(acceptable_wts)

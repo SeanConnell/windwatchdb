@@ -1,3 +1,7 @@
 #!/usr/bin/python
 def sanitize_string(string):
-    return string.replace(' ','_').replace(',','').replace('\'','').replace('\"','').replace('\?','')
+    return string.replace(' ','_').replace('\\','')\
+            .replace(';','').replace('"','')\
+            .replace(',','').replace('\'','')\
+            .replace('\"','').replace('\?','')\
+            .lower().strip()

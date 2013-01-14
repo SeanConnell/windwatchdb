@@ -67,7 +67,7 @@ print "Importing site list"
 for site in site_list:
     site.nameid = sanitize_string(site.name)
     site.save()
-    print "Saving",site
+    print "Saving Sitename: %s SitenameID: %s" % (site.name,site.nameid)
 
 sollie_w = Launch(
         name="West",

@@ -85,6 +85,7 @@ class Site(models.Model):
         return self.get_ground_conditions(launches_list, check_day)
 
     def get_landing_conditions(self, check_day):
+
         landing_list = Landing.objects.filter(site=self)
 
         if empty(landing_list):
