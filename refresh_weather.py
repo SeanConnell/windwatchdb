@@ -1,5 +1,4 @@
 #!/usr/bin/python
-from urllib import *
 import sys
 from datetime import datetime 
 import getpass
@@ -11,7 +10,7 @@ sys.path.append(spath)
 from django.core.management import setup_environ
 import settings
 setup_environ(settings)
-from icarus.models import *
+from icarus.models import Site
 from _update_weather import update_weather
 from _delete_weather import delete_weather
 

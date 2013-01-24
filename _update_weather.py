@@ -4,14 +4,16 @@ import xml.etree.ElementTree as xml
 import sys
 from datetime import datetime 
 import re
+import pprint
 
 #Get windwatcher and django on the import path
 sys.path.append('/home/sean/django/windwatcher')
 from django.core.management import setup_environ
-from _delete_weather import delete_weather
 import settings
 setup_environ(settings)
 from icarus.models import *
+
+pp = pprint.PrettyPrinter(indent=4)
 
 """Pulls weather for a specific site, and puts it into the site's WeatherWatchQueue"""
 def update_weather(site):
@@ -47,11 +49,10 @@ def update_weather(site):
         gmt_offset = str(times.group(3)) 
         date_it_happens = datetime.strptime(date_it_happens,"%Y-%m-%d")
         start_time = datetime.strptime(start_time,"%H:%M:%S")
-        times = {'forecast_dt':forecast_dt,
+        return {'forecast_dt':forecast_dt,
                  'date_it_happens':date_it_happens,
                  'start_time':start_time,
                  'gmt_offset':gmt_offset}
-        return times
 
     """Parses relevant information into a weather time slice"""
     def create_wtime_slice(time, data_dict):
@@ -63,6 +64,7 @@ def update_weather(site):
             wtslice.start_time = datetime.strptime(time,'%H:%M:%S') 
         except KeyError:
             print "NOAA fucked up, left out some data. Skipping this WTS"
+            pp.pprint(data_dict)
             return None
         return wtslice
 
@@ -90,7 +92,7 @@ def update_weather(site):
     wxml = wxml.find('data')
 
     if wxml is None:
-        print "NOAA fucked up, missing data in this returned data... bailing"
+        print "NOAA fucked up, missing the whole xml tree. Bailing" 
         return
 
     #build first level of dict
@@ -111,10 +113,8 @@ def update_weather(site):
             wtime = wvars.attrib['time-layout']
             #for some reason strip wasn't doing anything, hack'd
             wtype = wvars.find('name').text.lower().replace(' ','_').replace(',','')
-            index = 0 # <- a good sign I'm not doing this properly 
-            for wtslice in wvars.findall('value'):
+            for index, wtslice in enumerate(wvars.findall('value')):
                 lk_dict[wtime][index][wtype] = wtslice.text 
-                index += 1
 
     #join data ranges into time ranges based on time key
     time_dict = {} 
@@ -143,7 +143,7 @@ def update_weather(site):
             for data in time_dict[day].keys():
                 day_data_dict[date][time][data] = time_dict[day][data]
     except KeyError:
-        print "NOAA fucked up, missing data in this returned data... Ignoring this chunk"
+        print "Failed during date time data lookup creation"
 
     day_list = day_data_dict.keys()
     day_list.sort()
