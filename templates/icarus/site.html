@@ -12,7 +12,7 @@
         {% endfor %}
 
         {% for row in conditions_table %}
-            <tr>
+            <tr class="{% cycle 'odd' 'even' %}">
             {% for column in row %}
                 {% if column.link %}
                 <td> <a href="/{{column.link}}/{{column.id}}">{{column.value}}</a> </td>

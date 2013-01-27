@@ -13,7 +13,7 @@
         <th>Flight Window</th>
 
         {% for row in site_table %}
-            <tr>
+            <tr class="{% cycle 'odd' 'even' %}">
             {% for column in row %}
                 <td> {{column}} </td>
             {% endfor %}

@@ -175,11 +175,12 @@ body{
   background-color:rgb(70,80,90);
 }
 
-tbody tr:nth-child(odd) td {
-  background-color: #00373F;
-}
-tbody tr:nth-child(even) td {
+tr.even {
   background-color: #10474F;
+}
+
+tr.odd{
+  background-color: #00373F;
 }
 
 table{
