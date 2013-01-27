@@ -1,9 +1,3 @@
-#Get windwatcher and django on the import path  
-import sys
-sys.path.append('/home/sean/django/windwatcher') 
-from django.core.management import setup_environ 
-import settings 
-setup_environ(settings) 
 from icarus.models import * 
  
 def delete_weather(site): 
