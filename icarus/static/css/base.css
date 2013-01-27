@@ -176,11 +176,11 @@ body{
 }
 
 tr.even {
-  background-color: #10474F;
+  background-color: #00373F;
 }
 
 tr.odd{
-  background-color: #00373F;
+  background-color: #10474F;
 }
 
 table{
