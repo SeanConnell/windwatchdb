@@ -73,7 +73,7 @@ class Site(models.Model):
 
     def get_launching_conditions(self, check_day):
 
-        launches_list = Launch.objects.filter(site=self)
+        launches_list = list(Launch.objects.filter(site=self))
 
         if empty(launches_list):
             raise UnflyableError("No launches for site %s" %self)
@@ -86,7 +86,7 @@ class Site(models.Model):
 
     def get_landing_conditions(self, check_day):
 
-        landing_list = Landing.objects.filter(site=self)
+        landing_list = list(Landing.objects.filter(site=self))
 
         if empty(landing_list):
             raise UnflyableError("No landings for site %s" %self)
