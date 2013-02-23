@@ -56,7 +56,7 @@ def site(request, site_name=None):
     flipped_table.append(times)
 
     for day in weather_list:
-        column = [{'value':'No Prediction'} for i in range(TABLE_HEIGHT)]
+        column = [{'value':'no info'} for i in range(TABLE_HEIGHT)]
         for wts in _get_unique_slices_list(day):
             raw_flyability = _get_wts_flyability(site, wts) 
             column[ time_to_index[wts.as_hour()] ] = {'value':_wts_flyability(raw_flyability)}
